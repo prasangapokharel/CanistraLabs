@@ -19,3 +19,7 @@ Project documentation is grouped by topic:
 - **Production checklist:** [`deployment/PRODUCTION_CHECKLIST.md`](deployment/PRODUCTION_CHECKLIST.md)
 - **Architecture overview:** [`architecture/ARCHITECTURE_OVERVIEW.md`](architecture/ARCHITECTURE_OVERVIEW.md)
 - **Quick reference:** [`guides/QUICK_REFERENCE.md`](guides/QUICK_REFERENCE.md)
+
+---
+<!-- doc-sync-log -->
+sync 2025-08-31T11:40:03

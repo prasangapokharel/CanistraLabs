@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>Phonesium - AI Trading Agent</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'AlibabaSans-Regular';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/AlibabaSans-Regular.otf');
+        }
+        @font-face {
+            font-family: 'AlibabaSans-Medium';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/AlibabaSans-Medium.otf');
+        }
+        @font-face {
+            font-family: 'AlibabaSans-Bold';
+            src: url('https://assets-persist.lovart.ai/agent-static-assets/Alibaba-PuHuiTi-Bold.otf');
+        }
+
+        :root {
+            --primary-blue: #2563EB;
+            --primary-dark: #0F172A;
+            --secondary-bg: #F8FAFC;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --accent-gradient: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'AlibabaSans-Regular', sans-serif;
+            background-color: #FFFFFF;
+            color: var(--text-main);
+            width: 1920px;
+            overflow-x: hidden;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 1440px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-family: 'AlibabaSans-Medium', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #E2E8F0;
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .section-tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-blue);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-family: 'AlibabaSans-Medium', sans-serif;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 24px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 1440px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            font-size: 24px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--primary-blue);
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            font-family: 'AlibabaSans-Medium', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-sm {
+            padding: 10px 24px;
+            font-size: 14px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 180px;
+            padding-bottom: 100px;
+            background: radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.05) 0%, transparent 40%);
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            font-size: 72px;
+            line-height: 1.1;
+            color: var(--primary-dark);
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero-text h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 540px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .feature-pills {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #F8FAFC;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-muted);
+            border: 1px solid #F1F5F9;
+        }
+
+        .pill i {
+            color: var(--primary-blue);
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-img-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .hero-img-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .play-btn i {
+            font-size: 32px;
+            color: white;
+            margin-left: 4px;
+        }
+
+        .play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: #FAFAFA;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-header h2 {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            font-size: 48px;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #F1F5F9;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: #EFF6FF;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--primary-blue);
+            font-size: 28px;
+        }
+
+        .feature-card h3 {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: var(--primary-dark);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .feature-metric {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            font-size: 14px;
+            color: var(--primary-blue);
+            background: #EFF6FF;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            background: var(--primary-dark);
+            color: white;
+            border: none;
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-blue);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-family: 'AlibabaSans-Bold', sans-serif;
+        }
+
+        .pricing-header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .plan-name {
+            font-size: 20px;
+            font-family: 'AlibabaSans-Medium', sans-serif;
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        .featured .plan-name {
+            color: #94A3B8;
+        }
+
+        .price {
+            font-size: 48px;
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .featured .price {
+            color: white;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: normal;
+        }
+
+        .featured .price span {
+            color: #94A3B8;
+        }
+
+        .pricing-features {
+            margin-bottom: 40px;
+            flex-grow: 1;
+        }
+
+        .pricing-features ul {
+            list-style: none;
+        }
+
+        .pricing-features li {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+        }
+
+        .featured .pricing-features li {
+            color: #E2E8F0;
+        }
+
+        .pricing-features li i {
+            color: var(--primary-blue);
+            font-size: 20px;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'AlibabaSans-Medium', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-basic {
+            background: #F1F5F9;
+            color: var(--primary-dark);
+        }
+
+        .btn-basic:hover {
+            background: #E2E8F0;
+        }
+
+        .btn-featured {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-featured:hover {
+            background: #3B82F6;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            padding: 80px 0 40px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            margin-bottom: 24px;
+        }
+
+        .footer-desc {
+            color: var(--text-muted);
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .footer-col h4 {
+            font-family: 'AlibabaSans-Bold', sans-serif;
+            margin-bottom: 24px;
+            color: var(--primary-dark);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-muted);
+            padding-top: 40px;
+            border-top: 1px solid #E2E8F0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-wrapper">
+            <div class="logo">
+                <i class="ri-robot-2-fill"></i>
+                Phonesium
+            </div>
+            <nav class="nav-links">
+                <a href="#">Trade</a>
+                <a href="#">Strategies</a>
+                <a href="#">Markets</a>
+                <a href="#">Documentation</a>
+                <a href="#">Contact</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-outline btn-sm">Login</a>
+                <a href="#" class="btn btn-primary btn-sm">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <div class="section-tag">AI Powered Trading v2.0</div>
+                    <h1>Autonomous <br><span>Intelligence.</span></h1>
+                    <p>Experience the future of trading with Phonesium's advanced AI agents. Automated trading strategies on KuCoin exchange running 24/7 to maximize your portfolio growth.</p>
+                    
+                    <div class="hero-ctas">
+                        <a href="#" class="btn btn-primary">Get started free <i class="ri-arrow-right-line"></i></a>
+                        <a href="#" class="btn btn-outline">Open terminal</a>
+                    </div>
+
+                    <div class="feature-pills">
+                        <div class="pill"><i class="ri-exchange-dollar-line"></i> KuCoin Exchange</div>
+                        <div class="pill"><i class="ri-brain-line"></i> AI Powered</div>
+                        <div class="pill"><i class="ri-time-line"></i> 24/7 Active</div>
+                        <div class="pill"><i class="ri-rocket-line"></i> v2.0 Latest</div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-img-container">
+                        <img src="https://a.lovart.ai/artifacts/user/vriJIpddsH7ut1e2.png" alt="AI Robot Trading Interface">
+                        <div class="play-btn">
+                            <i class="ri-play-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Infrastructure</div>
+                    <h2>Why choose Phonesium?</h2>
+                    <p>Built on enterprise-grade infrastructure designed for reliability, speed, and security.</p>
+                </div>
+
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-shield-check-line"></i>
+                        </div>
+                        <h3>Bank-Grade Security</h3>
+                        <p>Your assets are protected with 256-bit encryption and enterprise security protocols.</p>
+                        <span class="feature-metric">AES-256</span>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-brain-2-line"></i>
+                        </div>
+                        <h3>AI Powered Core</h3>
+                        <p>Advanced machine learning algorithms that adapt to market conditions in real-time.</p>
+                        <span class="feature-metric">Neural Net v4</span>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-timer-flash-line"></i>
+                        </div>
+                        <h3>24/7 Active Trading</h3>
+                        <p>Never miss an opportunity with non-stop market monitoring and execution.</p>
+                        <span class="feature-metric">99.9% Uptime</span>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-bar-chart-grouped-line"></i>
+                        </div>
+                        <h3>Real-time Analytics</h3>
+                        <p>Live market data processing and instant portfolio performance tracking.</p>
+                        <span class="feature-metric">< 50ms Latency</span>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-stack-line"></i>
+                        </div>
+                        <h3>Multi-Strategy Support</h3>
+                        <p>Deploy diverse trading approaches simultaneously for risk management.</p>
+                        <span class="feature-metric">15+ Strategies</span>
+                    </div>
+
+                    <!-- Feature 6 -->
+                    <div class="feature-card">
+                        <div class="icon-box">
+                            <i class="ri-refresh-line"></i>
+                        </div>
+                        <h3>Latest v2.0 Platform</h3>
+                        <p>Completely redesigned interface with enhanced execution capabilities.</p>
+                        <span class="feature-metric">Updated Daily</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-tag">Plans</div>
+                    <h2>Simple, transparent pricing</h2>
+                    <p>Start for free, upgrade as you grow. No hidden fees.</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <!-- Basic Plan -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <div class="plan-name">Basic</div>
+                            <div class="price">$0<span>/month</span></div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="ri-check-line"></i> 1 Active Bot</li>
+                                <li><i class="ri-check-line"></i> Basic Strategies</li>
+                                <li><i class="ri-check-line"></i> Daily Reports</li>
+                                <li><i class="ri-check-line"></i> Community Support</li>
+                            </ul>
+                        </div>
+                        <button class="pricing-btn btn-basic">Get Started</button>
+                    </div>
+
+                    <!-- Pro Plan -->
+                    <div class="pricing-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <div class="plan-name">Pro</div>
+                            <div class="price">$29.99<span>/month</span></div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="ri-check-line"></i> 10 Active Bots</li>
+                                <li><i class="ri-check-line"></i> All AI Strategies</li>
+                                <li><i class="ri-check-line"></i> Real-time Alerts</li>
+                                <li><i class="ri-check-line"></i> Priority Support</li>
+                                <li><i class="ri-check-line"></i> Advanced Analytics</li>
+                            </ul>
+                        </div>
+                        <button class="pricing-btn btn-featured">Start Pro Trial</button>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <div class="plan-name">Enterprise</div>
+                            <div class="price">$99.99<span>/month</span></div>
+                        </div>
+                        <div class="pricing-features">
+                            <ul>
+                                <li><i class="ri-check-line"></i> Unlimited Bots</li>
+                                <li><i class="ri-check-line"></i> Custom Strategy Dev</li>
+                                <li><i class="ri-check-line"></i> API Access</li>
+                                <li><i class="ri-check-line"></i> Dedicated Account Mgr</li>
+                                <li><i class="ri-check-line"></i> White-label Option</li>
+                            </ul>
+                        </div>
+                        <button class="pricing-btn btn-basic">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="logo footer-logo">
+                        <i class="ri-robot-2-fill"></i>
+                        Phonesium
+                    </div>
+                    <p class="footer-desc">
+                        Empowering traders with autonomous intelligence. The next generation of algorithmic trading is here.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Trading Terminal</a></li>
+                        <li><a href="#">Strategy Marketplace</a></li>
+                        <li><a href="#">Analytics</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Reference</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Legal</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2024 Phonesium Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

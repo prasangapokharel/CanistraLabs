@@ -1,0 +1,169 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.turbo/
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+backend/*.log
+frontend/*.log
+
+# Testing
+coverage/
+.nyc_output/
+.coverage
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# ICP specific
+.dfx/
+canister_ids.json
+
+# Build artifacts
+*.tgz
+*.tar.gz
+
+# Backup files
+*.backup
+*.bak
+
+# TypeScript
+frontend/tsconfig.tsbuildinfo
+frontend/.tsbuildinfo
+
+# Python specific
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.pytest_cache/
+backend/alembic/versions/*.py
+!backend/alembic/versions/__init__.py
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# FastAPI
+backend/app/__pycache__/
+backend/app/**/__pycache__/
+
+# Deployment
+deployment/
+dist/
+
+# Local configuration
+local.env
+local.json
+config.local.json
+
+# Test databases
+test.db
+test.sqlite
+
+# Migration files (keep only initial)
+backend/alembic/versions/
+!backend/alembic/versions/.gitkeep
+
+# Media uploads
+uploads/
+media/
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+
+# Package manager lockfiles (keep these)
+# package-lock.json
+# yarn.lock
+
+# But ignore some generated lockfiles
+backend/poetry.lock
+backend/Pipfile.lock
+
+# Profiling
+*.prof
+
+# DFX identity files
+.dfx/local/
+.dfx/ic/
+identity.pem
+
+# Build info
+build-info/

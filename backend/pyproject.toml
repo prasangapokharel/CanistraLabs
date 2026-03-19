@@ -1,0 +1,103 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "icp-hosting-platform"
+version = "0.1.0"
+description = "Automated ICP-based hosting platform with FastAPI backend"
+requires-python = ">=3.11,<4.0"
+authors = [
+    {name = "Prasanga Pokharel", email = "prasanga@example.com"}
+]
+
+dependencies = [
+    # Web Framework
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    
+    # Database
+    "sqlalchemy>=2.0.23",
+    "alembic>=1.13.1",
+    "psycopg2-binary>=2.9.9",
+    
+    # Authentication & Security
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.6",
+    "cryptography>=41.0.0",
+    
+    # Task Queue & Async
+    "celery>=5.3.4",
+    "redis>=5.0.1",
+    
+    # HTTP Client
+    "httpx>=0.25.2",
+    "requests>=2.31.0",
+    
+    # ICRC Rosetta Integration
+    "ecdsa>=0.18.0",
+    "cryptography>=41.0.0",
+    "base58>=2.1.1",
+    "cbor2>=5.4.6",
+    
+    # Utilities
+    "python-dotenv>=1.0.0",
+    "email-validator>=2.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "pytest-cov==4.1.0",
+    "pytest-mock==3.12.0",
+    "black==23.12.0",
+    "ruff==0.1.8",
+    "mypy==1.7.1",
+    "types-requests==2.31.0.10",
+]
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-v --cov=app --cov-report=term-missing --cov-report=html --strict-markers"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]

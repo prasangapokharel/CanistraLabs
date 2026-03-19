@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "canisters": {
+    "test_app": {
+      "type": "assets",
+      "source": ["src/test_app/assets/"]
+    },
+    "dynamic_test": {
+      "type": "assets",
+      "source": ["src/dynamic_test/assets/"]
+    }
+  },
+  "networks": {
+    "ic": {
+      "providers": ["https://ic0.app"],
+      "type": "persistent"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  }
+}

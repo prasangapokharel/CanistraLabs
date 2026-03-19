@@ -1,0 +1,50 @@
+Quick start
+Beginner
+
+Build Web3, DeFi, fully network-resident social media, games, enterprise apps, and just about anything else you can imagine. Your projects are immune to cyberattacks and unstoppable.
+
+Open your terminal and deploy in minutes using these steps.
+
+    Linux
+    macOS
+    Windows
+
+Prerequisites
+Download and install Node.js.
+Install the libunwind package. On Debian/Ubuntu: sudo apt install libunwind-dev.
+1. Install the IC SDK.
+
+sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+
+Confirm the IC SDK has been installed (you may need to open a new terminal window):
+
+dfx --version
+
+2. Create a new project.
+
+dfx new hello --type motoko --frontend react
+
+This generates a simple "Hello, [name]!" application that uses Motoko, React, and TypeScript.
+3. Deploy the project.
+
+cd hello
+dfx deploy --playground
+
+4. Interact with the app.
+
+Open the frontend URL in a web browser. You'll see the template React frontend interface.
+
+Congratulations, you just created your first internet-native app!
+
+You can try other templates. Run dfx new -h for more information about the supported backend and frontend options.
+Possible next steps
+
+    Learn more about this example application's architecture.
+
+    Take a look at curated example code in ICP Ninja, a web-based IDE that allows you to deploy to the mainnet with a few clicks.
+
+    Fork the ICP example repo that includes various code examples in different languages.
+
+    Continue setting up your local development environment by creating a developer identity and getting tokens for more dapp deployments.
+
+    Learn more about canister smart contracts and how to deploy and manage them.

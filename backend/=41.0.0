@@ -1,0 +1,5 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: cryptography in /home/prasanga/.local/lib/python3.14/site-packages (46.0.5)
+Requirement already satisfied: cffi>=2.0.0 in /usr/lib64/python3.14/site-packages (from cryptography) (2.0.0)
+Requirement already satisfied: pycparser in /usr/lib/python3.14/site-packages (from cffi>=2.0.0->cryptography) (2.22)
+Requirement already satisfied: ply==3.11 in /usr/lib/python3.14/site-packages (from pycparser->cffi>=2.0.0->cryptography) (3.11)

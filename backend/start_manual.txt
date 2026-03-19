@@ -1,0 +1,22 @@
+#!/bin/bash
+# Manual Backend Startup Commands
+# Run these from inside the backend/ directory
+
+echo "=== Manual Backend Startup Guide ==="
+echo ""
+echo "1. Activate virtual environment:"
+echo "   source venv/bin/activate"
+echo ""
+echo "2. Install dependencies (if needed):"
+echo "   pip install -e ."
+echo ""
+echo "3. Start the server:"
+echo "   python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+echo ""
+echo "Or in one line:"
+echo "   source venv/bin/activate && pip install -e . && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+echo ""
+echo "=== Alternative Commands ==="
+echo "   uvicorn app.main:app --reload"
+echo "   python -m app.main"
+echo "   fastapi run app/main.py --port 8000"

@@ -1,0 +1,296 @@
+{
+  "summary": {
+    "total_tests": 15,
+    "passed": 14,
+    "failed": 1,
+    "success_rate": 93.33333333333333,
+    "duration": "0:00:27.516188",
+    "start_time": "2026-03-21T11:31:14.006551",
+    "end_time": "2026-03-21T11:31:41.522739"
+  },
+  "results": [
+    {
+      "test": "User Login",
+      "success": true,
+      "details": "Successfully logged in as prasangaramanpokharel@gmail.com",
+      "timestamp": "2026-03-21T11:31:14.694482",
+      "status_code": 200,
+      "response_data": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImV4cCI6MTc3NDE1ODM3NCwiaWF0IjoxNzc0MDcxOTc0LCJ0eXBlIjoiYWNjZXNzIn0.xMM3wvWJpClSZ9q8aH-cfWW0VgJ9UlVgEGSs9x-IhMw",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImV4cCI6MTc3NDY3Njc3NCwiaWF0IjoxNzc0MDcxOTc0LCJ0eXBlIjoicmVmcmVzaCJ9.1ryN8du6npjOiGv3KXw6XAub2US6-ghmGoyQpzwKl40",
+        "token_type": "bearer",
+        "expires_in": 86400
+      }
+    },
+    {
+      "test": "Get Current User",
+      "success": true,
+      "details": "Retrieved user: prasangaramanpokharel@gmail.com",
+      "timestamp": "2026-03-21T11:31:15.144224",
+      "status_code": 200,
+      "response_data": {
+        "email": "prasangaramanpokharel@gmail.com",
+        "username": "prasangaraman",
+        "full_name": "Prasanga Raman Pokharel",
+        "id": 38,
+        "is_active": true,
+        "is_superuser": false,
+        "created_at": "2026-03-21T05:05:19.786769",
+        "updated_at": "2026-03-21T05:05:20.041686"
+      }
+    },
+    {
+      "test": "Token Refresh",
+      "success": true,
+      "details": "Successfully refreshed tokens",
+      "timestamp": "2026-03-21T11:31:15.658768",
+      "status_code": 200,
+      "response_data": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImV4cCI6MTc3NDE1ODM3NSwiaWF0IjoxNzc0MDcxOTc1LCJ0eXBlIjoiYWNjZXNzIn0.2wjCusd2cpWRH31_EDP3sBrmSuqmVR1vMMMYVhkMGBc",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImV4cCI6MTc3NDY3Njc3NSwiaWF0IjoxNzc0MDcxOTc1LCJ0eXBlIjoicmVmcmVzaCJ9.ovwXf3P1fsJUWQ_tNUZ_1gr3eqZ9TnqwwV_DmIecWms",
+        "token_type": "bearer",
+        "expires_in": 86400
+      }
+    },
+    {
+      "test": "Forgot Password",
+      "success": true,
+      "details": "Password reset email requested",
+      "timestamp": "2026-03-21T11:31:16.786941",
+      "status_code": 200,
+      "response_data": {
+        "message": "If the email address exists, you will receive password reset instructions.",
+        "success": true
+      }
+    },
+    {
+      "test": "Verify Reset Token",
+      "success": true,
+      "details": "Correctly rejected invalid token",
+      "timestamp": "2026-03-21T11:31:17.397456",
+      "status_code": 400,
+      "response_data": {
+        "detail": "Invalid or expired reset token"
+      }
+    },
+    {
+      "test": "Get Projects",
+      "success": true,
+      "details": "Retrieved 0 projects",
+      "timestamp": "2026-03-21T11:31:17.909855",
+      "status_code": 200,
+      "response_data": []
+    },
+    {
+      "test": "Create Project",
+      "success": true,
+      "details": "Created project: test-project-20260321113117 (ID: 31)",
+      "timestamp": "2026-03-21T11:31:18.832243",
+      "status_code": 201,
+      "response_data": {
+        "name": "test-project-20260321113117",
+        "description": "Test project created at 2026-03-21 11:31:17.910046",
+        "language": "html",
+        "id": 31,
+        "user_id": 38,
+        "status": "pending",
+        "canister_id": null,
+        "principal_id": null,
+        "url": "https://a5771bce-31.ic0.app",
+        "created_at": "2026-03-21T05:46:18.215939",
+        "updated_at": "2026-03-21T05:46:18.525038",
+        "deployed_at": null
+      }
+    },
+    {
+      "test": "Get Project Details",
+      "success": true,
+      "details": "Retrieved project: test-project-20260321113117",
+      "timestamp": "2026-03-21T11:31:19.095019",
+      "status_code": 200,
+      "response_data": {
+        "name": "test-project-20260321113117",
+        "description": "Test project created at 2026-03-21 11:31:17.910046",
+        "language": "html",
+        "id": 31,
+        "user_id": 38,
+        "status": "pending",
+        "canister_id": null,
+        "principal_id": null,
+        "url": "https://a5771bce-31.ic0.app",
+        "created_at": "2026-03-21T05:46:18.215939",
+        "updated_at": "2026-03-21T05:46:18.525038",
+        "deployed_at": null,
+        "code_content": null
+      }
+    },
+    {
+      "test": "Update Project",
+      "success": true,
+      "details": "Updated project 31",
+      "timestamp": "2026-03-21T11:31:19.569407",
+      "status_code": 200,
+      "response_data": {
+        "name": "test-project-20260321113117",
+        "description": "Updated test project at 2026-03-21 11:31:19.095125",
+        "language": "html",
+        "id": 31,
+        "user_id": 38,
+        "status": "pending",
+        "canister_id": null,
+        "principal_id": null,
+        "url": "https://a5771bce-31.ic0.app",
+        "created_at": "2026-03-21T05:46:18.215939",
+        "updated_at": "2026-03-21T05:46:19.413584",
+        "deployed_at": null
+      }
+    },
+    {
+      "test": "Get Wallet Identity",
+      "success": true,
+      "details": "Retrieved identity: afwmn-5tqd5-7spnc-ze7sb-y2aje-jpn3m-5ivld-ak5sb-xmaeb-veds5-gae",
+      "timestamp": "2026-03-21T11:31:29.072492",
+      "status_code": 200,
+      "response_data": {
+        "identity_name": "user_38_97e46295",
+        "principal_id": "afwmn-5tqd5-7spnc-ze7sb-y2aje-jpn3m-5ivld-ak5sb-xmaeb-veds5-gae",
+        "account_id": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+        "cycles_balance": "0",
+        "icp_balance": "0",
+        "formatted_icp": "0.00000000 ICP",
+        "formatted_cycles": "0 cycles",
+        "funding_required": true,
+        "auto_convert_available": false,
+        "has_pending_icp": false,
+        "status": "active",
+        "message": "Wallet needs funding - minimum 0.1 ICP required",
+        "funding_address": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+        "created_at": "2026-03-21T05:05:20.040434"
+      }
+    },
+    {
+      "test": "Get Wallet Status",
+      "success": true,
+      "details": "Wallet funded: False",
+      "timestamp": "2026-03-21T11:31:34.058785",
+      "status_code": 200,
+      "response_data": {
+        "principal_id": "afwmn-5tqd5-7spnc-ze7sb-y2aje-jpn3m-5ivld-ak5sb-xmaeb-veds5-gae",
+        "account_id": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+        "current_status": {
+          "funded": false,
+          "balance": "0",
+          "cycles_balance": "0",
+          "needs_setup": false
+        },
+        "instructions": [
+          {
+            "step": 1,
+            "title": "Get Your ICP Address (Account ID)",
+            "description": "This is your ICP funding address - NOT the Principal ID",
+            "data": {
+              "account_id": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+              "principal_id": "afwmn-5tqd5-7spnc-ze7sb-y2aje-jpn3m-5ivld-ak5sb-xmaeb-veds5-gae",
+              "funding_address": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+              "copyable": true,
+              "note": "\u26a0\ufe0f Send ICP to Account ID, not Principal ID"
+            }
+          },
+          {
+            "step": 2,
+            "title": "Buy ICP Tokens",
+            "description": "Purchase ICP from exchanges (minimum 0.1 ICP)",
+            "options": [
+              {
+                "name": "Coinbase",
+                "url": "https://coinbase.com"
+              },
+              {
+                "name": "Binance",
+                "url": "https://binance.com"
+              },
+              {
+                "name": "Kraken",
+                "url": "https://kraken.com"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "title": "Transfer to Your ICP Address",
+            "description": "Send ICP to your Account ID (hex format)",
+            "data": {
+              "recipient": "5753353bbc7c17b25c6c2c7ba5707ae42880979906e56781596f294b9b8b811f",
+              "recipient_type": "Account ID",
+              "minimum_amount": "0.1 ICP",
+              "network": "Internet Computer (ICP)",
+              "warning": "\u26a0\ufe0f Use Account ID, not Principal ID for ICP transfers"
+            }
+          },
+          {
+            "step": 4,
+            "title": "Automatic Conversion",
+            "description": "We'll detect your deposit and offer to convert to cycles",
+            "data": {
+              "auto_detect": true,
+              "refresh_endpoint": "/api/v1/wallet/refresh-balance"
+            }
+          }
+        ],
+        "quick_links": {
+          "nns_dapp": "https://nns.ic0.app/",
+          "internet_identity": "https://identity.ic0.app/",
+          "dfinity_faucet": "https://faucet.dfinity.org/"
+        }
+      }
+    },
+    {
+      "test": "Refresh Wallet Balance",
+      "success": true,
+      "details": "Balance refreshed successfully",
+      "timestamp": "2026-03-21T11:31:40.293852",
+      "status_code": 200,
+      "response_data": {
+        "cycles_balance": "0",
+        "icp_balance": "0",
+        "formatted_icp": "0.00000000 ICP",
+        "formatted_cycles": "0 cycles",
+        "funding_required": true,
+        "auto_convert_available": false,
+        "has_pending_icp": false,
+        "principal_id": "afwmn-5tqd5-7spnc-ze7sb-y2aje-jpn3m-5ivld-ak5sb-xmaeb-veds5-gae",
+        "message": "Wallet needs funding - minimum 0.1 ICP required"
+      }
+    },
+    {
+      "test": "Deploy Project",
+      "success": false,
+      "details": "Failed to deploy project: {'detail': 'No code content provided for deployment'}",
+      "timestamp": "2026-03-21T11:31:40.606985",
+      "status_code": 400,
+      "response_data": {
+        "detail": "No code content provided for deployment"
+      }
+    },
+    {
+      "test": "Delete Project",
+      "success": true,
+      "details": "Deleted project 31",
+      "timestamp": "2026-03-21T11:31:41.519968",
+      "status_code": 204,
+      "response_data": {}
+    },
+    {
+      "test": "User Logout",
+      "success": true,
+      "details": "Successfully logged out",
+      "timestamp": "2026-03-21T11:31:41.522631",
+      "status_code": 200,
+      "response_data": {
+        "message": "Successfully logged out",
+        "success": true
+      }
+    }
+  ],
+  "base_url": "http://localhost:8000/api/v1"
+}

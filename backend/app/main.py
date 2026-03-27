@@ -9,8 +9,10 @@ from app.api.v1 import (
     deployments,
     wallet,
     cleanDfx,
-    dynamic_deployment,
-    domain_management,
+    dynamicDeployment,
+    domainManagement,
+    metrics,
+    cron,
 )
 from app.config import settings
 
@@ -60,8 +62,10 @@ def create_app() -> FastAPI:
     app.include_router(deployments.router)
     app.include_router(wallet.router)
     app.include_router(cleanDfx.router)  # Clean, minimal dfx API
-    app.include_router(dynamic_deployment.router)  # Dynamic deployment API
-    app.include_router(domain_management.router)  # Domain management API
+    app.include_router(dynamicDeployment.router)  # Dynamic deployment API
+    app.include_router(domainManagement.router)  # Domain management API
+    app.include_router(metrics.router)  # Project metrics API
+    app.include_router(cron.router)  # Cron service management API
 
     return app
 

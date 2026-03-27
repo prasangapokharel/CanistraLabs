@@ -4,6 +4,7 @@ import json
 import logging
 import hashlib
 import base64
+import os
 from typing import Dict, Any, Optional, List, Tuple
 from datetime import datetime
 
@@ -29,14 +30,14 @@ class RosettaClient:
     # ICP Ledger Canister ID (mainnet)
     ICP_LEDGER_CANISTER_ID = "rrkah-fqaaa-aaaaa-aaaaq-cai"
 
-    # Default Rosetta node endpoints
+    # Default Rosetta node endpoints with environment variable support
     MAINNET_ROSETTA_URL = "https://rosetta-api.internetcomputer.org"
-    LOCAL_ROSETTA_URL = "http://localhost:8082"
+    LOCAL_ROSETTA_URL = os.getenv("ROSETTA_URL", "http://localhost:8082")
 
     def __init__(
         self,
-        node_address: str = None,
-        canister_id: str = None,
+        node_address: Optional[str] = None,
+        canister_id: Optional[str] = None,
         network_identifier: str = "mainnet",
     ):
         """

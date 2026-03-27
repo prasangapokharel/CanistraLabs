@@ -11,8 +11,8 @@ from app.models.project import Project, ProjectStatus
 from app.models.canister import Canister
 from app.models.deployment import Deployment
 from app.models.user import User
-from app.utils.icp_utils import ICPService, ICPError, CanisterCreationException
-from app.services.icp_identity_manager import ICPIdentityManager
+from app.utils.icpUtils import ICPService, ICPError, CanisterCreationException
+from app.services.icpIdentityManager import ICPIdentityManager
 from app.config import settings
 
 logger = logging.getLogger(__name__)

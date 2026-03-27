@@ -35,6 +35,7 @@ class UserResponse(UserBase):
     id: int
     is_active: bool
     is_superuser: bool
+    email_verified: bool
     created_at: datetime
     updated_at: datetime
 
@@ -69,3 +70,41 @@ class PasswordChangeRequest(BaseModel):
 
     old_password: str
     new_password: str = Field(..., min_length=8, max_length=255)
+
+
+class ForgotPasswordRequest(BaseModel):
+    """Schema for forgot password request."""
+
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    """Schema for password reset request."""
+
+    token: str = Field(..., min_length=1)
+    new_password: str = Field(..., min_length=8, max_length=255)
+
+
+class VerifyResetTokenRequest(BaseModel):
+    """Schema for verifying reset token."""
+
+    token: str = Field(..., min_length=1)
+
+
+class MessageResponse(BaseModel):
+    """Schema for simple message responses."""
+
+    message: str
+    success: bool = True
+
+
+class VerifyEmailRequest(BaseModel):
+    """Schema for email verification request."""
+
+    token: str = Field(..., min_length=1)
+
+
+class ResendVerificationRequest(BaseModel):
+    """Schema for resending email verification."""
+
+    email: EmailStr

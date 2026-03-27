@@ -16,7 +16,7 @@ from typing import Dict, Any, List, Optional
 import re
 
 from app.database.db import get_db
-from app.services.domain_management import DomainManagementService
+from app.services.domainManagement import DomainManagementService
 from app.services.auth import AuthService
 from app.models.domain import CustomDomain
 from app.models.project import Project

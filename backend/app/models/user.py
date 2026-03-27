@@ -14,6 +14,8 @@ if TYPE_CHECKING:
     from app.models.enrollment import ProjectEnrollment
     from app.models.project import Project
     from app.models.domain import CustomDomain
+    from app.models.password_reset_token import PasswordResetToken
+    from app.models.email_verification_token import EmailVerificationToken
 
 
 class User(Base):
@@ -28,6 +30,7 @@ class User(Base):
     full_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
@@ -52,6 +55,12 @@ class User(Base):
     )
     custom_domains: Mapped[list["CustomDomain"]] = relationship(
         "CustomDomain", back_populates="owner", cascade="all, delete-orphan"
+    )
+    password_reset_tokens: Mapped[list["PasswordResetToken"]] = relationship(
+        "PasswordResetToken", back_populates="user", cascade="all, delete-orphan"
+    )
+    email_verification_tokens: Mapped[list["EmailVerificationToken"]] = relationship(
+        "EmailVerificationToken", back_populates="user", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:

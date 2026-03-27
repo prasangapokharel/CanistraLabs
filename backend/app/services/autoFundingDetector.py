@@ -9,8 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.models.user import User
-from app.services.rosetta_client import RosettaClient
-from app.services.icp_identity_manager import ICPIdentityManager, ICPError
+from app.services.rosettaClient import RosettaClient
+from app.services.icpIdentityManager import ICPIdentityManager, ICPError
 from app.config import settings
 
 logger = logging.getLogger(__name__)

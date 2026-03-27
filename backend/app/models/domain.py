@@ -92,6 +92,11 @@ class CustomDomain(Base):
     # Relationships
     project: Mapped["Project"] = relationship("Project", back_populates="custom_domains")
     owner: Mapped["User"] = relationship("User", back_populates="custom_domains")
+    verifications: Mapped[list["DomainVerification"]] = relationship(
+        "DomainVerification",
+        cascade="all, delete-orphan",
+        foreign_keys="DomainVerification.domain_id",
+    )
 
     def __repr__(self) -> str:
         return f"<CustomDomain(id={self.id}, domain={self.domain_name}, status={self.status})>"

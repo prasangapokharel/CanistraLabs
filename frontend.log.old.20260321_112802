@@ -1,0 +1,1408 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1437ms
+ ○ Compiling / ...
+ ✓ Compiled / in 5.1s (1781 modules)
+ GET / 200 in 5348ms
+ ✓ Compiled in 434ms (832 modules)
+ GET / 200 in 28ms
+ GET / 200 in 34ms
+ ✓ Compiled /_not-found in 497ms (1752 modules)
+ GET /noise.png 404 in 671ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1370ms (2011 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 1404ms (2333 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1400ms (2559 modules)
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 1889ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 168ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 167ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 168ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 170ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 169ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 41ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 42ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 43ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 44ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 44ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 43ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 32ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 30ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 46ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 42ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 40ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 36ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 30ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 29ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 29ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 29ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 28ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 35ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 36ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 37ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 35ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 22ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 32ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 18ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 22ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 22ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 24ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 23ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 23ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 23ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 24ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 27ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 37ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 38ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 36ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 36ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 25ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 18ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 32ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 33ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 34ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 36ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 22ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 21ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 22ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 23ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 38ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 39ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 41ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 28ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 29ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 26ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 31ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 25ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 26ms
+ GET /_next/static/css/app/layout.css?v=1774070453851 404 in 13ms
+ GET /login?reason=auth_required 200 in 5ms
+ GET /login?reason=auth_required 200 in 24ms
+ GET / 200 in 94ms
+ GET /_next/static/webpack/webpack.83d436238b081676.hot-update.js 404 in 90ms
+ GET /_next/static/webpack/webpack.1274d58922cab156.hot-update.js 404 in 90ms
+ GET /_next/static/css/app/layout.css?v=1774070499093 404 in 65ms
+ GET /_next/static/css/app/layout.css?v=1774070516429 404 in 62ms
+ GET /_next/static/chunks/main-app.js?v=1774070516429 404 in 59ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 58ms
+ GET /_next/static/chunks/app/login/page.js 404 in 56ms
+ GET /_next/static/chunks/app/layout.js 404 in 38ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/react-hook-form.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/react-hook-form' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/react-hook-form.js', but to 'Error: Can't resolve './vendor-chunks/react-hook-form' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/react-hook-form (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/react-hook-form.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/@hookform' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/@hookform.js', but to 'Error: Can't resolve './vendor-chunks/@hookform' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/@hookform (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/@hookform.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/class-variance-authority' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/class-variance-authority.js', but to 'Error: Can't resolve './vendor-chunks/class-variance-authority' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/class-variance-authority (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/class-variance-authority.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+ ✓ Compiled in 1124ms (2360 modules)
+ ✓ Compiled in 438ms (2360 modules)
+ ✓ Compiled in 244ms (1308 modules)
+ ✓ Compiled in 265ms (1308 modules)
+ ✓ Compiled in 370ms (1308 modules)
+ ✓ Compiled in 561ms (1288 modules)
+ ✓ Compiled in 449ms (2354 modules)
+ ✓ Compiled in 158ms (1288 modules)
+ ✓ Compiled in 570ms (2354 modules)
+ ✓ Compiled in 700ms (2354 modules)
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1117ms (2357 modules)
+ ✓ Compiled /_error in 236ms (2359 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 2295ms
+   Reload env: .env
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 881ms (2359 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 32ms
+   Reload env: .env
+ ✓ Compiled in 509ms (2359 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 16ms
+ ✓ Compiled in 1175ms (2356 modules)
+ ✓ Compiled /_not-found in 202ms (2359 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /_next/static/webpack/5efe1095774d20c5.webpack.hot-update.json 500 in 223ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 11ms
+ ✓ Compiled in 420ms (2359 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /_next/static/webpack/5efe1095774d20c5.webpack.hot-update.json 500 in 14ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 12ms
+ ✓ Compiled in 744ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 11ms
+ ✓ Compiled in 276ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 12ms
+ ✓ Compiled in 325ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 19ms
+ ✓ Compiled in 225ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 12ms
+ ✓ Compiled in 235ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 13ms
+ ✓ Compiled in 222ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 10ms
+ ✓ Compiled in 233ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 13ms
+ ✓ Compiled in 226ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 10ms
+ ✓ Compiled in 224ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 15ms
+ ✓ Compiled in 246ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 11ms
+ ✓ Compiled in 206ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 11ms
+ ✓ Compiled in 205ms (1305 modules)
+ ⨯ Error: Cannot find module './682.js'
+Require stack:
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+- /home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js
+- /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1456:15)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)
+    at Module._load (node:internal/modules/cjs/loader:1242:25)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at __webpack_require__.f.require (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:198:28)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:111:40
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:162:22)
+    at /home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:340
+    at Object.<anonymous> (/home/prasanga/dev/InternetComputer/frontend/.next/server/pages/_document.js:1:382)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1556:12)
+    at mod.require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require-hook.js:65:28)
+    at require (node:internal/modules/helpers:152:16)
+    at requirePage (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js:109:84)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:72:65
+    at async Promise.all (index 0)
+    at async loadComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js:71:33)
+    at async DevServer.findPageComponentsImpl (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/next-server.js:714:36) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js',
+    '/home/prasanga/dev/InternetComputer/frontend/.next/server/app/_not-found/page.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-middleware.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/router-server.js',
+    '/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+ GET /login?reason=auth_required 500 in 24ms
+[?25h

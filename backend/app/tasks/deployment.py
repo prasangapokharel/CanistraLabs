@@ -5,7 +5,7 @@ from sqlalchemy import select
 from app.database.db import async_session_maker
 from app.models.deployment import Deployment, DeploymentStatus
 from app.models.project import Project, ProjectStatus
-from app.tasks.celery_app import celery_app
+from app.tasks.celeryApp import celery_app
 
 
 @celery_app.task(bind=True, name="tasks.deploy_project")

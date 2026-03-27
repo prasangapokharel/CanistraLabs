@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from app.models.user import User
 from app.schemas.user import UserCreate
 from app.utils.security import hash_password, verify_password
-from app.services.icp_identity_manager import ICPIdentityManager, ICPError
+from app.services.icpIdentityManager import ICPIdentityManager, ICPError
 
 logger = logging.getLogger(__name__)
 

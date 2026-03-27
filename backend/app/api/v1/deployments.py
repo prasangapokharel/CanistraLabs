@@ -9,7 +9,7 @@ from app.database.db import get_db
 from app.schemas.project import ProjectDeployRequest
 from app.services.deployment import DeploymentService
 from app.services.projects import ProjectService
-from app.services.canister_factory import CanisterFactory
+from app.services.canisterFactory import CanisterFactory
 from app.models.deployment import Deployment
 from app.utils.security import verify_token
 

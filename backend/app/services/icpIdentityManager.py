@@ -368,10 +368,10 @@ class ICPIdentityManager:
         """
         try:
             # This should match dfx ledger account-id output exactly
-            # Use the comprehensive dfx operations service for consistency
-            from app.services.dfx_operations import DfxOperationsService
+            # Use dfxCommand service for consistency
+            from app.services.dfxCommand import DfxCommand
 
-            dfx_ops = DfxOperationsService()
+            dfx = DfxCommand()
 
             # For now, we rely on dfx to provide the correct Account ID
             # In the future, we could implement the full ICRC algorithm

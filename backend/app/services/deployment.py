@@ -10,7 +10,7 @@ from app.models.canister import Canister
 from app.models.deployment import Deployment
 from app.models.project import Project
 from app.schemas.project import ProjectDeployRequest
-from app.utils.icp_utils import ICPService, ICPError
+from app.utils.icpUtils import ICPService, ICPError
 from app.config import settings
 
 

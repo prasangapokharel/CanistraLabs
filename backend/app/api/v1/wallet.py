@@ -7,10 +7,11 @@ from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.db import get_db
-from app.services.icp_identity_manager import ICPIdentityManager, ICPError
-from app.services.auto_funding_detector import AutoFundingDetector, format_cycles
+from app.services.icpIdentityManager import ICPIdentityManager, ICPError
+from app.services.autoFundingDetector import AutoFundingDetector, format_cycles
 from app.services.auth import AuthService
 from app.utils.security import verify_token
+from app.cache.wallet_cache import wallet_cache
 
 router = APIRouter(prefix="/api/v1/wallet", tags=["ICP Wallet"])
 
@@ -64,6 +65,11 @@ async def get_wallet_identity(
         - status: Identity status (active, pending, etc.)
     """
     try:
+        # Check cache first
+        cached_data = wallet_cache.get(user_id)
+        if cached_data:
+            return cached_data
+
         user = await AuthService.get_user_by_id(session, user_id)
         if not user:
             raise HTTPException(
@@ -81,7 +87,7 @@ async def get_wallet_identity(
         # Commit any changes (like new identity creation)
         await session.commit()
 
-        return {
+        result = {
             "identity_name": identity_context["identity_name"],
             "principal_id": identity_context["principal_id"],
             "account_id": user.account_id,  # Account ID for ICP funding
@@ -100,30 +106,10 @@ async def get_wallet_identity(
             else None,
         }
 
-    except ICPError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"ICP identity error: {str(e)}",
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get wallet identity: {str(e)}",
-        )
+        # Cache the result
+        wallet_cache.set(user_id, result)
 
-        # Get or create identity context
-        identity_context = await ICPIdentityManager.get_user_identity_context(session, user)
-
-        return {
-            "identity_name": identity_context["identity_name"],
-            "principal_id": identity_context["principal_id"],
-            "cycles_balance": identity_context["cycles_balance"],
-            "funding_required": identity_context["funding_required"],
-            "status": identity_context["status"],
-            "created_at": user.identity_created_at.isoformat()
-            if user.identity_created_at
-            else None,
-        }
+        return result
 
     except ICPError as e:
         raise HTTPException(
@@ -314,6 +300,9 @@ async def recreate_identity(
     WARNING: Any existing canisters will be orphaned.
     """
     try:
+        # Invalidate cache for this user
+        wallet_cache.invalidate(user_id)
+
         user = await AuthService.get_user_by_id(session, user_id)
         if not user:
             raise HTTPException(
@@ -321,21 +310,30 @@ async def recreate_identity(
                 detail="User not found",
             )
 
-        # Delete existing identity if it exists
-        if user.dfx_identity_name:
-            await ICPIdentityManager.delete_user_identity(session, user)
+        # Ensure identity is available in dfx
+        ICPIdentityManager._restore_identity_files(user)
 
-        # Create new identity
-        identity_info = await ICPIdentityManager.create_user_identity(session, user)
+        # Check funding status with both ICP and cycles
+        funding_detector = AutoFundingDetector()
+        funding_status = await funding_detector.check_user_funding_status(session, user)
         await session.commit()
 
-        return {
-            "message": "Identity recreated successfully",
-            "identity_name": identity_info["identity_name"],
-            "principal_id": identity_info["principal_id"],
-            "funding_required": identity_info["funding_required"],
-            "warning": "Previous canisters may be orphaned. Please redeploy projects.",
+        result = {
+            "cycles_balance": funding_status["cycles_balance"],
+            "icp_balance": funding_status["balance"],
+            "formatted_icp": funding_status.get("formatted_icp", "0 ICP"),
+            "formatted_cycles": funding_status.get("formatted_cycles", "0 cycles"),
+            "funding_required": not funding_status["funded"],
+            "auto_convert_available": funding_status.get("auto_convert_available", False),
+            "has_pending_icp": funding_status.get("has_pending_icp", False),
+            "principal_id": user.principal_id,
+            "message": funding_status["message"],
         }
+
+        # Update cache with fresh data
+        wallet_cache.set(user_id, result)
+
+        return result
 
     except ICPError as e:
         await session.rollback()

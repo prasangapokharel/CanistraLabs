@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, Any
 
 from app.database.db import get_db
-from app.services.dynamic_deployment import DynamicDeploymentService, DeploymentConfig
+from app.services.dynamicDeployment import DynamicDeploymentService, DeploymentConfig
 from app.services.auth import AuthService
 from app.models.project import Project
 from sqlalchemy import select

@@ -1,6 +1,41 @@
 {
   "version": 1,
   "canisters": {
+    "api_gateway": {
+      "type": "motoko",
+      "main": "src/api_gateway/main.mo",
+      "dependencies": ["user_registry", "project_manager", "billing", "domain_manager"]
+    },
+    "user_registry": {
+      "type": "motoko",
+      "main": "src/user_registry/main.mo",
+      "dependencies": []
+    },
+    "project_manager": {
+      "type": "motoko",
+      "main": "src/project_manager/main.mo",
+      "dependencies": ["user_registry", "deploy_engine"]
+    },
+    "deploy_engine": {
+      "type": "motoko",
+      "main": "src/deploy_engine/main.mo",
+      "dependencies": ["user_registry", "project_manager"]
+    },
+    "billing": {
+      "type": "motoko",
+      "main": "src/billing/main.mo",
+      "dependencies": ["user_registry"]
+    },
+    "domain_manager": {
+      "type": "motoko",
+      "main": "src/domain_manager/main.mo",
+      "dependencies": ["user_registry", "project_manager"]
+    },
+    "metrics_collector": {
+      "type": "motoko",
+      "main": "src/metrics_collector/main.mo",
+      "dependencies": ["user_registry", "project_manager"]
+    },
     "test_app": {
       "type": "assets",
       "source": ["src/test_app/assets/"]
@@ -11,6 +46,10 @@
     }
   },
   "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
     "ic": {
       "providers": ["https://ic0.app"],
       "type": "persistent"

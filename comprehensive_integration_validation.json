@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-04-01T00:56:38.178584",
+  "summary": {
+    "total": 11,
+    "passed": 9,
+    "failed": 2,
+    "pass_rate": "81.8%"
+  },
+  "validations": [
+    {
+      "test_id": 1,
+      "test_name": "API Client: All Endpoints Defined",
+      "status": "PASS",
+      "details": "All 27 endpoints implemented"
+    },
+    {
+      "test_id": 2,
+      "test_name": "Error Handling: Comprehensive Coverage",
+      "status": "PASS",
+      "details": "Found 6/6 error handling patterns"
+    },
+    {
+      "test_id": 3,
+      "test_name": "Cycle Balance: Full Coverage",
+      "status": "PASS",
+      "details": "Found 6/6 cycle checks"
+    },
+    {
+      "test_id": 4,
+      "test_name": "Backend: Directory Structure",
+      "status": "PASS",
+      "details": "All 5 directories present"
+    },
+    {
+      "test_id": 5,
+      "test_name": "Backend: API Endpoints",
+      "status": "FAIL",
+      "details": "Missing: ['domains.py']"
+    },
+    {
+      "test_id": 6,
+      "test_name": "Backend: Cycle Balance Endpoints",
+      "status": "FAIL",
+      "details": "Missing: ['POST /wallet/refresh-balance']"
+    },
+    {
+      "test_id": 7,
+      "test_name": "Response Types: API Definitions",
+      "status": "PASS",
+      "details": "All 8 response types defined"
+    },
+    {
+      "test_id": 8,
+      "test_name": "Response Schema: Cycle Balance",
+      "status": "PASS",
+      "details": "Found 6/6 cycle fields"
+    },
+    {
+      "test_id": 9,
+      "test_name": "Hooks: All Implemented",
+      "status": "PASS",
+      "details": "All 6 hooks present"
+    },
+    {
+      "test_id": 10,
+      "test_name": "Hooks: React Query Integration",
+      "status": "PASS",
+      "details": "React Query integrated in 3 hooks"
+    },
+    {
+      "test_id": 11,
+      "test_name": "Configuration: Environment Files",
+      "status": "PASS",
+      "details": "All 3 environment files present"
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+
+> frontend@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1576ms
+ ○ Compiling / ...
+ ✓ Compiled / in 5.7s (1781 modules)
+ GET / 200 in 5995ms
+ ✓ Compiled in 397ms (832 modules)
+ GET / 200 in 33ms
+ GET / 200 in 30ms
+ ✓ Compiled /_not-found in 433ms (1752 modules)
+ GET /noise.png 404 in 569ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 1110ms (2011 modules)
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 1293ms (2321 modules)
+ GET / 200 in 101ms
+ ○ Compiling /dashboard/projects ...
+ ✓ Compiled /dashboard/projects in 628ms (2371 modules)
+ GET /dashboard/canisters 404 in 57ms
+ GET /dashboard/projects 200 in 45ms
+ ○ Compiling /dashboard/wallet ...
+ ✓ Compiled /dashboard/wallet in 1289ms (2472 modules)
+ GET / 200 in 79ms
+ ○ Compiling /dashboard/domains ...
+ ✓ Compiled /dashboard/domains in 563ms (2484 modules)
+ GET / 200 in 62ms
+ GET / 200 in 30ms
+ GET / 200 in 37ms
+ GET / 200 in 25ms
+ GET / 200 in 28ms
+ GET / 200 in 26ms
+ HEAD / 200 in 21ms
+ GET /api/projects 404 in 19ms
+ HEAD / 200 in 20ms
+ GET / 200 in 27ms
+ GET / 200 in 25ms
+ GET / 200 in 23ms
+ GET / 200 in 21ms
+ GET / 200 in 18ms
+ GET / 200 in 21ms
+ GET /dashboard/projects 200 in 60ms
+ ○ Compiling /dashboard/projects/[id] ...
+ ✓ Compiled /dashboard/projects/[id] in 875ms (2495 modules)
+ GET /dashboard/projects/32 200 in 1363ms
+ ✓ Compiled /_not-found in 430ms (2498 modules)
+ GET /api/v1/projects/32/metrics 404 in 534ms
+ GET /api/v1/projects/32/metrics 404 in 18ms
+ GET /dashboard/projects 200 in 31ms
+ GET / 200 in 37ms
+ GET /dashboard/projects 200 in 21ms
+ GET /dashboard 200 in 61ms
+ GET / 200 in 33ms
+ ○ Compiling /dashboard/projects/[id]/edit ...
+ ✓ Compiled /dashboard/projects/[id]/edit in 1699ms (2498 modules)
+ GET / 200 in 178ms
+ GET /dashboard 200 in 140ms
+ GET /dashboard/projects/32 200 in 71ms
+ GET /api/v1/projects/32/metrics 404 in 26ms
+ GET /api/v1/projects/32/metrics 404 in 30ms
+ GET / 200 in 31ms
+ GET / 200 in 31ms
+ GET /dashboard/analytics 404 in 12ms
+ GET /dashboard 200 in 13ms
+ GET / 200 in 21ms
+ GET / 200 in 21ms
+ GET /dashboard/canisters 404 in 14ms
+ GET /dashboard 200 in 18ms
+ GET / 200 in 30ms
+ GET / 200 in 30ms
+ GET / 200 in 23ms
+ GET / 200 in 28ms
+ GET / 200 in 29ms
+ GET / 200 in 21ms
+ ✓ Compiled in 1291ms (2481 modules)
+ GET / 200 in 169ms
+ ✓ Compiled in 1357ms (2493 modules)
+ GET / 200 in 73ms
+ ✓ Compiled in 768ms (2493 modules)
+ ✓ Compiled in 1009ms (2493 modules)
+ ✓ Compiled in 502ms (2493 modules)
+ GET / 200 in 60ms
+ ✓ Compiled in 407ms (2479 modules)
+ GET / 200 in 69ms
+ GET / 200 in 38ms
+ ✓ Compiled in 754ms (2493 modules)
+ ✓ Compiled in 534ms (2493 modules)
+ GET / 200 in 60ms
+ GET / 200 in 20ms
+ ✓ Compiled in 943ms (2493 modules)
+ GET / 200 in 71ms
+ GET / 200 in 28ms
+ ✓ Compiled in 697ms (2493 modules)
+ GET / 200 in 546ms
+ ✓ Compiled in 9.4s (2501 modules)
+ GET / 200 in 603ms
+ GET / 200 in 196ms
+ GET / 200 in 160ms
+ ✓ Compiled in 12.1s (2487 modules)
+ GET / 200 in 1617ms
+ GET / 200 in 94ms
+ GET / 200 in 239ms
+ GET / 200 in 42ms
+ GET / 200 in 43ms
+ GET / 200 in 118ms
+ GET / 200 in 128ms
+ GET / 200 in 105ms
+ GET / 200 in 72ms
+ GET / 200 in 56ms
+ GET / 200 in 140ms
+ GET / 200 in 153ms
+ GET / 200 in 152ms
+ GET / 200 in 26ms
+ GET / 200 in 20ms
+ GET / 200 in 20ms
+ GET / 200 in 20ms
+ GET / 200 in 20ms
+ GET / 200 in 20ms
+ GET / 200 in 18ms
+ ✓ Compiled in 1596ms (2501 modules)
+ GET / 200 in 629ms
+ ✓ Compiled in 1418ms (2487 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /dashboard/domains 200 in 145ms
+ GET / 200 in 41ms
+ ✓ Compiled in 555ms (2487 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /dashboard/domains 200 in 164ms
+ GET / 200 in 34ms
+ GET / 200 in 28ms
+ GET / 200 in 22ms
+ GET / 200 in 28ms
+ ○ Compiling /dashboard/projects ...
+ ✓ Compiled /dashboard/projects in 896ms (1319 modules)
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:33:42)
+digest: "582545427"
+TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:33:42)
+    at require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:40:20064)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108376
+    at ea (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108583)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:109078)
+    at eo (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108123)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115291
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115308
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115341
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115358
+    at t (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115581)
+ ⨯ TypeError: __webpack_modules__[moduleId] is not a function
+    at Object.__webpack_require__ [as require] (/home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js:33:42)
+    at require (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:40:20064)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108376
+    at ea (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108583)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:110813
+    at Object._fromJSON (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:111370)
+    at JSON.parse (<anonymous>)
+    at ec (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:109078)
+    at eo (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:108123)
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115291
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115308
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115341
+    at /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115358
+    at t (/home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:35:115581) {
+  page: '/dashboard/projects'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1392ms (2727 modules)
+ GET /dashboard/projects 500 in 1544ms
+ GET / 200 in 149ms
+ GET / 200 in 21ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/es-object-atoms.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/es-object-atoms' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/es-object-atoms.js', but to 'Error: Can't resolve './vendor-chunks/es-object-atoms' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/es-object-atoms (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/es-object-atoms.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/has-tostringtag' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/has-tostringtag.js', but to 'Error: Can't resolve './vendor-chunks/has-tostringtag' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/has-tostringtag (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/has-tostringtag.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/hasown' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/hasown.js', but to 'Error: Can't resolve './vendor-chunks/hasown' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/hasown (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/hasown.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/es-define-property' in /home/prasanga/dev/InternetComputer/frontend/.next/server for build dependencies doesn't lead to expected result '/home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/es-define-property.js', but to 'Error: Can't resolve './vendor-chunks/es-define-property' in '/home/prasanga/dev/InternetComputer/frontend/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/es-define-property (expected /home/prasanga/dev/InternetComputer/frontend/.next/server/vendor-chunks/es-define-property.js)
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/webpack-runtime.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/.next/server/app/page.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/require.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /home/prasanga/dev/InternetComputer/frontend/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+ GET / 200 in 23ms
+ ✓ Compiled in 1506ms (2713 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled /dashboard/projects in 215ms (1359 modules)
+ GET /dashboard/projects 200 in 406ms
+ ✓ Compiled /_not-found in 337ms (2730 modules)
+ GET /_next/static/css/app/layout.css?v=1774074579271 404 in 454ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 452ms
+ GET /_next/static/chunks/app/dashboard/projects/page.js 404 in 449ms
+ GET /_next/static/chunks/main-app.js?v=1774074579271 404 in 453ms
+ GET / 200 in 37ms
+ ✓ Compiled in 919ms (2744 modules)
+ ✓ Compiled in 545ms (2744 modules)
+ ✓ Compiled in 492ms (2744 modules)
+ ✓ Compiled in 745ms (2744 modules)
+ ✓ Compiled in 564ms (2744 modules)
+ ✓ Compiled in 568ms (2744 modules)
+ GET / 200 in 166ms
+ ✓ Compiled in 520ms (2744 modules)
+ ✓ Compiled in 621ms (2744 modules)
+ ✓ Compiled in 490ms (2744 modules)
+ GET / 200 in 69ms
+[?25h

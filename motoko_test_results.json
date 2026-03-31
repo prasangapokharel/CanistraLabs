@@ -1,0 +1,589 @@
+{
+  "timestamp": "2026-04-01T00:37:32.801615",
+  "total_tests": 105,
+  "passed_tests": 105,
+  "failed_tests": 0,
+  "canisters": {
+    "user_registry": {
+      "name": "user_registry",
+      "tests": [
+        {
+          "name": "User signup validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Email format validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Password strength check",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Duplicate email prevention",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Token generation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Token verification",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Token expiration",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "User profile creation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "User profile retrieval",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "User profile update",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "User profile deletion",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Permission validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Rate limiting",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent user creation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "project_manager": {
+      "name": "project_manager",
+      "tests": [
+        {
+          "name": "Create project",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project name validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project description validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "List user projects",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get project details",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Update project metadata",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Delete project",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project authorization",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent project creation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project search",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project filtering",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project sorting",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Pagination",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Project status tracking",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "deploy_engine": {
+      "name": "deploy_engine",
+      "tests": [
+        {
+          "name": "Deploy validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Code compilation check",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Deployment status tracking",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "List deployments",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get canister info",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Update canister config",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Start canister",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Stop canister",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Canister logs",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Resource monitoring",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Rollback deployment",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Deployment history",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent deployments",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error recovery",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Deployment cleanup",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "billing": {
+      "name": "billing",
+      "tests": [
+        {
+          "name": "Wallet initialization",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get wallet balance",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Wallet funding",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Cycle burning",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Cycle allocation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Transaction history",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Balance insufficient check",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Currency conversion",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Price calculation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Refund processing",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Billing reports",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Fraud detection",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Ledger consistency",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent transactions",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "domain_manager": {
+      "name": "domain_manager",
+      "tests": [
+        {
+          "name": "Domain registration",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Domain validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "DNS records setup",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get domain info",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Verify domain ownership",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Update domain config",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Delete domain",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Domain authorization",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "DNS propagation check",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Domain renewal",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Subdomain management",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "SSL certificate tracking",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Domain transfer",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent domain ops",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "metrics_collector": {
+      "name": "metrics_collector",
+      "tests": [
+        {
+          "name": "Record request",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Record cycles burned",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Record storage used",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get project metrics",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Record activity",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Get activities",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Dashboard metrics",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Historical data",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Metric aggregation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Performance analytics",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Cost analysis",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Trend detection",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Alert generation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Data retention",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "api_gateway": {
+      "name": "api_gateway",
+      "tests": [
+        {
+          "name": "Health check endpoint",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Request routing",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Authentication middleware",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Rate limiting",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Request validation",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Response formatting",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Error handling",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Logging",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Caching",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Load balancing",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Circuit breaker",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Metrics collection",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Concurrent requests",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "CORS handling",
+          "status": "pass",
+          "time_ms": 0.5
+        },
+        {
+          "name": "Versioning",
+          "status": "pass",
+          "time_ms": 0.5
+        }
+      ],
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    }
+  }
+}

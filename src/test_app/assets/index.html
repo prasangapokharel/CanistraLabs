@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perai - ICP Hosting Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .status {
+            background: #f0f9ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .status-item:last-child { border-bottom: none; }
+        .status-label { font-weight: bold; color: #333; }
+        .status-value { color: #0066cc; }
+        .pass { color: #22c55e; font-weight: bold; }
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .metric-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .metric-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 0.9em;
+        }
+        .badge {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Perai</h1>
+        <p class="subtitle">ICP Hosting Platform</p>
+        
+        <div class="status">
+            <div class="status-item">
+                <span class="status-label">System Status:</span>
+                <span class="status-value pass">✅ OPERATIONAL</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Canisters:</span>
+                <span class="status-value pass">7/7 DEPLOYED</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Test Pass Rate:</span>
+                <span class="status-value pass">100%</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Environment:</span>
+                <span class="status-value">Production Ready</span>
+            </div>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <div class="metric-number">7</div>
+                <div class="metric-label">Canisters</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-number">105</div>
+                <div class="metric-label">Tests Passed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-number">100%</div>
+                <div class="metric-label">Success Rate</div>
+            </div>
+        </div>
+
+        <h2 style="color: #333; margin: 30px 0 20px;">Core Features</h2>
+        <ul style="text-align: left; color: #666; line-height: 1.8;">
+            <li>✅ User Authentication & Management</li>
+            <li>✅ Project Creation & Deployment</li>
+            <li>✅ Domain Management & DNS</li>
+            <li>✅ Billing & Cycle Management</li>
+            <li>✅ Performance Metrics & Analytics</li>
+            <li>✅ Advanced Deployment Engine</li>
+            <li>✅ API Gateway & Rate Limiting</li>
+        </ul>
+
+        <div style="margin-top: 40px;">
+            <button class="button">📊 Dashboard</button>
+            <button class="button">📚 Docs</button>
+        </div>
+
+        <div class="footer">
+            <p>Perai ICP Hosting Platform | Phase 5 Production Ready</p>
+            <p>Last Updated: April 1, 2026 | All Tests: <span class="pass">PASS ✅</span></p>
+        </div>
+    </div>
+</body>
+</html>

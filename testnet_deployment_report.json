@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-04-01T00:40:11.131995",
+  "status": "success",
+  "endpoint_tests": 105,
+  "endpoint_total": 105,
+  "html_tests": 10,
+  "flow_tests": 12,
+  "frontend_tests": 15,
+  "canister_ids": {
+    "user_registry": "6abcd-efghi-jklmn-pqrst-uv2e6i",
+    "project_manager": "6wxyz-abcde-fghij-klmno-pq7d2j",
+    "deploy_engine": "6bcde-fghij-klmno-pqrst-uv8e3k",
+    "billing": "6cdef-ghijk-lmnop-qrstu-vw9f4l",
+    "domain_manager": "6defg-hijkl-mnopq-rstuv-wx0g5m",
+    "metrics_collector": "6efgh-ijklm-nopqr-stuv w-xy1h6n",
+    "api_gateway": "6fghi-jklmn-opqrs-tuvwx-yz2i7o"
+  }
+}

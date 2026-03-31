@@ -42,6 +42,14 @@ venv.bak/
 .env.development.local
 .env.test.local
 .env.production.local
+backend/.env
+backend/.env.local
+backend/.env.testnet
+backend/.env.mainnet
+backend/.env.production.example
+frontend/.env
+frontend/.env.local
+frontend/.env.example
 
 # Next.js
 frontend/.next/

@@ -22,6 +22,7 @@ Project documentation is grouped by topic:
 
 ---
 <!-- doc-sync-log -->
+sync 2026-04-14T18:44:56
 sync 2026-04-12T18:23:19
 sync 2026-04-12T17:08:42
 sync 2026-04-12T12:46:34

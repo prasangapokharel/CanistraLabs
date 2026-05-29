@@ -5,18 +5,16 @@ This service runs every 30 seconds to check user ICP balances and automatically
 convert ICP to cycles when sufficient balance is available.
 """
 
-import logging
 import asyncio
-from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
+import logging
+from typing import Dict, Any, Optional
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_
 
-from app.database.db import get_db, async_session_maker
+from app.database.db import async_session_maker
 from app.models.user import User
 from app.services.autoFundingDetector import AutoFundingDetector
-from app.services.rosettaClient import RosettaClient
-from app.services.icpIdentityManager import ICPIdentityManager
 
 logger = logging.getLogger(__name__)
 

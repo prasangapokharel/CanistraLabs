@@ -1,8 +1,7 @@
 """Cleanup tasks for expired password reset tokens."""
 
-import logging
 import asyncio
-from celery import Celery
+import logging
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.config import settings
@@ -18,8 +17,7 @@ async def get_async_session() -> AsyncSession:
     """Create async database session for tasks."""
     engine = create_async_engine(settings.database_url)
     async_session = async_sessionmaker(engine, expire_on_commit=False)
-    session = async_session()
-    return session
+    return async_session()
 
 
 @celery_app.task(bind=True)

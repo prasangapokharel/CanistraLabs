@@ -6,10 +6,9 @@ Provides complete automation for domain setup and ICP boundary node registration
 """
 
 import json
-import asyncio
 import httpx
 import dns.resolver
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -33,6 +32,7 @@ class DomainManagementService:
         self.network = network
         self.dfx = DfxCommand(network=network)
         self.icp_boundary_node = "https://icp0.io"
+        self.icp_api_host = "https://icp-api.io"
 
     async def setup_custom_domain(
         self,
@@ -63,10 +63,13 @@ class DomainManagementService:
                     "error": "Project must be deployed before adding custom domain",
                 }
 
-            # Check if domain already exists
+            # Check if domain already exists for this project/user/domain tuple
             existing = await session.execute(
                 select(CustomDomain).where(
-                    CustomDomain.domain_name == domain_name, CustomDomain.subdomain == subdomain
+                    CustomDomain.project_id == project_id,
+                    CustomDomain.user_id == user_id,
+                    CustomDomain.domain_name == domain_name,
+                    CustomDomain.subdomain == subdomain,
                 )
             )
             if existing.scalar_one_or_none():
@@ -101,7 +104,7 @@ class DomainManagementService:
                     domain_id=custom_domain.id,
                     record_type="CNAME",
                     record_name=full_domain,
-                    record_value="icp1.io",
+                    record_value=f"{full_domain}.icp1.io",
                 ),
                 DomainVerification(
                     domain_id=custom_domain.id,
@@ -151,8 +154,8 @@ class DomainManagementService:
                 {
                     "type": "CNAME",
                     "host": domain,
-                    "value": "icp1.io",
-                    "description": "Points your domain to ICP boundary nodes",
+                    "value": f"{domain}.icp1.io",
+                    "description": "Points your domain to ICP gateway routing",
                 },
                 {
                     "type": "TXT",
@@ -171,7 +174,7 @@ class DomainManagementService:
                 {
                     "type": "ALIAS/ANAME",
                     "host": domain,
-                    "value": "icp1.io",
+                    "value": f"{domain}.icp1.io",
                     "description": "Use if your registrar doesn't support CNAME on apex domain",
                 }
             ],
@@ -323,7 +326,7 @@ class DomainManagementService:
 
                     domain.icp_request_id = request_id
                     domain.status = DomainStatus.REGISTERING
-                    domain.registration_status = DomainRegistrationStatus.PENDING
+                    domain.registration_status = DomainRegistrationStatus.PROCESSING
 
                     await session.commit()
 
@@ -369,7 +372,7 @@ class DomainManagementService:
 
                     domain.registration_status = status
 
-                    if status == DomainRegistrationStatus.AVAILABLE:
+                    if status == DomainRegistrationStatus.AVAILABLE.value:
                         domain.status = DomainStatus.ACTIVE
                         domain.ssl_active = True
                         domain.ssl_issued_at = datetime.utcnow()
@@ -379,7 +382,7 @@ class DomainManagementService:
                         if not domain.activated_at:
                             domain.activated_at = datetime.utcnow()
 
-                    elif status == DomainRegistrationStatus.FAILED:
+                    elif status == DomainRegistrationStatus.FAILED.value:
                         domain.status = DomainStatus.FAILED
 
                     await session.commit()

@@ -9,7 +9,7 @@ from app.tasks.celeryApp import celery_app
 
 
 @celery_app.task(bind=True, name="tasks.deploy_project")
-async def deploy_project_task(self, project_id: int, deployment_id: int) -> dict:
+def deploy_project_task(self, project_id: int, deployment_id: int) -> dict:
     """Deploy a project to ICP canister."""
     async with async_session_maker() as session:
         try:
@@ -53,7 +53,7 @@ async def deploy_project_task(self, project_id: int, deployment_id: int) -> dict
 
 
 @celery_app.task(name="tasks.check_canister_status")
-async def check_canister_status_task(project_id: int) -> dict:
+def check_canister_status_task(project_id: int) -> dict:
     """Check the status of a deployed canister."""
     async with async_session_maker() as session:
         try:

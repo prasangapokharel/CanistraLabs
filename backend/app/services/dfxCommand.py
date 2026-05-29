@@ -96,16 +96,6 @@ class DfxCommand:
 
         return result
 
-    def identityUse(self, name: str) -> Dict[str, Any]:
-        """Switch identity: dfx identity use <name>"""
-        returncode, stdout, stderr = self._runCommand(["identity", "use", name])
-
-        return {
-            "success": returncode == 0,
-            "identityName": name,
-            "message": stdout.strip() if returncode == 0 else stderr,
-        }
-
     def identityWhoami(self) -> Dict[str, Any]:
         """Get current identity: dfx identity whoami"""
         returncode, stdout, stderr = self._runCommand(["identity", "whoami"])

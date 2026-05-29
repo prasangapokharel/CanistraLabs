@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "skills": {
+    "asset-canister": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "60eb12b28df5703a2fd7c62708df2fde01f0aad0d92e243c7bd642acfdbebebc"
+    },
+    "canhelp": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "d7418dc6133afbf815501c1c46ce2129c6eb1e9332adbc485e0bdeef9f31505c"
+    },
+    "canister-security": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "aa599635ccf3d5996cab1230b49e2e345535cd25b5d522d1ffc07804c2944a51"
+    },
+    "certified-variables": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "9c099d6cf8cebdb4dd7ee97f4f9fe200ea0e8c297b9c6bc062a8d9c6c8978d5a"
+    },
+    "ckbtc": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "756240281baaa5e2443f46eb03f393e74c3ff21dc504c37cdd333961b617ce9c"
+    },
+    "custom-domains": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "005687085a6e2e57f7c3bb35481f6f1c2689a33c32b3ae1d58a7cf0ecec645f2"
+    },
+    "cycles-management": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "4b8f9ac545376886b6473084ae5de6c77edc4856c2da339f95d3a0b22528068d"
+    },
+    "evm-rpc": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "c9cecbe282f15127a20d2a537c416345f144b95059222262f0b1b267fdd0691e"
+    },
+    "https-outcalls": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "0207638b0c3b0410900d355ad0dc63343f6ac1102b338b0349d430de34265118"
+    },
+    "ic-dashboard": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "ea969d231566b38d90c16a59f165d16496dd5f47faf3c7e939a051aeecc6fcb3"
+    },
+    "icp-cli": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "66e0df901e04ab006f5d4d5c8abfb06ce0774a46ef6368bf32473f1dc58f2d34"
+    },
+    "icrc-ledger": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "e52ec36d9b8e1a16233d55726f452a59ddc1a164e7cc7722a8f88dd679947314"
+    },
+    "internet-identity": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "34d30841c1a6f2eda4586c8b92d272034a21544c3c0ce9fedd447ef5f515d7dc"
+    },
+    "motoko": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "3f1e7bb29c8266e248dd0883ba0fde890728c7646466a7eb12aee314179b41d0"
+    },
+    "multi-canister": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "fe8924d455a9253204cb82129725a8c7df16deb1c44ea2f463ca7259ca48fce0"
+    },
+    "shadcn": {
+      "source": "shadcn/ui",
+      "sourceType": "github",
+      "skillPath": "skills/shadcn/SKILL.md",
+      "computedHash": "80a6226e78f6d1fe464214ae0ef449d49d8ffaa3e7704f011e9b418c678ad4d1"
+    },
+    "sns-launch": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "7d02bb7addb5504ae160f94d53a97a2b1b9a6d3338efb9bc262903fbeb198056"
+    },
+    "stable-memory": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "fff6adf86c298be8859a7af6045cb136be4f9b1a2bff25dbde90cd04781a3ba4"
+    },
+    "vetkd": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "c80cee4c04d2b9e044e5cfd9436e7a8ac973ef895296c4e7824b3adfaafcccdd"
+    },
+    "wallet-integration": {
+      "source": "dfinity/icskills",
+      "sourceType": "github",
+      "computedHash": "d148213ada5242ac04523e0a6f5a4d89a679e5f95bed33b87236e18935c8c2e5"
+    }
+  }
+}

@@ -131,8 +131,8 @@ backend/alembic/versions/*.py
 backend/app/__pycache__/
 backend/app/**/__pycache__/
 
-# Deployment
-deployment/
+# Deployment artifacts (root only — not frontend/components/deployment)
+/deployment/
 dist/
 
 # Local configuration

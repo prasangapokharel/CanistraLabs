@@ -31,9 +31,9 @@ python3 testing/final_testing_report.py                 # Complete system valida
 
 ### View Results
 
-- **Final Validation Report:** `docs/FINAL_VALIDATION_SUMMARY.md`
+- **Final Validation Report:** `docs/reports/FINAL_VALIDATION_SUMMARY.md`
 - **Test Results JSON:** `testing/FINAL_TESTING_REPORT.json`
-- **Test Results Markdown:** `docs/FINAL_TESTING_REPORT.md`
+- **Test Results Markdown:** `docs/reports/FINAL_TESTING_REPORT.md`
 
 ---
 
@@ -177,7 +177,7 @@ python3 testing/final_testing_report.py
 
 **Output:**
 - JSON: `testing/FINAL_TESTING_REPORT.json`
-- Markdown: `docs/FINAL_TESTING_REPORT.md`
+- Markdown: `docs/reports/FINAL_TESTING_REPORT.md`
 
 ---
 
@@ -410,13 +410,13 @@ cat testing/FINAL_TESTING_REPORT.json
 
 ## Documentation References
 
-- **Deployment Guide:** `docs/README_DEPLOYMENT.md`
-- **Final Validation:** `docs/FINAL_VALIDATION_SUMMARY.md`
-- **Test Results:** `docs/FINAL_TESTING_REPORT.md`
-- **Deployment Checklist:** `docs/DEPLOYMENT_READY_CHECKLIST.md`
-- **Production Guide:** `docs/PRODUCTION_DEPLOYMENT.md`
-- **Cycle Analysis:** `docs/CYCLE_ANALYSIS.md`
-- **Architecture:** `docs/ARCHITECTURE_OVERVIEW.md`
+- **Deployment Guide:** `docs/deployment/README_DEPLOYMENT.md`
+- **Final Validation:** `docs/reports/FINAL_VALIDATION_SUMMARY.md`
+- **Test Results:** `docs/reports/FINAL_TESTING_REPORT.md`
+- **Deployment Checklist:** `docs/deployment/DEPLOYMENT_READY_CHECKLIST.md`
+- **Production Guide:** `docs/deployment/PRODUCTION_DEPLOYMENT.md`
+- **Cycle Analysis:** `docs/architecture/CYCLE_ANALYSIS.md`
+- **Architecture:** `docs/architecture/ARCHITECTURE_OVERVIEW.md`
 
 ---
 
@@ -433,10 +433,10 @@ cat testing/FINAL_TESTING_REPORT.json
 
 For issues or questions:
 
-1. Check `docs/QUICK_FIXES.md` for common solutions
+1. Check `docs/audit/QUICK_FIXES.md` for common solutions
 2. Review test logs: `testing/debug_test_results.json`
 3. Run verification: `python3 testing/final_testing_report.py`
-4. Check deployment status: `docs/TESTNET_DEPLOYMENT_COMPLETE.md`
+4. Check deployment status: `docs/deployment/TESTNET_DEPLOYMENT_COMPLETE.md`
 
 ---
 

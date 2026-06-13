@@ -135,7 +135,7 @@ Copy `backend/.env.example` → `backend/.env`. Important variables:
 | `JWT_SECRET_KEY` | Auth signing key (32+ chars) |
 | `ENCRYPTION_KEY` | Custodial identity encryption (32+ chars) |
 
-See [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md) before going live.
+See [docs/deployment/PRODUCTION_CHECKLIST.md](docs/deployment/PRODUCTION_CHECKLIST.md) before going live.
 
 ---
 
@@ -146,7 +146,7 @@ See [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md) before going li
 ├── backend/           FastAPI API + dfx integration
 ├── start.sh           Start backend + frontend together
 ├── testing/           API scenario checks & unit tests
-└── docs/              Deployment & architecture notes
+└── docs/              Organized docs (deployment, architecture, reports, …)
 ```
 
 ---

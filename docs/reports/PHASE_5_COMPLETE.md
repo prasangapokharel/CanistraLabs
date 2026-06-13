@@ -676,7 +676,7 @@ The platform is now **fully on-chain capable** and ready for:
 4. ✅ Production monitoring and incident response
 5. ✅ Beta user onboarding
 
-**Next Step:** Proceed to testnet deployment following `/docs/TESTNET_DEPLOYMENT.md`
+**Next Step:** Proceed to testnet deployment following `/docs/deployment/TESTNET_DEPLOYMENT.md`
 
 ---
 

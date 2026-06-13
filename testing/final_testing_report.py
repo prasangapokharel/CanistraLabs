@@ -300,11 +300,11 @@ class FinalComprehensiveReport:
         # ==================== DOCUMENTATION ====================
         print("\n▶ DOCUMENTATION & RUNBOOKS")
         doc_files = {
-            "docs/README_DEPLOYMENT.md": "Deployment Guide",
-            "docs/TESTNET_DEPLOYMENT_COMPLETE.md": "Testnet Report",
-            "docs/CYCLE_ANALYSIS.md": "Cycle Analysis",
-            "docs/PROJECT_STRUCTURE.md": "Project Structure",
-            "docs/DEPLOYMENT_READY_CHECKLIST.md": "Deployment Checklist",
+            "docs/deployment/README_DEPLOYMENT.md": "Deployment Guide",
+            "docs/deployment/TESTNET_DEPLOYMENT_COMPLETE.md": "Testnet Report",
+            "docs/architecture/CYCLE_ANALYSIS.md": "Cycle Analysis",
+            "docs/architecture/PROJECT_STRUCTURE.md": "Project Structure",
+            "docs/deployment/DEPLOYMENT_READY_CHECKLIST.md": "Deployment Checklist",
         }
 
         for file_path, desc in doc_files.items():

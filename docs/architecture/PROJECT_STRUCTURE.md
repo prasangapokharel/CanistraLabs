@@ -301,27 +301,15 @@ src/
 
 ```
 docs/
-├── README_DEPLOYMENT.md                # Master deployment guide
-├── FINAL_REPORT.md                     # Final readiness report
-├── TESTNET_DEPLOYMENT_COMPLETE.md     # Testnet deployment report
-├── CYCLE_ANALYSIS.md                   # Cost analysis
-├── PRODUCTION_DEPLOYMENT.md            # Production guide
-├── BACKEND_ANALYSIS.md                 # Backend architecture
-├── ARCHITECTURE_OVERVIEW.md            # System design
-├── ARCHITECTURE_VERIFICATION.md        # Architecture verification
-├── PHASE_5_COMPLETE.md                 # Phase 5 summary
-├── SMTP_CONFIGURATION.md               # Email setup
-├── TEST_RESULTS_SUMMARY.md            # Test results
-├── TESTNET_DEPLOYMENT.md              # Testnet guide
-├── QUICK_REFERENCE.md                 # Quick reference
-├── QUICK_FIXES.md                     # Quick fixes
-├── AGENT.md                           # Agent documentation
-├── ANALYSIS_INDEX.md                  # Analysis index
-├── CODE_AUDIT_REPORT.md              # Code audit
-├── AUDIT_README.md                    # Audit readme
-├── AUDIT_EXECUTIVE_SUMMARY.md        # Audit summary
-├── FRONTEND_AUDIT_REPORT.md          # Frontend audit
-└── PROJECT_STRUCTURE.md               # This file
+├── README.md                           # Documentation index
+├── architecture/                       # System design & analysis
+├── audit/                              # Audit reports
+├── deployment/                         # Deployment guides & checklists
+├── guides/                             # Quick reference & agent docs
+├── icp/                                # ICP-specific notes
+├── reports/                            # Test & validation reports
+├── api/                                # API endpoint reference
+└── assets/                             # Screenshots & images
 ```
 
 **Stats**:
@@ -455,10 +443,10 @@ Status: LIVE ✅
 4. **Docs**: `/docs`
 
 ### For Documentation
-1. **Main guide**: `/docs/README_DEPLOYMENT.md`
-2. **Quick ref**: `/docs/QUICK_REFERENCE.md`
-3. **Cost analysis**: `/docs/CYCLE_ANALYSIS.md`
-4. **Architecture**: `/docs/ARCHITECTURE_OVERVIEW.md`
+1. **Main guide**: `/docs/deployment/README_DEPLOYMENT.md`
+2. **Quick ref**: `/docs/guides/QUICK_REFERENCE.md`
+3. **Cost analysis**: `/docs/architecture/CYCLE_ANALYSIS.md`
+4. **Architecture**: `/docs/architecture/ARCHITECTURE_OVERVIEW.md`
 
 ---
 

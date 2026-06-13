@@ -13,13 +13,29 @@ from app.models.deployment import Deployment
 from app.models.user import User
 from app.utils.icpUtils import ICPService, ICPError, CanisterCreationException
 from app.services.icpIdentityManager import ICPIdentityManager
+from app.services.autoFundingDetector import AutoFundingDetector
 from app.config import settings
+from app.utils.cycleRequirements import (
+    build_insufficient_cycles_error,
+    deploy_ready,
+    min_cycles_for_deploy,
+)
 
 logger = logging.getLogger(__name__)
 
 
 class CanisterFactory:
     """Factory for creating individual canisters for each project."""
+
+    @staticmethod
+    async def _ensure_cycles_for_deploy(session: AsyncSession, user: User) -> None:
+        """Auto-convert ICP/TESTICP balance to cycles when user has tokens but low cycles."""
+        detector = AutoFundingDetector()
+        funding = await detector.check_user_funding_status(session, user)
+        if funding.get("auto_convert_available"):
+            logger.info(f"Auto-converting token balance to cycles for user {user.id}")
+            await detector.auto_convert_icp_to_cycles(session, user)
+            await ICPIdentityManager.check_wallet_balance(user)
 
     @staticmethod
     async def create_project_canister(
@@ -65,22 +81,37 @@ class CanisterFactory:
         # Get or create user's ICP identity
         identity_context = await ICPIdentityManager.get_user_identity_context(session, user)
 
-        # Check if user has sufficient cycles
-        if identity_context.get("funding_required", True):
-            logger.warning(f"User {user.id} needs to fund wallet for deployment")
+        # Auto-convert deposited ICP to cycles before checking funding (production UX)
+        await CanisterFactory._ensure_cycles_for_deploy(session, user)
+        identity_context = await ICPIdentityManager.get_user_identity_context(session, user)
+
+        # Check if user has sufficient cycles for deploy (mainnet needs ~600B+)
+        cycles_balance = int(identity_context.get("cycles_balance") or 0)
+        if not deploy_ready(cycles_balance):
+            err = build_insufficient_cycles_error(cycles_balance)
+            logger.warning(
+                "User %s underfunded for %s deploy: %s cycles (need %s)",
+                user.id,
+                settings.effective_deploy_network,
+                cycles_balance,
+                min_cycles_for_deploy(),
+            )
             if deployment:
                 deployment.status = "pending_funding"
-                deployment.message = (
-                    f"Wallet funding required. Principal ID: {identity_context['principal_id']}"
-                )
+                deployment.message = err["message"]
                 await session.flush()
 
             return {
                 "status": "pending_funding",
                 "principal_id": identity_context["principal_id"],
                 "funding_required": True,
-                "cycles_balance": identity_context["cycles_balance"],
-                "message": "Please fund your ICP wallet to continue deployment",
+                "cycles_balance": str(cycles_balance),
+                "message": err["message"],
+                "error_code": err["error_code"],
+                "cycles_required": err["cycles_required"],
+                "cycles_shortfall": err["cycles_shortfall"],
+                "recommended_icp": err["recommended_icp"],
+                "action": err["action"],
             }
 
         # Update deployment status if provided
@@ -99,6 +130,7 @@ class CanisterFactory:
             result = ICPService.create_individual_canister(
                 project_name=project.name,
                 html_content=html_content,
+                available_cycles=cycles_balance,
             )
 
             canister_id = result["canister_id"]
@@ -106,8 +138,8 @@ class CanisterFactory:
 
             logger.info(f"Canister created successfully: {canister_id}")
 
-            # Create or update the Canister model record
-            stmt = select(Canister).where(Canister.canister_name == canister_id)
+            # One canister row per project; principal_id is shared across a user's canisters
+            stmt = select(Canister).where(Canister.project_id == project.id)
             db_result = await session.execute(stmt)
             canister_record = db_result.scalars().first()
 
@@ -120,11 +152,14 @@ class CanisterFactory:
                     cycles_balance=identity_context["cycles_balance"],
                 )
                 session.add(canister_record)
-                logger.info(f"Created new Canister record for {canister_id}")
+                logger.info(f"Created new Canister record for project {project.id}")
             else:
+                canister_record.canister_name = canister_id
+                canister_record.principal_id = identity_context["principal_id"]
                 canister_record.status = "deployed"
+                canister_record.cycles_balance = identity_context["cycles_balance"]
                 canister_record.updated_at = datetime.utcnow()
-                logger.info(f"Updated existing Canister record for {canister_id}")
+                logger.info(f"Updated Canister record for project {project.id}")
 
             # Update the Project record with canister information
             project.canister_id = canister_id
@@ -162,42 +197,14 @@ class CanisterFactory:
 
         except CanisterCreationException as e:
             logger.error(f"Canister creation failed: {str(e)}")
-
-            # Update project and deployment with failure status
-            project.status = ProjectStatus.FAILED.value
-            if deployment:
-                deployment.status = "failed"
-                deployment.message = f"Canister creation failed: {str(e)}"
-                deployment.error_details = str(e)
-                deployment.completed_at = datetime.utcnow()
-
-            await session.flush()
             raise
 
         except ICPError as e:
             logger.error(f"ICP error during canister creation: {str(e)}")
-
-            project.status = ProjectStatus.FAILED.value
-            if deployment:
-                deployment.status = "failed"
-                deployment.message = f"ICP error: {str(e)}"
-                deployment.error_details = str(e)
-                deployment.completed_at = datetime.utcnow()
-
-            await session.flush()
             raise
 
         except Exception as e:
             logger.error(f"Unexpected error during canister creation: {str(e)}")
-
-            project.status = ProjectStatus.FAILED.value
-            if deployment:
-                deployment.status = "failed"
-                deployment.message = f"Unexpected error: {str(e)}"
-                deployment.error_details = str(e)
-                deployment.completed_at = datetime.utcnow()
-
-            await session.flush()
             raise CanisterCreationException(f"Unexpected error: {str(e)}")
 
     @staticmethod
@@ -264,30 +271,34 @@ class CanisterFactory:
             logger.warning(f"Project {project.id} has no canister to delete")
             return False
 
+        canister_id = project.canister_id
+
         try:
-            logger.info(f"Deleting canister {project.canister_id} for project {project.id}")
+            logger.info(f"Deleting canister {canister_id} for project {project.id}")
 
-            # Delete from IC
-            ICPService.delete_canister(project.canister_id)
-
-            # Update database records
-            stmt = select(Canister).where(Canister.canister_name == project.canister_id)
+            stmt = select(User).where(User.id == project.user_id)
             result = await session.execute(stmt)
-            canister_record = result.scalars().first()
+            user = result.scalars().first()
+            if user and user.dfx_identity_name:
+                ICPIdentityManager.switch_to_user_identity(user)
+
+            ICPService.delete_canister(canister_id)
+
+            stmt = select(Canister).where(Canister.project_id == project.id)
+            db_result = await session.execute(stmt)
+            canister_record = db_result.scalars().first()
 
             if canister_record:
-                canister_record.status = "deleted"
-                canister_record.updated_at = datetime.utcnow()
+                await session.delete(canister_record)
 
-            # Clear project's canister references
             project.canister_id = None
-            project.principal_id = None
             project.url = None
             project.status = ProjectStatus.PENDING.value
+            project.deployed_at = None
 
             await session.flush()
 
-            logger.info(f"Successfully deleted canister {project.canister_id}")
+            logger.info(f"Successfully deleted canister {canister_id}")
             return True
 
         except ICPError as e:
@@ -320,17 +331,25 @@ class CanisterFactory:
                 f"Project {project.id} has no canister to update. Create one first."
             )
 
+        stmt = select(User).where(User.id == project.user_id)
+        result = await session.execute(stmt)
+        user = result.scalars().first()
+        if not user:
+            raise CanisterCreationException("Project owner not found")
+
         try:
             logger.info(f"Updating canister {project.canister_id} for project {project.id}")
 
-            # Generate new Motoko code
-            motoko_code = ICPService._generate_html_serving_motoko(html_content)
+            ICPIdentityManager.switch_to_user_identity(user)
+            await CanisterFactory._ensure_cycles_for_deploy(session, user)
 
-            # Update the canister with new code
             result = ICPService.update_canister(
                 canister_id=project.canister_id,
-                code_content=motoko_code,
+                code_content=html_content,
             )
+
+            if result.get("url"):
+                project.url = result["url"]
 
             # Update project's deployment timestamp
             project.deployed_at = datetime.utcnow()
@@ -348,3 +367,45 @@ class CanisterFactory:
         except ICPError as e:
             logger.error(f"Failed to update canister: {str(e)}")
             raise
+
+    @staticmethod
+    async def set_canister_power(
+        session: AsyncSession,
+        project: Project,
+        enabled: bool,
+    ) -> Dict[str, Any]:
+        """Start or stop the project's canister on ICP."""
+        if not project.canister_id:
+            raise CanisterCreationException("Project has no deployed canister")
+
+        stmt = select(User).where(User.id == project.user_id)
+        result = await session.execute(stmt)
+        user = result.scalars().first()
+        if user and user.dfx_identity_name:
+            ICPIdentityManager.switch_to_user_identity(user)
+
+        if enabled:
+            ICPService.start_canister(project.canister_id)
+            project.status = ProjectStatus.ACTIVE.value
+            icp_status = "running"
+        else:
+            ICPService.stop_canister(project.canister_id)
+            project.status = ProjectStatus.PAUSED.value
+            icp_status = "stopped"
+
+        stmt = select(Canister).where(Canister.project_id == project.id)
+        db_result = await session.execute(stmt)
+        canister_record = db_result.scalars().first()
+        if canister_record:
+            canister_record.status = "active" if enabled else "stopped"
+            canister_record.updated_at = datetime.utcnow()
+
+        await session.flush()
+
+        return {
+            "project_id": project.id,
+            "canister_id": project.canister_id,
+            "enabled": enabled,
+            "status": project.status,
+            "canister_status": icp_status,
+        }

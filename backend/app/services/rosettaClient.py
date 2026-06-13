@@ -57,11 +57,18 @@ class RosettaClient:
         # Token information (auto-discovered)
         self.token_info: Dict[str, Any] = {}
 
+        if self.canister_id == settings.testicp_ledger_canister_id:
+            self.token_info = {"symbol": "TESTICP", "decimals": 8, "source": "testicp_ledger"}
+
+        if self.canister_id == settings.testicp_ledger_canister_id:
+            self.token_info = {"symbol": "TESTICP", "decimals": 8, "source": "testicp_ledger"}
+
         # Network metadata
         self.network_metadata: Dict[str, Any] = {}
 
-        # Auto-discover token information
-        self._discover_token_info()
+        # Auto-discover token information (skip if TESTICP preset)
+        if not self.token_info:
+            self._discover_token_info()
 
     def _make_request(self, endpoint: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         """

@@ -1,11 +1,12 @@
 """Authentication API routes."""
 
 from datetime import timedelta
-from typing import Annotated, Optional
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_bearer_token
 from app.database.db import get_db
 from app.schemas.user import (
     LoginRequest,
@@ -29,30 +30,36 @@ from app.utils.rate_limit import rate_limiter, RateLimitExceeded
 router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
 
-async def get_bearer_token(authorization: Annotated[Optional[str], Header()] = None) -> str:
-    """Extract bearer token from Authorization header."""
-    if not authorization:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authorization header",
-        )
-
-    parts = authorization.split()
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authorization header format",
-        )
-
-    return parts[1]
+def get_client_ip(request: Request) -> str:
+    """Get client IP address for rate limiting."""
+    forwarded_ip = request.headers.get("X-Forwarded-For")
+    if forwarded_ip:
+        return forwarded_ip.split(",")[0].strip()
+    real_ip = request.headers.get("X-Real-IP")
+    if real_ip:
+        return real_ip.strip()
+    return request.client.host if request.client else "unknown"
 
 
 @router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
 async def signup(
+    request: Request,
     user_create: UserCreate,
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> TokenResponse:
     """Register a new user."""
+    client_ip = get_client_ip(request)
+    rate_limit_key = f"signup:{client_ip}"
+    is_allowed, retry_after = rate_limiter.is_allowed(
+        rate_limit_key, max_requests=5, window_seconds=600
+    )
+    if not is_allowed:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Too many signup attempts. Try again in {retry_after} seconds.",
+            headers={"Retry-After": str(retry_after)},
+        )
+
     try:
         user = await AuthService.create_user(session, user_create)
         await session.commit()
@@ -79,10 +86,23 @@ async def signup(
 
 @router.post("/login", response_model=TokenResponse)
 async def login(
+    request: Request,
     login_request: LoginRequest,
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> TokenResponse:
     """Login user and return tokens."""
+    client_ip = get_client_ip(request)
+    rate_limit_key = f"login:{client_ip}"
+    is_allowed, retry_after = rate_limiter.is_allowed(
+        rate_limit_key, max_requests=10, window_seconds=300
+    )
+    if not is_allowed:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Too many login attempts. Try again in {retry_after} seconds.",
+            headers={"Retry-After": str(retry_after)},
+        )
+
     user = await AuthService.authenticate_user(session, login_request.email, login_request.password)
 
     if not user:
@@ -180,23 +200,6 @@ async def logout(
         message="Successfully logged out",
         success=True,
     )
-
-
-def get_client_ip(request: Request) -> str:
-    """Get client IP address for rate limiting."""
-    # Check for forwarded IP first (for proxy/load balancer scenarios)
-    forwarded_ip = request.headers.get("X-Forwarded-For")
-    if forwarded_ip:
-        # X-Forwarded-For can contain multiple IPs, get the first one
-        return forwarded_ip.split(",")[0].strip()
-
-    # Check for real IP (another common header)
-    real_ip = request.headers.get("X-Real-IP")
-    if real_ip:
-        return real_ip.strip()
-
-    # Fall back to direct connection IP
-    return request.client.host if request.client else "unknown"
 
 
 @router.post("/forgot-password", response_model=MessageResponse)

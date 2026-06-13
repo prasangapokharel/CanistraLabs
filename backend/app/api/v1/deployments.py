@@ -1,50 +1,114 @@
 """Deployment API routes."""
 
+import logging
 from typing import Annotated, List, Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from sqlalchemy import select
+
+from app.api.deps import get_current_user_id
+from app.config import settings
 from app.database.db import get_db
-from app.schemas.project import ProjectDeployRequest
+from app.models.project import Project
+from app.schemas.project import ProjectDeployRequest, CanisterPowerRequest
 from app.services.deployment import DeploymentService
 from app.services.projects import ProjectService
 from app.services.canisterFactory import CanisterFactory
-from app.models.deployment import Deployment
-from app.utils.security import verify_token
+from app.models.deployment import Deployment, DeploymentStatus
+from app.utils.http_errors import safe_error_detail
+from app.utils.cycleRequirements import build_insufficient_cycles_error
+from app.utils.dfxErrors import http_error_detail, parse_dfx_error
+from app.utils.canisterNetwork import is_local_canister_id, network_for_canister
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/deployments", tags=["Deployments"])
 
-
-async def get_bearer_token(authorization: Annotated[Optional[str], Header()] = None) -> str:
-    """Extract bearer token from Authorization header."""
-    if not authorization:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authorization header",
-        )
-
-    parts = authorization.split()
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authorization header format",
-        )
-
-    return parts[1]
+TERMINAL_DEPLOY_STATUSES = {
+    "success",
+    "failed",
+    "pending_funding",
+    DeploymentStatus.SUCCESS.value,
+    DeploymentStatus.FAILED.value,
+}
 
 
-async def get_current_user_id(
-    authorization: Annotated[str, Depends(get_bearer_token)],
-) -> int:
-    """Get current user ID from token."""
-    token_data = verify_token(authorization, token_type="access")
-    if not token_data:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-        )
-    return int(token_data.sub)
+def _serialize_deployment(deployment: Deployment) -> dict:
+    return {
+        "id": deployment.id,
+        "deployment_id": deployment.id,
+        "status": deployment.status,
+        "message": deployment.message,
+        "canister_id": deployment.canister_id,
+        "url": deployment.deployment_url,
+        "created_at": deployment.created_at.isoformat() if deployment.created_at else None,
+        "started_at": deployment.started_at.isoformat() if deployment.started_at else None,
+        "completed_at": deployment.completed_at.isoformat() if deployment.completed_at else None,
+    }
+
+
+def _enqueue_deploy_task(
+    project_id: int,
+    deployment_id: int,
+    code_content: str,
+) -> Optional[str]:
+    if not settings.async_deploy_enabled:
+        return None
+    try:
+        from app.tasks.deployment import run_project_deploy_task
+
+        task = run_project_deploy_task.delay(project_id, deployment_id, code_content)
+        return task.id
+    except Exception as exc:
+        logger.warning("Celery unavailable, falling back to sync deploy: %s", exc)
+        return None
+
+
+async def _run_sync_deploy(
+    session: AsyncSession,
+    project: Project,
+    deployment: Deployment,
+    code_content: str,
+) -> dict:
+    result = await CanisterFactory.create_project_canister(
+        session=session,
+        project=project,
+        html_content=code_content,
+        deployment=deployment,
+    )
+    await session.commit()
+
+    if result.get("status") == "pending_funding":
+        return {
+            "deployment_id": deployment.id,
+            "project_id": project.id,
+            "canister_id": None,
+            "url": None,
+            "status": "pending_funding",
+            "message": result.get("message", "Funding required"),
+            "principal_id": result.get("principal_id"),
+            "cycles_balance": result.get("cycles_balance", "0"),
+            "funding_required": True,
+            "can_retry": True,
+            "async": False,
+            "error_code": result.get("error_code", "insufficient_cycles"),
+            "cycles_required": result.get("cycles_required"),
+            "cycles_shortfall": result.get("cycles_shortfall"),
+            "recommended_icp": result.get("recommended_icp"),
+            "action": result.get("action"),
+        }
+
+    return {
+        "deployment_id": deployment.id,
+        "project_id": project.id,
+        "canister_id": result["canister_id"],
+        "url": result["url"],
+        "status": result["status"],
+        "message": f"Successfully deployed to {result['url']}",
+        "async": False,
+    }
 
 
 @router.post("/projects/{project_id}/deploy", status_code=status.HTTP_202_ACCEPTED)
@@ -57,16 +121,9 @@ async def deploy_project(
     """
     Deploy a project to a unique individual ICP canister.
 
-    This creates a new canister for each project with a unique canister ID
-    and returns the unique URL for accessing the deployed project.
-
-    Returns 202 Accepted with deployment details including:
-    - deployment_id: Deployment record ID
-    - canister_id: Unique canister ID for this project
-    - url: Public URL to access the deployed project
-    - status: Current deployment status
+    When Celery is available, returns immediately with ``status: queued`` and
+    runs deploy in a background worker. Poll ``GET .../deployments/{id}`` for progress.
     """
-    # Get project and verify ownership
     project = await ProjectService.get_project_by_id(session, project_id, user_id)
 
     if not project:
@@ -76,7 +133,6 @@ async def deploy_project(
         )
 
     try:
-        # Use project code if deploy request doesn't specify code
         code_content = deploy_request.code_content or project.code_content or ""
 
         if not code_content.strip():
@@ -85,57 +141,53 @@ async def deploy_project(
                 detail="No code content provided for deployment",
             )
 
-        # Create deployment record
+        if code_content.strip() and code_content != (project.code_content or ""):
+            project.code_content = code_content
+            await session.flush()
+
         deployment = Deployment(
             project_id=project_id,
-            status="pending",
-            message="Creating individual canister...",
+            status=DeploymentStatus.QUEUED.value,
+            message="Queued for deployment…",
         )
         session.add(deployment)
         await session.flush()
 
-        # Create the individual canister using CanisterFactory
-        result = await CanisterFactory.create_project_canister(
-            session=session,
-            project=project,
-            html_content=code_content,
-            deployment=deployment,
-        )
-
-        await session.commit()
-
-        # Handle funding required case
-        if result.get("status") == "pending_funding":
+        task_id = _enqueue_deploy_task(project_id, deployment.id, code_content)
+        if task_id:
+            deployment.task_id = task_id
+            deployment.status = DeploymentStatus.QUEUED.value
+            deployment.message = "Deploy queued — processing in background"
+            await session.commit()
             return {
                 "deployment_id": deployment.id,
                 "project_id": project_id,
                 "canister_id": None,
                 "url": None,
-                "status": "pending_funding",
-                "message": result.get("message", "Funding required"),
-                "principal_id": result.get("principal_id"),
-                "cycles_balance": result.get("cycles_balance", "0"),
-                "funding_required": True,
+                "status": "queued",
+                "message": deployment.message,
+                "async": True,
             }
 
-        return {
-            "deployment_id": deployment.id,
-            "project_id": project_id,
-            "canister_id": result["canister_id"],
-            "url": result["url"],
-            "status": result["status"],
-            "message": f"Successfully deployed to {result['url']}",
-        }
+        deployment.status = DeploymentStatus.PENDING.value
+        deployment.message = "Creating individual canister…"
+        await session.flush()
+        return await _run_sync_deploy(session, project, deployment, code_content)
 
     except HTTPException:
-        # Re-raise HTTP exceptions as-is
         await session.rollback()
         raise
     except Exception as e:
         await session.rollback()
+        err_text = safe_error_detail(e, fallback="Deployment failed")
+        if "insufficient cycles" in err_text.lower() or "not enough cycles" in err_text.lower():
+            raise HTTPException(
+                status_code=status.HTTP_402_PAYMENT_REQUIRED,
+                detail=build_insufficient_cycles_error(0, err_text),
+            )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Deployment failed: {str(e)}",
+            detail=f"Deployment failed: {err_text}",
         )
 
 
@@ -170,9 +222,11 @@ async def get_deployment_status(
         "project_id": deployment.project_id,
         "status": deployment.status,
         "message": deployment.message,
-        "started_at": deployment.started_at,
-        "completed_at": deployment.completed_at,
-        "created_at": deployment.created_at,
+        "canister_id": deployment.canister_id,
+        "url": deployment.deployment_url,
+        "started_at": deployment.started_at.isoformat() if deployment.started_at else None,
+        "completed_at": deployment.completed_at.isoformat() if deployment.completed_at else None,
+        "created_at": deployment.created_at.isoformat() if deployment.created_at else None,
     }
 
 
@@ -199,16 +253,7 @@ async def list_deployments(
         session, project_id, limit=limit, skip=skip
     )
 
-    return [
-        {
-            "deployment_id": d.id,
-            "status": d.status,
-            "message": d.message,
-            "created_at": d.created_at,
-            "completed_at": d.completed_at,
-        }
-        for d in deployments
-    ]
+    return [_serialize_deployment(d) for d in deployments]
 
 
 @router.get("/canisters/{canister_id}/status")
@@ -217,14 +262,74 @@ async def get_canister_status(
     user_id: Annotated[int, Depends(get_current_user_id)],
     session: Annotated[AsyncSession, Depends(get_db)],
 ):
-    """Get the current status of a canister."""
+    """Get canister status for a canister owned by the authenticated user."""
+    ownership = await session.execute(
+        select(Project).where(Project.canister_id == canister_id, Project.user_id == user_id)
+    )
+    if not ownership.scalar_one_or_none():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Canister not found",
+        )
+
     try:
         status_info = await DeploymentService.get_canister_status(session, canister_id)
-        return status_info
+        cycles = status_info.get("cycles_balance", status_info.get("cycles", 0))
+        memory = status_info.get("memory_size", status_info.get("memory_usage", 0))
+        return {
+            **status_info,
+            "canister_id": canister_id,
+            "cycles_balance": cycles,
+            "memory_size": memory,
+        }
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get canister status: {str(e)}",
+            detail=safe_error_detail(e, fallback="Failed to get canister status"),
+        )
+
+
+@router.post("/projects/{project_id}/canister/power")
+async def set_canister_power(
+    project_id: int,
+    body: CanisterPowerRequest,
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    session: Annotated[AsyncSession, Depends(get_db)],
+):
+    """Start or stop a project's canister (toggle hosting on/off)."""
+    project = await ProjectService.get_project_by_id(session, project_id, user_id)
+
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Project not found",
+        )
+
+    if not project.canister_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Project has no deployed canister",
+        )
+
+    try:
+        result = await CanisterFactory.set_canister_power(session, project, body.enabled)
+        await session.commit()
+        return {
+            **result,
+            "canister_network": network_for_canister(project.canister_id),
+            "is_local_canister": is_local_canister_id(project.canister_id),
+        }
+    except Exception as e:
+        await session.rollback()
+        parsed = parse_dfx_error(str(e))
+        status_code = status.HTTP_502_BAD_GATEWAY
+        if parsed.get("error_code") == "canister_not_found":
+            status_code = status.HTTP_404_NOT_FOUND
+        elif parsed.get("error_code") == "network_unreachable":
+            status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+        raise HTTPException(
+            status_code=status_code,
+            detail=http_error_detail(e, fallback="Failed to change canister power state", debug=settings.debug),
         )
 
 
@@ -288,7 +393,7 @@ async def update_canister(
         await session.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Canister update failed: {str(e)}",
+            detail=f"Canister update failed: {safe_error_detail(e, fallback='Canister update failed')}",
         )
 
 

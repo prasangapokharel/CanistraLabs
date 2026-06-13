@@ -3,7 +3,7 @@
 from functools import lru_cache
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -13,8 +13,8 @@ class Settings(BaseSettings):
     # App Configuration
     app_name: str = "ICP Hosting Platform"
     app_version: str = "0.1.0"
-    debug: bool = True
-    environment: str = "development"
+    debug: bool = False
+    environment: str = "production"
 
     # Database - CRITICAL: Must be set via environment variable for security
     database_url: str = Field(..., description="Database connection URL (required)")
@@ -28,18 +28,45 @@ class Settings(BaseSettings):
     jwt_expiration_hours: int = 24
     jwt_refresh_expiration_days: int = 7
 
-    # ICP Configuration
-    wallet_principal_id: str = "ni5n2-efxui-dyqdu-2mnpr-atclq-d6snc-zdq5q-u6ibz-ibpkq-brjpj-gqe"
-    icp_network: str = "local"
-    dfx_network: str = "local"
-    dfx_path: str = "/usr/local/bin/dfx"
+    # Encryption for custodial dfx identity keys (separate from JWT secret)
+    encryption_key: Optional[str] = Field(
+        default=None,
+        min_length=32,
+        description="Fernet encryption key material (32+ chars, required in production)",
+    )
 
-    # Celery/Redis - Use environment variables in production
+    # Admin/internal API protection (cron, mass deploy, etc.)
+    admin_api_key: Optional[str] = Field(
+        default=None,
+        min_length=32,
+        description="API key for admin/internal endpoints (X-Admin-Api-Key header)",
+    )
+
+    # CORS - comma-separated allowed origins (never use * with credentials)
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+
+    # Auth policy
+    require_email_verification: bool = False
+
+    # ICP Configuration
+    wallet_principal_id: str = ""
+    icp_network: str = "ic"
+    dfx_network: str = "ic"
+    dfx_path: str = "/usr/local/bin/dfx"
+    # TESTICP test ledger on IC mainnet (faucet.internetcomputer.org)
+    use_testicp: bool = False
+    testicp_ledger_canister_id: str = "xafvr-biaaa-aaaai-aql5q-cai"
+    icp_ledger_canister_id: str = "rrkah-fqaaa-aaaaa-aaaaq-cai"
+    rosetta_url: str = "https://rosetta-api.internetcomputer.org"
+    # Where canisters are created (local = free dfx cycles; ic = mainnet)
+    deploy_network: str = ""
+
+    # Celery/Redis
     celery_broker_url: str = "redis://localhost:6379/0"
     celery_result_backend: str = "redis://localhost:6379/1"
     redis_url: str = "redis://localhost:6379"
 
-    # Application URLs - Use environment variables for different environments
+    # Application URLs
     frontend_url: str = "http://localhost:3000"
     backend_url: str = "http://localhost:8000"
 
@@ -55,14 +82,60 @@ class Settings(BaseSettings):
 
     # Deployment
     auto_deploy_enabled: bool = True
+    async_deploy_enabled: bool = True
     deployment_timeout_seconds: int = 300
     max_deployment_retries: int = 3
+
+    @field_validator("environment")
+    @classmethod
+    def normalize_environment(cls, value: str) -> str:
+        return value.lower().strip()
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @property
+    def is_production(self) -> bool:
+        return self.environment in {"production", "prod"}
+
+    @property
+    def ledger_canister_id(self) -> Optional[str]:
+        """Ledger canister for balance/convert commands (TESTICP or ICP)."""
+        if self.use_testicp:
+            return self.testicp_ledger_canister_id
+        return self.icp_ledger_canister_id
+
+    @property
+    def wallet_network(self) -> str:
+        """IC network for ICP ledger balance and cycles conversion."""
+        if self.use_testicp:
+            return self.icp_network if self.icp_network != "local" else "ic"
+        return self.icp_network if self.icp_network != "local" else "ic"
+
+    @property
+    def token_symbol(self) -> str:
+        return "TESTICP" if self.use_testicp else "ICP"
+
+    @property
+    def effective_deploy_network(self) -> str:
+        """Network used for canister create/deploy (defaults to dfx_network)."""
+        return self.deploy_network or self.dfx_network
+
+    @property
+    def effective_encryption_key(self) -> str:
+        """Encryption key for identity storage; falls back to JWT secret in dev only."""
+        if self.encryption_key:
+            return self.encryption_key
+        if self.is_production:
+            raise ValueError("ENCRYPTION_KEY must be set in production")
+        return self.jwt_secret_key
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = False
-        extra = "allow"
+        extra = "ignore"
 
 
 @lru_cache()

@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import User
 from app.utils.encryption import EncryptionService
 from app.config import settings
+from app.utils.cycleRequirements import deploy_ready, min_cycles_for_deploy
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class ICPIdentityManager:
             # Use clean dfxCommand service
             from app.services.dfxCommand import DfxCommand
 
-            dfx = DfxCommand(network="ic")
+            dfx = DfxCommand.from_settings()
 
             # Create new identity
             result = dfx.identityNew(identity_name)
@@ -131,7 +132,7 @@ class ICPIdentityManager:
                 "principal_id": user.principal_id,
                 "cycles_balance": cycles_balance,
                 "status": "active",
-                "funding_required": int(cycles_balance) < 20_000_000,  # Minimum cycles needed
+                "funding_required": not deploy_ready(int(cycles_balance)),
             }
 
         except Exception as e:
@@ -260,9 +261,10 @@ class ICPIdentityManager:
             # Use clean dfxCommand service
             from app.services.dfxCommand import DfxCommand
 
-            dfx = DfxCommand(network="ic")
+            deploy_network = settings.effective_deploy_network
+            dfx = DfxCommand(network=deploy_network)
 
-            # Get cycles balance
+            # Get cycles balance on deploy network (local replica or IC)
             cyclesResult = dfx.cyclesGetBalance(user.dfx_identity_name)
             walletResult = dfx.walletGetBalance(user.dfx_identity_name)
 
@@ -271,6 +273,14 @@ class ICPIdentityManager:
                 balance = str(cyclesResult["balanceCycles"])
             elif walletResult["success"] and walletResult.get("walletExists", False):
                 balance = str(walletResult["balanceCycles"])
+            elif deploy_network == "local" and not settings.is_production:
+                # Local dev: convert free local ICP to cycles when replica is running
+                convert = dfx.cyclesConvert("1", user.dfx_identity_name)
+                if convert.get("success"):
+                    cyclesResult = dfx.cyclesGetBalance(user.dfx_identity_name)
+                    balance = str(cyclesResult.get("balanceCycles", 0))
+                else:
+                    balance = "0"
             else:
                 balance = "0"
 

@@ -3,7 +3,8 @@
 import base64
 import json
 import logging
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
+
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -12,103 +13,68 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
+# Legacy salt used before ENCRYPTION_KEY was introduced (decrypt-only fallback)
+_LEGACY_SALT = b"icp_identity_salt_12345"
+
 
 class EncryptionService:
     """Service for encrypting and decrypting sensitive data."""
 
     @staticmethod
-    def _get_key() -> bytes:
-        """Generate encryption key from JWT secret."""
-        # Use JWT secret as base for encryption key
-        password = settings.jwt_secret_key.encode()
-        salt = b"icp_identity_salt_12345"  # Fixed salt for consistent keys
-
+    def _derive_key(password: str, salt: bytes) -> bytes:
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=32,
             salt=salt,
-            iterations=100000,
+            iterations=100_000,
         )
-        key = base64.urlsafe_b64encode(kdf.derive(password))
-        return key
+        return base64.urlsafe_b64encode(kdf.derive(password.encode()))
+
+    @staticmethod
+    def _get_primary_key() -> bytes:
+        """Current encryption key derived from dedicated ENCRYPTION_KEY."""
+        salt = b"icp_hosting_v2_" + settings.effective_encryption_key[:16].encode()
+        return EncryptionService._derive_key(settings.effective_encryption_key, salt)
+
+    @staticmethod
+    def _get_legacy_key() -> bytes:
+        """Legacy key derived from JWT secret (for decrypting existing records)."""
+        return EncryptionService._derive_key(settings.jwt_secret_key, _LEGACY_SALT)
 
     @staticmethod
     def encrypt_data(data: Dict[str, Any]) -> str:
-        """
-        Encrypt sensitive data for secure storage.
-
-        Args:
-            data: Dictionary containing sensitive data to encrypt
-
-        Returns:
-            Base64 encoded encrypted string
-        """
+        """Encrypt sensitive data for secure storage."""
         try:
-            # Convert dict to JSON string
             json_str = json.dumps(data)
-
-            # Encrypt the JSON string
-            key = EncryptionService._get_key()
-            f = Fernet(key)
+            f = Fernet(EncryptionService._get_primary_key())
             encrypted_data = f.encrypt(json_str.encode())
-
-            # Return base64 encoded string for database storage
             return base64.urlsafe_b64encode(encrypted_data).decode()
-
         except Exception as e:
-            logger.error(f"Encryption failed: {str(e)}")
-            raise ValueError(f"Failed to encrypt data: {str(e)}")
+            logger.error("Encryption failed: %s", e)
+            raise ValueError(f"Failed to encrypt data: {e}") from e
 
     @staticmethod
     def decrypt_data(encrypted_str: str) -> Dict[str, Any]:
-        """
-        Decrypt sensitive data from storage.
+        """Decrypt sensitive data, with legacy key fallback for migration."""
+        encrypted_data = base64.urlsafe_b64decode(encrypted_str.encode())
+        last_error: Optional[Exception] = None
 
-        Args:
-            encrypted_str: Base64 encoded encrypted string
+        for key_fn in (EncryptionService._get_primary_key, EncryptionService._get_legacy_key):
+            try:
+                f = Fernet(key_fn())
+                decrypted_data = f.decrypt(encrypted_data)
+                return json.loads(decrypted_data.decode())
+            except Exception as e:
+                last_error = e
 
-        Returns:
-            Dictionary containing decrypted data
-        """
-        try:
-            # Decode base64
-            encrypted_data = base64.urlsafe_b64decode(encrypted_str.encode())
-
-            # Decrypt the data
-            key = EncryptionService._get_key()
-            f = Fernet(key)
-            decrypted_data = f.decrypt(encrypted_data)
-
-            # Parse JSON and return dict
-            return json.loads(decrypted_data.decode())
-
-        except Exception as e:
-            logger.error(f"Decryption failed: {str(e)}")
-            raise ValueError(f"Failed to decrypt data: {str(e)}")
+        logger.error("Decryption failed: %s", last_error)
+        raise ValueError("Failed to decrypt data") from last_error
 
     @staticmethod
     def encrypt_string(text: str) -> str:
-        """
-        Encrypt a simple string.
-
-        Args:
-            text: String to encrypt
-
-        Returns:
-            Base64 encoded encrypted string
-        """
         return EncryptionService.encrypt_data({"value": text})
 
     @staticmethod
     def decrypt_string(encrypted_str: str) -> str:
-        """
-        Decrypt a simple string.
-
-        Args:
-            encrypted_str: Base64 encoded encrypted string
-
-        Returns:
-            Decrypted string
-        """
         data = EncryptionService.decrypt_data(encrypted_str)
         return data["value"]

@@ -1,379 +1,250 @@
-"""Project metrics API endpoints."""
+"""Project metrics API — real canister data from dfx + HTTP health."""
 
-import random
-from datetime import datetime
-from typing import Dict
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_current_user_id
 from app.database.db import get_db
 from app.models.project import Project
+from app.services.canisterMetrics import (
+    build_project_metrics,
+    fetch_canister_metrics,
+    format_bytes,
+    format_cycles,
+)
 
 router = APIRouter(prefix="/api/v1", tags=["Metrics"])
 
 
-def generate_mock_metrics(project_id: int, canister_id: str | None = None) -> Dict:
-    """Generate realistic mock metrics for a project."""
-    if not canister_id:
-        return {
-            "storage_used_bytes": 0,
-            "requests_today": 0,
-            "avg_response_time_ms": 0.0,
-            "uptime_percentage": 0.0,
-            "cycles_balance": 0,
-            "is_healthy": False,
-            "error_count_today": 0,
-            "bandwidth_used_bytes": 0,
-        }
+async def _get_owned_project(
+    project_id: int,
+    user_id: int,
+    db: AsyncSession,
+) -> Project:
+    result = await db.execute(
+        select(Project).where(Project.id == project_id, Project.user_id == user_id)
+    )
+    project = result.scalar_one_or_none()
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return project
 
-    # Generate realistic metrics for deployed projects
-    uptime = random.uniform(98.5, 100.0)
+
+async def _get_user_projects(user_id: int, db: AsyncSession) -> list[Project]:
+    result = await db.execute(
+        select(Project)
+        .where(Project.user_id == user_id)
+        .order_by(Project.updated_at.desc())
+    )
+    return list(result.scalars().all())
+
+
+def _metrics_payload(project: Project) -> dict:
+    metrics = build_project_metrics(
+        canister_id=project.canister_id,
+        url=project.url,
+        code_content=project.code_content,
+        project_name=project.name,
+    )
     return {
-        "storage_used_bytes": random.randint(50_000_000, 1_500_000_000),
-        "requests_today": random.randint(10, 5000),
-        "avg_response_time_ms": round(random.uniform(50.0, 300.0), 1),
-        "uptime_percentage": round(uptime, 2),
-        "cycles_balance": random.randint(1_000_000_000_000, 50_000_000_000_000),
-        "is_healthy": uptime > 99.0,
-        "error_count_today": random.randint(0, 10) if uptime < 99.5 else 0,
-        "bandwidth_used_bytes": random.randint(10_000_000, 500_000_000),
+        "success": True,
+        "project_id": project.id,
+        "project_name": project.name,
+        "canister_id": project.canister_id,
+        "url": project.url,
+        "deployed_at": project.deployed_at.isoformat() if project.deployed_at else None,
+        "metrics": metrics,
     }
 
 
-def format_cycles(cycles: int) -> str:
-    """Format cycles to human-readable format."""
-    if cycles >= 1_000_000_000_000:  # Trillion
-        return f"{cycles / 1_000_000_000_000:.2f} TC"
-    elif cycles >= 1_000_000_000:  # Billion
-        return f"{cycles / 1_000_000_000:.2f} BC"
-    elif cycles >= 1_000_000:  # Million
-        return f"{cycles / 1_000_000:.2f} MC"
-    else:
-        return f"{cycles:,}"
-
-
-def format_bytes(bytes_val: int) -> str:
-    """Format bytes to human-readable format."""
-    if bytes_val >= 1_073_741_824:  # GB
-        return f"{bytes_val / 1_073_741_824:.2f} GB"
-    elif bytes_val >= 1_048_576:  # MB
-        return f"{bytes_val / 1_048_576:.2f} MB"
-    elif bytes_val >= 1024:  # KB
-        return f"{bytes_val / 1024:.2f} KB"
-    else:
-        return f"{bytes_val} B"
-
-
 @router.get("/projects/{project_id}/metrics")
-async def get_project_metrics(project_id: int, db: AsyncSession = Depends(get_db)):
-    """Get comprehensive project metrics."""
-    try:
-        # Get project
-        result = await db.execute(select(Project).where(Project.id == project_id))
-        project = result.scalar_one_or_none()
+async def get_project_metrics(
+    project_id: int,
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """Real canister metrics for a project (cycles, memory, HTTP health)."""
+    project = await _get_owned_project(project_id, user_id, db)
+    return _metrics_payload(project)
 
-        if not project:
-            raise HTTPException(status_code=404, detail="Project not found")
 
-        # Generate metrics
-        live_metrics = generate_mock_metrics(project_id, project.canister_id)
+@router.get("/projects/{project_id}/metrics/live")
+async def get_live_project_metrics(
+    project_id: int,
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """Alias for live metrics — same real data as /metrics."""
+    project = await _get_owned_project(project_id, user_id, db)
+    payload = _metrics_payload(project)
+    return {"success": True, "live_data": payload["metrics"]}
 
-        # Calculate storage usage percentage
-        storage_limit = 2_147_483_648  # 2GB default
-        storage_usage_pct = (
-            (live_metrics["storage_used_bytes"] / storage_limit * 100) if storage_limit > 0 else 0
-        )
 
-        return {
-            "success": True,
-            "project": {
+@router.get("/dashboard/stats")
+async def get_dashboard_stats(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """Aggregated dashboard stats from real canister status."""
+    projects = await _get_user_projects(user_id, db)
+    deployed = [p for p in projects if p.canister_id]
+    total_cycles = 0
+    healthy = 0
+
+    for project in deployed:
+        metrics = fetch_canister_metrics(project.canister_id, project.url)
+        total_cycles += metrics.get("cycles_balance", 0)
+        if str(metrics.get("status", "")).lower() == "running":
+            healthy += 1
+
+    return {
+        "success": True,
+        "totalCanisters": len(deployed),
+        "activeProjects": len([p for p in projects if p.status == "active"]),
+        "totalCycles": total_cycles,
+        "deploymentsThisMonth": len(deployed),
+        "uptime": round((healthy / max(len(deployed), 1)) * 100, 1),
+        "averageResponseTime": 0,
+    }
+
+
+@router.get("/dashboard/overview")
+async def get_dashboard_overview(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """Dashboard overview with real per-project canister metrics."""
+    projects = await _get_user_projects(user_id, db)
+    total_cycles = 0
+    total_memory = 0
+    healthy_projects = 0
+    project_stats = []
+
+    for project in projects:
+        if project.canister_id:
+            metrics = fetch_canister_metrics(project.canister_id, project.url)
+            cycles = metrics.get("cycles_balance", 0)
+            memory = metrics.get("memory_bytes", 0)
+            is_healthy = str(metrics.get("status", "")).lower() == "running"
+        else:
+            cycles = 0
+            memory = 0
+            is_healthy = False
+
+        total_cycles += cycles
+        total_memory += memory
+        if is_healthy:
+            healthy_projects += 1
+
+        project_stats.append(
+            {
                 "id": project.id,
                 "name": project.name,
                 "status": project.status,
                 "canister_id": project.canister_id,
                 "url": project.url,
+                "cycles_balance": cycles,
+                "memory_bytes": memory,
+                "is_healthy": is_healthy,
                 "created_at": project.created_at.isoformat(),
-                "deployed_at": project.deployed_at.isoformat() if project.deployed_at else None,
-            },
-            "metrics": {
-                # Storage metrics
-                "storage": {
-                    "used_bytes": live_metrics["storage_used_bytes"],
-                    "used_formatted": format_bytes(live_metrics["storage_used_bytes"]),
-                    "limit_bytes": storage_limit,
-                    "limit_formatted": format_bytes(storage_limit),
-                    "usage_percentage": round(storage_usage_pct, 1),
-                    "deployment_size_bytes": live_metrics["storage_used_bytes"] // 2,
-                    "deployment_size_formatted": format_bytes(
-                        live_metrics["storage_used_bytes"] // 2
-                    ),
-                },
-                # Performance metrics
-                "performance": {
-                    "avg_response_time_ms": live_metrics["avg_response_time_ms"],
-                    "uptime_percentage": live_metrics["uptime_percentage"],
-                    "is_healthy": live_metrics["is_healthy"],
-                    "last_health_check": datetime.utcnow().isoformat(),
-                    "error_count_today": live_metrics["error_count_today"],
-                },
-                # Traffic metrics
-                "traffic": {
-                    "requests_today": live_metrics["requests_today"],
-                    "requests_total": live_metrics["requests_today"] * random.randint(10, 100),
-                    "bandwidth_used_bytes": live_metrics["bandwidth_used_bytes"],
-                    "bandwidth_used_formatted": format_bytes(live_metrics["bandwidth_used_bytes"]),
-                },
-                # Cycle metrics
-                "cycles": {
-                    "balance": live_metrics["cycles_balance"],
-                    "balance_formatted": format_cycles(live_metrics["cycles_balance"]),
-                    "burned_today": random.randint(100_000_000, 10_000_000_000),
-                    "burned_today_formatted": format_cycles(
-                        random.randint(100_000_000, 10_000_000_000)
-                    ),
-                    "burned_total": random.randint(1_000_000_000, 100_000_000_000),
-                    "burned_total_formatted": format_cycles(
-                        random.randint(1_000_000_000, 100_000_000_000)
-                    ),
-                },
-                # Deployment metrics
-                "deployment": {
-                    "build_time_seconds": random.uniform(10, 120),
-                    "last_deployment_at": project.deployed_at.isoformat()
-                    if project.deployed_at
-                    else None,
-                    "deployments_count": random.randint(1, 10),
-                },
-                # Domain metrics
-                "domains": {
-                    "ssl_status": "active",
-                    "custom_domains_count": random.randint(0, 3),
-                },
-                # Meta
-                "updated_at": datetime.utcnow().isoformat(),
-            },
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        return {"success": False, "error": str(e)}
-
-
-@router.get("/projects/{project_id}/metrics/live")
-async def get_live_project_metrics(project_id: int, db: AsyncSession = Depends(get_db)):
-    """Get live project metrics (lightweight endpoint for real-time updates)."""
-    try:
-        # Get project
-        result = await db.execute(select(Project).where(Project.id == project_id))
-        project = result.scalar_one_or_none()
-
-        if not project:
-            raise HTTPException(status_code=404, detail="Project not found")
-
-        if not project.canister_id:
-            return {
-                "success": True,
-                "live_data": {
-                    "status": "not_deployed",
-                    "is_healthy": False,
-                    "uptime_percentage": 0.0,
-                    "avg_response_time_ms": 0.0,
-                    "requests_today": 0,
-                    "error_count_today": 0,
-                    "cycles_balance": 0,
-                    "cycles_balance_formatted": "0",
-                    "storage_used_bytes": 0,
-                    "bandwidth_used_bytes": 0,
-                    "timestamp": datetime.utcnow().isoformat(),
-                },
             }
+        )
 
-        # Get real-time data
-        live_metrics = generate_mock_metrics(project_id, project.canister_id)
-
-        return {
-            "success": True,
-            "live_data": {
-                "status": "active" if live_metrics["is_healthy"] else "degraded",
-                "is_healthy": live_metrics["is_healthy"],
-                "uptime_percentage": live_metrics["uptime_percentage"],
-                "avg_response_time_ms": live_metrics["avg_response_time_ms"],
-                "requests_today": live_metrics["requests_today"],
-                "error_count_today": live_metrics["error_count_today"],
-                "cycles_balance": live_metrics["cycles_balance"],
-                "cycles_balance_formatted": format_cycles(live_metrics["cycles_balance"]),
-                "storage_used_bytes": live_metrics["storage_used_bytes"],
-                "bandwidth_used_bytes": live_metrics["bandwidth_used_bytes"],
-                "timestamp": datetime.utcnow().isoformat(),
+    deployed_count = len([p for p in projects if p.canister_id])
+    return {
+        "success": True,
+        "overview": {
+            "projects": {
+                "total": len(projects),
+                "active": len([p for p in projects if p.status == "active"]),
+                "deployed": deployed_count,
+                "healthy": healthy_projects,
+                "health_percentage": round(
+                    (healthy_projects / max(deployed_count, 1)) * 100, 1
+                ),
             },
-        }
-    except HTTPException:
-        raise
-    except Exception as e:
-        return {"success": False, "error": str(e)}
-
-
-@router.get("/dashboard/overview")
-async def get_dashboard_overview(db: AsyncSession = Depends(get_db)):
-    """Get dashboard overview with aggregated metrics for all projects."""
-    try:
-        # Get all projects
-        result = await db.execute(select(Project).order_by(Project.updated_at.desc()))
-        projects = result.scalars().all()
-
-        total_projects = len(projects)
-        active_projects = len([p for p in projects if p.status == "active"])
-        deployed_projects = len([p for p in projects if p.canister_id])
-
-        # Aggregate metrics
-        total_storage_used = 0
-        total_requests_today = 0
-        total_cycles_balance = 0
-        healthy_projects = 0
-
-        project_stats = []
-
-        for project in projects:
-            # Get live data if project is deployed
-            if project.canister_id:
-                live_metrics = generate_mock_metrics(project.id, project.canister_id)
-                storage_used = live_metrics["storage_used_bytes"]
-                requests_today = live_metrics["requests_today"]
-                cycles_balance = live_metrics["cycles_balance"]
-                is_healthy = live_metrics["is_healthy"]
-            else:
-                storage_used = 0
-                requests_today = 0
-                cycles_balance = 0
-                is_healthy = False
-
-            total_storage_used += storage_used
-            total_requests_today += requests_today
-            total_cycles_balance += cycles_balance
-            if is_healthy:
-                healthy_projects += 1
-
-            project_stats.append(
-                {
-                    "id": project.id,
-                    "name": project.name,
-                    "status": project.status,
-                    "canister_id": project.canister_id,
-                    "url": project.url,
-                    "storage_used_bytes": storage_used,
-                    "requests_today": requests_today,
-                    "cycles_balance": cycles_balance,
-                    "is_healthy": is_healthy,
-                    "created_at": project.created_at.isoformat(),
-                }
-            )
-
-        return {
-            "success": True,
-            "overview": {
-                "projects": {
-                    "total": total_projects,
-                    "active": active_projects,
-                    "deployed": deployed_projects,
-                    "healthy": healthy_projects,
-                    "health_percentage": round(
-                        (healthy_projects / max(deployed_projects, 1)) * 100, 1
-                    ),
-                },
-                "aggregated_metrics": {
-                    "total_storage_used": total_storage_used,
-                    "total_storage_formatted": format_bytes(total_storage_used),
-                    "total_requests_today": total_requests_today,
-                    "total_cycles_balance": total_cycles_balance,
-                    "total_cycles_formatted": format_cycles(total_cycles_balance),
-                },
-                "recent_projects": project_stats[:6],
+            "aggregated_metrics": {
+                "total_cycles_balance": total_cycles,
+                "total_cycles_formatted": format_cycles(total_cycles),
+                "total_memory_bytes": total_memory,
+                "total_memory_formatted": format_bytes(total_memory),
             },
-        }
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+            "recent_projects": project_stats[:6],
+        },
+    }
 
 
 @router.get("/dashboard/canisters")
-async def get_dashboard_canisters(db: AsyncSession = Depends(get_db)):
-    """Get list of deployed canisters (projects with canister_id)."""
-    try:
-        # Get projects with canister_id
-        result = await db.execute(
-            select(Project)
-            .where(Project.canister_id.isnot(None))
-            .order_by(Project.updated_at.desc())
+async def get_dashboard_canisters(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """List deployed canisters with real status."""
+    projects = await _get_user_projects(user_id, db)
+    canisters = []
+
+    for project in projects:
+        if not project.canister_id:
+            continue
+        metrics = fetch_canister_metrics(project.canister_id, project.url)
+        canisters.append(
+            {
+                "id": project.id,
+                "name": project.name,
+                "canister_id": project.canister_id,
+                "status": project.status,
+                "url": project.url,
+                "cycles_balance": metrics.get("cycles_balance", 0),
+                "memory_bytes": metrics.get("memory_bytes", 0),
+                "is_healthy": str(metrics.get("status", "")).lower() == "running",
+                "created_at": project.created_at.isoformat(),
+                "updated_at": project.updated_at.isoformat(),
+            }
         )
-        projects = result.scalars().all()
 
-        canisters = []
-        for project in projects:
-            if project.canister_id:
-                live_metrics = generate_mock_metrics(project.id, project.canister_id)
-
-                canisters.append(
-                    {
-                        "id": project.id,
-                        "name": project.name,
-                        "canister_id": project.canister_id,
-                        "status": project.status,
-                        "url": f"https://{project.canister_id}.icp0.io/",
-                        "cycles_balance": live_metrics["cycles_balance"],
-                        "requests_today": live_metrics["requests_today"],
-                        "storage_used_bytes": live_metrics["storage_used_bytes"],
-                        "is_healthy": live_metrics["is_healthy"],
-                        "created_at": project.created_at.isoformat(),
-                        "updated_at": project.updated_at.isoformat(),
-                    }
-                )
-
-        return {
-            "success": True,
-            "data": canisters,
-        }
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    return {"success": True, "data": canisters}
 
 
 @router.get("/dashboard/activities")
-async def get_dashboard_activities(db: AsyncSession = Depends(get_db)):
-    """Get recent activity log (mock data for now)."""
-    try:
-        # Get recent projects for activity feed
-        result = await db.execute(select(Project).order_by(Project.updated_at.desc()).limit(10))
-        projects = result.scalars().all()
+async def get_dashboard_activities(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    db: AsyncSession = Depends(get_db),
+):
+    """Recent project activity from deployment timestamps."""
+    from app.models.deployment import Deployment
 
-        activities = []
-        for i, project in enumerate(projects):
-            # Generate mock activities
-            if project.canister_id:
-                activities.append(
-                    {
-                        "id": f"activity_{project.id}_{i}",
-                        "title": f"Deployment completed: {project.name}",
-                        "description": f"Project successfully deployed to canister {project.canister_id[:8]}...",
-                        "timestamp": project.updated_at.isoformat(),
-                        "status": "success",
-                        "project_id": project.id,
-                    }
-                )
-            else:
-                activities.append(
-                    {
-                        "id": f"activity_{project.id}_{i}",
-                        "title": f"Project created: {project.name}",
-                        "description": f"New project '{project.name}' created and ready for deployment",
-                        "timestamp": project.created_at.isoformat(),
-                        "status": "pending",
-                        "project_id": project.id,
-                    }
-                )
+    projects = await _get_user_projects(user_id, db)
+    project_ids = [p.id for p in projects]
+    if not project_ids:
+        return {"success": True, "data": []}
 
-        return {
-            "success": True,
-            "data": activities,
-        }
-    except Exception as e:
-        return {"success": False, "error": str(e)}
+    result = await db.execute(
+        select(Deployment)
+        .where(Deployment.project_id.in_(project_ids))
+        .order_by(Deployment.created_at.desc())
+        .limit(15)
+    )
+    deployments = result.scalars().all()
+    project_by_id = {p.id: p for p in projects}
+
+    activities = []
+    for dep in deployments:
+        project = project_by_id.get(dep.project_id)
+        if not project:
+            continue
+        activities.append(
+            {
+                "id": f"dep_{dep.id}",
+                "title": f"{project.name}: {dep.status}",
+                "description": dep.message or dep.status,
+                "timestamp": (dep.completed_at or dep.created_at).isoformat(),
+                "status": dep.status,
+                "project_id": dep.project_id,
+                "deployment_id": dep.id,
+            }
+        )
+
+    return {"success": True, "data": activities}

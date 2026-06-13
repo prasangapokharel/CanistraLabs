@@ -1,10 +1,11 @@
 """Projects API routes."""
 
-from typing import Annotated, List, Optional
+from typing import Annotated, List
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_current_user_id
 from app.database.db import get_db
 from app.schemas.project import (
     ProjectCreate,
@@ -12,44 +13,13 @@ from app.schemas.project import (
     ProjectResponse,
     ProjectUpdate,
 )
-from app.services.auth import AuthService
 from app.services.projects import ProjectService
-from app.utils.security import verify_token
+from app.utils.http_errors import safe_error_detail
 
 router = APIRouter(prefix="/api/v1/projects", tags=["Projects"])
 
 
-async def get_bearer_token(authorization: Annotated[Optional[str], Header()] = None) -> str:
-    """Extract bearer token from Authorization header."""
-    if not authorization:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authorization header",
-        )
-
-    parts = authorization.split()
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authorization header format",
-        )
-
-    return parts[1]
-
-
-async def get_current_user_id(
-    authorization: Annotated[str, Depends(get_bearer_token)],
-) -> int:
-    """Get current user ID from token."""
-    token_data = verify_token(authorization, token_type="access")
-    if not token_data:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-        )
-    return int(token_data.sub)
-
-
+@router.post("", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED, include_in_schema=False)
 @router.post("/", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
 async def create_project(
     project_create: ProjectCreate,
@@ -62,12 +32,13 @@ async def create_project(
     return ProjectResponse.model_validate(project)
 
 
+@router.get("", response_model=List[ProjectResponse], include_in_schema=False)
 @router.get("/", response_model=List[ProjectResponse])
 async def list_projects(
     user_id: Annotated[int, Depends(get_current_user_id)],
     session: Annotated[AsyncSession, Depends(get_db)],
     skip: int = 0,
-    limit: int = 10,
+    limit: int = 100,
 ) -> List[ProjectResponse]:
     """List all projects for the current user."""
     projects = await ProjectService.get_user_projects(session, user_id, skip, limit)
@@ -100,6 +71,26 @@ async def update_project(
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> ProjectResponse:
     """Update a project."""
+    return await _update_project(project_id, project_update, user_id, session)
+
+
+@router.patch("/{project_id}", response_model=ProjectResponse)
+async def patch_project(
+    project_id: int,
+    project_update: ProjectUpdate,
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    session: Annotated[AsyncSession, Depends(get_db)],
+) -> ProjectResponse:
+    """Partially update a project (alias for PUT)."""
+    return await _update_project(project_id, project_update, user_id, session)
+
+
+async def _update_project(
+    project_id: int,
+    project_update: ProjectUpdate,
+    user_id: int,
+    session: AsyncSession,
+) -> ProjectResponse:
     project = await ProjectService.get_project_by_id(session, project_id, user_id)
 
     if not project:
@@ -119,7 +110,7 @@ async def delete_project(
     user_id: Annotated[int, Depends(get_current_user_id)],
     session: Annotated[AsyncSession, Depends(get_db)],
 ) -> None:
-    """Delete a project."""
+    """Delete a project, its canister on ICP, and all related records."""
     project = await ProjectService.get_project_by_id(session, project_id, user_id)
 
     if not project:
@@ -128,5 +119,15 @@ async def delete_project(
             detail="Project not found",
         )
 
-    await ProjectService.delete_project(session, project)
-    await session.commit()
+    try:
+        await ProjectService.delete_project(session, project)
+        await session.commit()
+    except HTTPException:
+        await session.rollback()
+        raise
+    except Exception as e:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete project: {safe_error_detail(e, fallback='Delete failed')}",
+        )

@@ -6,6 +6,9 @@ import logging
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 
+from app.config import settings
+from app.utils.cycleRequirements import MIN_ICP_CONVERT_E8S, MIN_ICP_RESERVE_E8S
+
 logger = logging.getLogger(__name__)
 
 
@@ -15,10 +18,23 @@ class DfxCommand:
     Maps all dfx operations to simple Python functions with clear naming.
     """
 
-    def __init__(self, network: str = "ic"):
+    def __init__(
+        self,
+        network: Optional[str] = None,
+        ledger_canister_id: Optional[str] = None,
+    ):
         """Initialize with network (ic for mainnet, local for development)."""
-        self.network = network
+        self.network = network or settings.dfx_network
+        self.ledger_canister_id = ledger_canister_id
         self.dfxPath = self._getDfxPath()
+
+    @classmethod
+    def from_settings(cls) -> "DfxCommand":
+        """Build a DfxCommand wired to wallet/ledger settings (mainnet ICP when USE_TESTICP=false)."""
+        return cls(
+            network=settings.wallet_network,
+            ledger_canister_id=settings.ledger_canister_id,
+        )
 
     def _getDfxPath(self) -> str:
         """Get dfx executable path."""
@@ -43,6 +59,9 @@ class DfxCommand:
         env = os.environ.copy()
         env["PATH"] = f"{Path.home() / '.local' / 'bin'}:{env.get('PATH', '')}"
         env["DFX_WARNING"] = "-mainnet_plaintext_identity"
+        env["DFX_NETWORK"] = self.network
+        if self.ledger_canister_id:
+            env["DFX_LEDGER_CANISTER_ID"] = self.ledger_canister_id
 
         logger.info(f"Running: {' '.join(cmd)}")
 
@@ -137,8 +156,15 @@ class DfxCommand:
             "error": stderr if returncode != 0 else None,
         }
 
+    def _ledgerFlags(self) -> List[str]:
+        """Extra ledger flags — TESTICP needs explicit canister id; mainnet ICP uses dfx default."""
+        flags: List[str] = []
+        if self.ledger_canister_id and settings.use_testicp:
+            flags.extend(["--ledger-canister-id", self.ledger_canister_id])
+        return flags
+
     # =========================
-    # LEDGER COMMANDS (ICP)
+    # LEDGER COMMANDS (ICP / TESTICP)
     # =========================
 
     def ledgerGetAccountId(self, identity: Optional[str] = None) -> Dict[str, Any]:
@@ -156,8 +182,8 @@ class DfxCommand:
     def ledgerGetBalance(
         self, accountId: Optional[str] = None, identity: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Get ICP balance: dfx ledger balance [account_id]"""
-        cmd = ["ledger", "balance", "--network", self.network]
+        """Get ICP/TESTICP balance: dfx ledger balance [account_id]"""
+        cmd = ["ledger", "balance", "--network", self.network, *self._ledgerFlags()]
         if accountId:
             cmd.append(accountId)
 
@@ -167,16 +193,21 @@ class DfxCommand:
 
         if returncode == 0:
             balanceText = stdout.strip()
-            # Parse "X.XXXXXXXX ICP"
+            # Parse "X.XXXXXXXX ICP" or "X.XXXXXXXX TESTICP"
             try:
                 icpAmount = float(balanceText.split()[0])
                 e8sAmount = int(icpAmount * 100_000_000)
-            except:
+            except Exception:
                 icpAmount = 0.0
                 e8sAmount = 0
 
             result.update(
-                {"balanceText": balanceText, "balanceIcp": icpAmount, "balanceE8s": e8sAmount}
+                {
+                    "balanceText": balanceText,
+                    "balanceIcp": icpAmount,
+                    "balanceE8s": e8sAmount,
+                    "tokenSymbol": balanceText.split()[1] if len(balanceText.split()) > 1 else settings.token_symbol,
+                }
             )
         else:
             result["error"] = stderr
@@ -198,6 +229,7 @@ class DfxCommand:
                 memo,
                 "--network",
                 self.network,
+                *self._ledgerFlags(),
             ],
             identity,
         )
@@ -240,23 +272,52 @@ class DfxCommand:
         return result
 
     def cyclesConvert(self, amount: str, identity: Optional[str] = None) -> Dict[str, Any]:
-        """Convert ICP to cycles: dfx cycles convert --amount <amount>"""
+        """Convert ICP/TESTICP to cycles: dfx cycles convert --amount <amount>"""
         returncode, stdout, stderr = self._runCommand(
-            ["cycles", "convert", "--amount", amount, "--network", self.network], identity
+            ["cycles", "convert", "--amount", amount, "--network", self.network],
+            identity,
         )
 
+        output = stdout.strip() if returncode == 0 else (stderr.strip() or stdout.strip())
         result = {
             "success": returncode == 0,
             "amount": amount,
-            "output": stdout.strip() if returncode == 0 else stderr,
+            "output": output,
+            "error": None if returncode == 0 else output,
         }
 
         if returncode == 0:
-            # Get new balance after conversion
             newBalance = self.cyclesGetBalance(identity)
             result["newBalance"] = newBalance
 
         return result
+
+    def ledgerCreateCanister(
+        self,
+        controller: str,
+        amount: str,
+        identity: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Create canister from ledger tokens: dfx ledger create-canister"""
+        cmd = [
+            "ledger",
+            "create-canister",
+            controller,
+            "--amount",
+            amount,
+            "--network",
+            self.network,
+            *self._ledgerFlags(),
+        ]
+        returncode, stdout, stderr = self._runCommand(cmd, identity)
+        output = stdout.strip() if returncode == 0 else (stderr.strip() or stdout.strip())
+        canister_id = self._extractCanisterId(output) if returncode == 0 else None
+        return {
+            "success": returncode == 0,
+            "canisterId": canister_id,
+            "output": output,
+            "error": None if returncode == 0 else output,
+        }
 
     def cyclesSend(
         self, toPrincipal: str, amount: str, identity: Optional[str] = None
@@ -479,8 +540,10 @@ class DfxCommand:
 
         return result
 
-    def autoConvertIcp(self, identityName: str, reserveIcp: float = 0.01) -> Dict[str, Any]:
+    def autoConvertIcp(self, identityName: str, reserveIcp: float = None) -> Dict[str, Any]:
         """Automatically convert available ICP to cycles, reserving some for fees."""
+        if reserveIcp is None:
+            reserveIcp = MIN_ICP_RESERVE_E8S / 100_000_000
         try:
             # Get current ICP balance
             balance = self.ledgerGetBalance(identity=identityName)
@@ -488,13 +551,18 @@ class DfxCommand:
                 return {"success": False, "error": "Could not get ICP balance"}
 
             icpAmount = balance["balanceIcp"]
-            if icpAmount < (reserveIcp + 0.01):  # Need at least reserve + 0.01 to convert
+            reserveIcp = MIN_ICP_RESERVE_E8S / 100_000_000
+            minTotalIcp = MIN_ICP_CONVERT_E8S / 100_000_000
+            if icpAmount < minTotalIcp:
                 return {
                     "success": False,
-                    "error": f"Insufficient ICP. Have {icpAmount}, need at least {reserveIcp + 0.01}",
+                    "error": (
+                        f"Insufficient ICP. Have {icpAmount:.8f} ICP, "
+                        f"need at least {minTotalIcp:.3f} ICP to convert "
+                        f"({reserveIcp:.3f} ICP reserved for ledger fees)."
+                    ),
                 }
 
-            # Calculate amount to convert
             convertAmount = icpAmount - reserveIcp
 
             # Round to 8 decimal places (e8s precision) to avoid floating point issues
@@ -502,6 +570,15 @@ class DfxCommand:
 
             # Convert to cycles
             result = self.cyclesConvert(str(convertAmount), identityName)
+
+            if not result["success"] and settings.use_testicp:
+                # dfx cycles convert only reads real ICP; TESTICP minting is not supported yet.
+                result["error"] = (
+                    result.get("error")
+                    or "TESTICP cannot be converted to cycles via dfx yet. "
+                    "Use DEPLOY_NETWORK=local with a running dfx replica for free local deploys, "
+                    "or use real ICP on mainnet for IC deployment."
+                )
 
             if result["success"]:
                 result["convertedAmount"] = convertAmount

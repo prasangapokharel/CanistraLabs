@@ -6,10 +6,13 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.deps import get_current_user_id, require_superuser
+from app.models.user import User
 from app.database.db import get_db
 from app.services.auth import AuthService
 from app.services.dfxCommand import DfxCommand
-from app.api.v1.wallet import get_current_user_id
+from app.config import settings
+from app.utils.http_errors import safe_error_detail
 
 router = APIRouter(prefix="/api/v1/clean", tags=["Clean DFX"])
 
@@ -28,7 +31,7 @@ async def getStatus(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
         status = dfx.getUserStatus(user.dfx_identity_name)
 
         return {
@@ -55,7 +58,7 @@ async def getBalances(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
 
         # Get individual balance calls for detailed info
         icp = dfx.ledgerGetBalance(identity=user.dfx_identity_name)
@@ -98,7 +101,7 @@ async def convertIcp(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
 
         if amount:
             # Convert specific amount
@@ -125,10 +128,12 @@ async def convertIcp(
 
 
 @router.get("/identities")
-async def listIdentities():
-    """List all dfx identities."""
+async def listIdentities(
+    _user: Annotated[User, Depends(require_superuser)],
+):
+    """List all dfx identities (superuser only)."""
     try:
-        dfx = DfxCommand()
+        dfx = DfxCommand(network=settings.dfx_network)
         identities = dfx.identityList()
 
         return {
@@ -157,7 +162,7 @@ async def sendIcp(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
         result = dfx.ledgerSend(toAddress, amount, memo, identity=user.dfx_identity_name)
 
         return {
@@ -186,7 +191,7 @@ async def sendCycles(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
         result = dfx.cyclesSend(toPrincipal, amount, identity=user.dfx_identity_name)
 
         return {
@@ -215,7 +220,7 @@ async def createCanister(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
 
         # Check cycles balance first
         balance = dfx.cyclesGetBalance(user.dfx_identity_name)
@@ -252,7 +257,7 @@ async def getCanisterStatus(
         if not user.dfx_identity_name:
             raise HTTPException(status_code=400, detail="No identity found")
 
-        dfx = DfxCommand(network="ic")
+        dfx = DfxCommand(network=settings.dfx_network)
         result = dfx.canisterGetStatus(canister_id, identity=user.dfx_identity_name)
 
         return {

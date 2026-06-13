@@ -1,8 +1,14 @@
 """ICP/dfx integration utilities for canister management."""
 
 import json
+import re
 import subprocess
 import logging
+import fcntl
+import time
+import urllib.error
+import urllib.request
+from contextlib import contextmanager
 from typing import Optional, Tuple, Dict, Any
 from pathlib import Path
 import tempfile
@@ -10,8 +16,29 @@ import shutil
 import os
 
 from app.config import settings
+from app.utils.canisterNetwork import network_for_canister
+from app.utils.cycleRequirements import (
+    MAINNET_RECOMMENDED_CYCLES,
+    build_insufficient_cycles_error,
+)
 
 logger = logging.getLogger(__name__)
+
+ASSET_CANISTER_NAME = "site"
+DEPLOY_FILES_MARKER = "__ICP_FILES__:"
+DFX_DEPLOY_LOCK_PATH = Path(tempfile.gettempdir()) / "icp-hosting-dfx-deploy.lock"
+
+
+@contextmanager
+def _dfx_deploy_lock():
+    """Cross-process exclusive lock for dfx deploy operations."""
+    DFX_DEPLOY_LOCK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(DFX_DEPLOY_LOCK_PATH, "a+", encoding="utf-8") as lock_file:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
 
 class ICPError(Exception):
@@ -41,7 +68,9 @@ class CanisterDeploymentException(ICPError):
 class ICPService:
     """Service for managing ICP canisters and deployments."""
 
-    DFX_NETWORK = "local"  # Use local for testing; change to "ic" for production
+    @staticmethod
+    def get_network() -> str:
+        return settings.effective_deploy_network
 
     @staticmethod
     def _check_dfx_installed() -> bool:
@@ -191,7 +220,7 @@ class ICPService:
 
                 # Deploy the canister
                 returncode, stdout, stderr = ICPService._run_dfx_command(
-                    ["deploy", "--network", ICPService.DFX_NETWORK],
+                    ["deploy", "--network", ICPService.get_network()],
                     cwd=str(project_dir),
                 )
 
@@ -214,7 +243,7 @@ class ICPService:
                     "principal_id": principal_id,
                     "project_name": project_name,
                     "status": "deployed",
-                    "network": ICPService.DFX_NETWORK,
+                    "network": ICPService.get_network(),
                 }
 
             except (CanisterCreationException, CanisterDeploymentException):
@@ -224,13 +253,179 @@ class ICPService:
                 raise CanisterCreationException(f"Unexpected error: {str(e)}")
 
     @staticmethod
+    def _dfx_networks_config() -> dict:
+        return {
+            "local": {"bind": "127.0.0.1:4943", "type": "ephemeral"},
+            "ic": {"providers": ["https://ic0.app"], "type": "persistent"},
+        }
+
+    @staticmethod
+    def _parse_deploy_content(code_content: str) -> Dict[str, str]:
+        """Parse bundled HTML or multi-file deploy payload into asset paths."""
+        content = code_content or ""
+        if content.startswith(DEPLOY_FILES_MARKER):
+            try:
+                files = json.loads(content[len(DEPLOY_FILES_MARKER) :])
+                if isinstance(files, dict) and files:
+                    return {str(path): str(body) for path, body in files.items()}
+            except json.JSONDecodeError:
+                logger.warning("Invalid multi-file deploy payload; using index.html fallback")
+        return {"index.html": content}
+
+    @staticmethod
+    def canister_public_url(canister_id: str, network: Optional[str] = None) -> str:
+        """Public HTTP URL for a deployed canister (local replica or IC mainnet)."""
+        cid = canister_id.strip()
+        net = network or network_for_canister(canister_id)
+        if net == "local":
+            return f"http://{cid}.localhost:4943/"
+        return f"https://{cid}.icp0.io/"
+
+    @staticmethod
+    def _write_asset_project(
+        project_dir: Path,
+        assets: Dict[str, str],
+        network: str,
+        canister_id: Optional[str] = None,
+    ) -> None:
+        """Prepare a minimal dfx project that deploys static assets."""
+        assets_dir = project_dir / "src" / ASSET_CANISTER_NAME / "assets"
+        assets_dir.mkdir(parents=True, exist_ok=True)
+
+        for rel_path, body in assets.items():
+            rel = rel_path.lstrip("/").replace("\\", "/")
+            if ".." in rel.split("/"):
+                raise CanisterDeploymentException(f"Invalid asset path: {rel_path}")
+            target = assets_dir / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(body, encoding="utf-8")
+
+        # Optional config — omit to use dfx defaults (avoids malformed json5 errors).
+        dfx_json = {
+            "canisters": {
+                ASSET_CANISTER_NAME: {
+                    "type": "assets",
+                    "source": [f"src/{ASSET_CANISTER_NAME}/assets"],
+                }
+            },
+            "networks": ICPService._dfx_networks_config(),
+        }
+        (project_dir / "dfx.json").write_text(json.dumps(dfx_json, indent=2))
+
+        if canister_id:
+            ids_dir = project_dir / ".dfx" / network
+            ids_dir.mkdir(parents=True, exist_ok=True)
+            (ids_dir / "canister_ids.json").write_text(
+                json.dumps({ASSET_CANISTER_NAME: {network: canister_id}}, indent=2)
+            )
+
+    @staticmethod
+    def _deploy_asset_canister(
+        project_dir: Path,
+        network: str,
+        canister_id: Optional[str] = None,
+        available_cycles: Optional[int] = None,
+    ) -> str:
+        """Deploy or upgrade the asset canister; return the canister ID."""
+        base_cmd = ["deploy", ASSET_CANISTER_NAME, "--network", network, "--yes"]
+        if network == "ic" and not canister_id and available_cycles:
+            # Cap at recommended amount; dfx deducts creation fee from this deposit.
+            with_cycles = min(available_cycles, MAINNET_RECOMMENDED_CYCLES)
+            base_cmd.extend(["--with-cycles", str(with_cycles)])
+
+        with _dfx_deploy_lock():
+            if canister_id:
+                cmd = base_cmd + ["--mode", "reinstall"]
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    cmd, cwd=str(project_dir)
+                )
+                output = f"{stdout}\n{stderr}"
+            else:
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    base_cmd, cwd=str(project_dir)
+                )
+                output = f"{stdout}\n{stderr}"
+                if returncode != 0:
+                    err_text = stderr or stdout
+                    if "insufficient cycles" in err_text.lower():
+                        err = build_insufficient_cycles_error(
+                            available_cycles or 0, err_text
+                        )
+                        raise CanisterDeploymentException(err["message"])
+                    raise CanisterDeploymentException(
+                        f"Failed to deploy asset canister: {err_text}"
+                    )
+
+                deployed_id = ICPService._extract_canister_id(output)
+                if not deployed_id:
+                    raise CanisterDeploymentException(
+                        "Could not extract canister ID from asset deployment output"
+                    )
+
+                # New canisters: first install creates the ID but assets often 503
+                # until a reinstall syncs files (local dfx quirk).
+                ids_dir = project_dir / ".dfx" / network
+                ids_dir.mkdir(parents=True, exist_ok=True)
+                (ids_dir / "canister_ids.json").write_text(
+                    json.dumps({ASSET_CANISTER_NAME: {network: deployed_id}}, indent=2)
+                )
+                returncode, stdout2, stderr2 = ICPService._run_dfx_command(
+                    base_cmd + ["--mode", "reinstall"],
+                    cwd=str(project_dir),
+                )
+                output = f"{output}\n{stdout2}\n{stderr2}"
+
+            if returncode != 0:
+                raise CanisterDeploymentException(
+                    f"Failed to deploy asset canister: {stderr or stdout}"
+                )
+
+        deployed_id = ICPService._extract_canister_id(output) or canister_id
+        if not deployed_id:
+            raise CanisterDeploymentException(
+                "Could not extract canister ID from asset deployment output"
+            )
+        ICPService._verify_canister_serves(deployed_id, network)
+        return deployed_id
+
+    @staticmethod
+    def _verify_canister_serves(canister_id: str, network: str, attempts: int = 5) -> None:
+        """Confirm the asset canister returns HTTP 200 for index after deploy."""
+        url = ICPService.canister_public_url(canister_id, network)
+        last_error = "unknown"
+        for attempt in range(attempts):
+            try:
+                with urllib.request.urlopen(url, timeout=15) as response:
+                    if response.status == 200:
+                        return
+                    last_error = f"HTTP {response.status}"
+            except urllib.error.HTTPError as exc:
+                last_error = f"HTTP {exc.code}"
+            except Exception as exc:
+                last_error = str(exc)
+            if attempt < attempts - 1:
+                time.sleep(1.5)
+        raise CanisterDeploymentException(
+            f"Canister {canister_id} deployed but site is not reachable ({last_error}). "
+            "Click Publish again or check that dfx is running."
+        )
+
+    @staticmethod
+    def _find_built_wasm(project_dir: Path, network: str) -> Path:
+        for name in ("main.wasm.gz", "main.wasm"):
+            wasm_file = project_dir / ".dfx" / network / "canisters" / "main" / name
+            if wasm_file.exists():
+                return wasm_file
+        raise CanisterDeploymentException("Failed to find built wasm file after dfx build")
+
+    @staticmethod
     def update_canister(canister_id: str, code_content: str) -> Dict[str, Any]:
         """
-        Update an existing canister's code.
+        Update an existing canister with new static assets (HTML/CSS/JS).
 
         Args:
             canister_id: The canister ID to update
-            code_content: New Motoko code to deploy
+            code_content: Bundled HTML or __ICP_FILES__ multi-file payload
 
         Returns:
             Dictionary with update status and metadata
@@ -241,60 +436,27 @@ class ICPService:
         if not ICPService._check_dfx_installed():
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
+        network = network_for_canister(canister_id)
+        assets = ICPService._parse_deploy_content(code_content)
+
         with tempfile.TemporaryDirectory() as tmpdir:
             try:
                 project_dir = Path(tmpdir) / "project"
                 project_dir.mkdir()
-
-                # Create a minimal dfx.json for existing canister
-                dfx_json = {
-                    "canisters": {
-                        "main": {
-                            "type": "motoko",
-                            "main": "src/main.mo",
-                            "candid": "src/main.did",
-                        }
-                    },
-                    "networks": {
-                        "ic": {
-                            "bind": "127.0.0.1:8000",
-                            "type": "ephemeral",
-                        }
-                    },
-                }
-
-                (project_dir / "dfx.json").write_text(json.dumps(dfx_json, indent=2))
-
-                # Create src directory and files
-                src_dir = project_dir / "src"
-                src_dir.mkdir()
-                src_dir.joinpath("main.mo").write_text(code_content)
-
-                # Update the canister
-                returncode, stdout, stderr = ICPService._run_dfx_command(
-                    [
-                        "canister",
-                        "install",
-                        canister_id,
-                        "--mode",
-                        "upgrade",
-                        "--network",
-                        ICPService.DFX_NETWORK,
-                    ],
-                    cwd=str(project_dir),
+                ICPService._write_asset_project(
+                    project_dir, assets, network, canister_id=canister_id
+                )
+                deployed_id = ICPService._deploy_asset_canister(
+                    project_dir, network, canister_id=canister_id
                 )
 
-                if returncode != 0:
-                    raise CanisterDeploymentException(
-                        f"Failed to update canister {canister_id}: {stderr}"
-                    )
-
-                logger.info(f"Successfully updated canister: {canister_id}")
+                logger.info(f"Successfully updated asset canister: {deployed_id}")
 
                 return {
-                    "canister_id": canister_id,
+                    "canister_id": deployed_id,
+                    "url": ICPService.canister_public_url(deployed_id, network),
                     "status": "updated",
-                    "timestamp": None,  # Would use datetime.utcnow() in production
+                    "timestamp": None,
                 }
 
             except CanisterDeploymentException:
@@ -361,7 +523,7 @@ class ICPService:
 
                 # Build the canister first
                 returncode, stdout, stderr = ICPService._run_dfx_command(
-                    ["build", "main", "--network", ICPService.DFX_NETWORK],
+                    ["build", "main", "--network", ICPService.get_network()],
                     cwd=str(project_dir),
                 )
 
@@ -373,7 +535,7 @@ class ICPService:
                 wasm_file = (
                     project_dir
                     / ".dfx"
-                    / ICPService.DFX_NETWORK
+                    / ICPService.get_network()
                     / "canisters"
                     / "main"
                     / "main.wasm.gz"
@@ -383,7 +545,7 @@ class ICPService:
                     wasm_file = (
                         project_dir
                         / ".dfx"
-                        / ICPService.DFX_NETWORK
+                        / ICPService.get_network()
                         / "canisters"
                         / "main"
                         / "main.wasm"
@@ -405,7 +567,7 @@ class ICPService:
                         "--wasm",
                         str(wasm_file),
                         "--network",
-                        ICPService.DFX_NETWORK,
+                        ICPService.get_network(),
                     ],
                     cwd=str(project_dir),
                 )
@@ -456,8 +618,9 @@ class ICPService:
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Nat8 "mo:base/Nat8";
+import Nat16 "mo:base/Nat16";
 
-actor {{
+persistent actor {{
   let htmlContent = "{escaped_content}";
 
   public query func http_request(request : {{
@@ -505,10 +668,12 @@ actor {{
         if not ICPService._check_dfx_installed():
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
+        network = network_for_canister(canister_id)
         try:
-            returncode, stdout, stderr = ICPService._run_dfx_command(
-                ["canister", "status", canister_id, "--network", ICPService.DFX_NETWORK],
-            )
+            with _dfx_deploy_lock():
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    ["canister", "status", canister_id, "--network", network],
+                )
 
             if returncode != 0:
                 raise ICPError(f"Failed to get canister status: {stderr}")
@@ -523,6 +688,48 @@ actor {{
         except Exception as e:
             logger.error(f"Error getting canister status: {e}")
             raise ICPError(f"Error getting canister status: {str(e)}")
+
+    @staticmethod
+    def stop_canister(canister_id: str) -> Dict[str, Any]:
+        """Stop a canister to reduce compute usage (site goes offline)."""
+        if not ICPService._check_dfx_installed():
+            raise DfxNotInstalledException("dfx is not installed or not in PATH")
+
+        network = network_for_canister(canister_id)
+        try:
+            with _dfx_deploy_lock():
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    ["canister", "stop", canister_id, "--network", network],
+                )
+            if returncode != 0:
+                raise ICPError(f"Failed to stop canister: {stderr or stdout}")
+            logger.info("Stopped canister %s on %s", canister_id, network)
+            return {"canister_id": canister_id, "status": "stopped", "message": stdout.strip()}
+        except ICPError:
+            raise
+        except Exception as e:
+            raise ICPError(f"Error stopping canister: {str(e)}")
+
+    @staticmethod
+    def start_canister(canister_id: str) -> Dict[str, Any]:
+        """Start a stopped canister."""
+        if not ICPService._check_dfx_installed():
+            raise DfxNotInstalledException("dfx is not installed or not in PATH")
+
+        network = network_for_canister(canister_id)
+        try:
+            with _dfx_deploy_lock():
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    ["canister", "start", canister_id, "--network", network],
+                )
+            if returncode != 0:
+                raise ICPError(f"Failed to start canister: {stderr or stdout}")
+            logger.info("Started canister %s on %s", canister_id, network)
+            return {"canister_id": canister_id, "status": "running", "message": stdout.strip()}
+        except ICPError:
+            raise
+        except Exception as e:
+            raise ICPError(f"Error starting canister: {str(e)}")
 
     @staticmethod
     def delete_canister(canister_id: str) -> Dict[str, Any]:
@@ -542,9 +749,18 @@ actor {{
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
         try:
-            returncode, stdout, stderr = ICPService._run_dfx_command(
-                ["canister", "delete", canister_id, "--network", ICPService.DFX_NETWORK],
-            )
+            network = network_for_canister(canister_id)
+            with _dfx_deploy_lock():
+                returncode, stdout, stderr = ICPService._run_dfx_command(
+                    [
+                        "canister",
+                        "delete",
+                        canister_id,
+                        "--network",
+                        network,
+                        "--yes",
+                    ],
+                )
 
             if returncode != 0:
                 raise ICPError(f"Failed to delete canister: {stderr}")
@@ -600,45 +816,194 @@ actor {{
         return None
 
     @staticmethod
+    def _parse_int_token(value: str) -> int:
+        cleaned = value.replace("_", "").replace(",", "").strip()
+        if cleaned.lower().startswith("nat(") and cleaned.endswith(")"):
+            cleaned = cleaned[4:-1]
+        return int(cleaned)
+
+    @staticmethod
+    def _parse_cycles_amount(text: str) -> int:
+        """Parse cycle amounts including TC/BC/MC suffixes from dfx output."""
+        line = text.lower().strip()
+        tc_match = re.search(r"([\d_.]+)\s*tc\b", line)
+        if tc_match:
+            return int(float(tc_match.group(1).replace("_", "")) * 1_000_000_000_000)
+        bc_match = re.search(r"([\d_.]+)\s*bc\b", line)
+        if bc_match:
+            return int(float(bc_match.group(1).replace("_", "")) * 1_000_000_000)
+        mc_match = re.search(r"([\d_.]+)\s*mc\b", line)
+        if mc_match:
+            return int(float(mc_match.group(1).replace("_", "")) * 1_000_000)
+        num_match = re.search(r"([\d_,]+)\s*cycles", line)
+        if num_match:
+            return ICPService._parse_int_token(num_match.group(1))
+        plain = re.search(r"balance:\s*([\d_,]+)", line)
+        if plain:
+            return ICPService._parse_int_token(plain.group(1))
+        return 0
+
+    @staticmethod
     def _parse_canister_status(output: str) -> Dict[str, Any]:
-        """Parse canister status from dfx output."""
-        status_data = {
-            "status": "running",
+        """Parse full ``dfx canister status`` output — all fields ICP exposes."""
+        status_data: Dict[str, Any] = {
+            "status": "unknown",
             "cycles": 0,
+            "cycles_balance": 0,
             "memory_usage": 0,
+            "memory_size": 0,
+            "idle_cycles_burned_per_day": 0,
+            "freezing_threshold_seconds": 0,
+            "reserved_cycles": 0,
+            "reserved_cycles_limit": 0,
+            "compute_allocation": 0,
+            "memory_allocation": 0,
+            "number_of_queries": 0,
+            "instructions_spent_in_queries": 0,
+            "query_request_payload_bytes": 0,
+            "query_response_payload_bytes": 0,
+            "module_hash": None,
+            "controllers": [],
+            "raw_output": output.strip(),
         }
 
-        # Parse output for status information
-        lines = output.split("\n")
-        for line in lines:
-            line_lower = line.lower()
-            if "running" in line_lower:
-                status_data["status"] = "running"
-            elif "stopped" in line_lower:
-                status_data["status"] = "stopped"
-            elif "cycles" in line_lower:
+        for line in output.split("\n"):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            lower = stripped.lower()
+
+            if lower.startswith("status:"):
+                status_data["status"] = stripped.split(":", 1)[1].strip()
+                continue
+
+            if lower.startswith("controllers:"):
+                controllers = stripped.split(":", 1)[1].strip()
+                status_data["controllers"] = [c for c in controllers.split() if c]
+                continue
+
+            if lower.startswith("memory allocation:"):
                 try:
-                    # Try to extract numeric value
-                    parts = line.split()
-                    for i, part in enumerate(parts):
-                        if "cycles" in part.lower() and i + 1 < len(parts):
-                            status_data["cycles"] = int(parts[i + 1])
-                except (ValueError, IndexError):
+                    status_data["memory_allocation"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
                     pass
+                continue
+
+            if lower.startswith("compute allocation:"):
+                try:
+                    status_data["compute_allocation"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("freezing threshold:"):
+                try:
+                    status_data["freezing_threshold_seconds"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if "idle cycles burned per day" in lower:
+                try:
+                    status_data["idle_cycles_burned_per_day"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("memory size:") or lower.startswith("memory used:"):
+                try:
+                    memory = ICPService._parse_int_token(stripped.split(":", 1)[1])
+                    status_data["memory_usage"] = memory
+                    status_data["memory_size"] = memory
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("balance:"):
+                cycles = ICPService._parse_cycles_amount(stripped)
+                status_data["cycles"] = cycles
+                status_data["cycles_balance"] = cycles
+                continue
+
+            if lower.startswith("reserved:") and "limit" not in lower:
+                try:
+                    status_data["reserved_cycles"] = ICPService._parse_cycles_amount(stripped)
+                except ValueError:
+                    pass
+                continue
+
+            if "reserved cycles limit" in lower:
+                try:
+                    status_data["reserved_cycles_limit"] = ICPService._parse_cycles_amount(stripped)
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("number of queries:"):
+                try:
+                    status_data["number_of_queries"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("instructions spent in queries:"):
+                try:
+                    status_data["instructions_spent_in_queries"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if "total query request payload size" in lower:
+                try:
+                    status_data["query_request_payload_bytes"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if "total query response payload size" in lower:
+                try:
+                    status_data["query_response_payload_bytes"] = ICPService._parse_int_token(
+                        stripped.split(":", 1)[1]
+                    )
+                except ValueError:
+                    pass
+                continue
+
+            if lower.startswith("module hash:"):
+                status_data["module_hash"] = stripped.split(":", 1)[1].strip()
+                continue
 
         return status_data
 
     @staticmethod
-    def create_individual_canister(project_name: str, html_content: str) -> Dict[str, Any]:
+    def create_individual_canister(
+        project_name: str,
+        html_content: str,
+        available_cycles: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """
-        Create a new individual canister for a project with HTML content.
+        Create a new individual asset canister for a project.
 
-        This creates a unique canister per project that serves HTML directly.
-        Each canister gets its own unique ID and URL.
+        Each project gets its own asset canister that serves HTML/CSS/JS locally
+        or on IC mainnet depending on ``effective_deploy_network``.
 
         Args:
-            project_name: Name of the project (sanitized for dfx project name)
-            html_content: HTML content to serve from the canister
+            project_name: Name of the project (for logging)
+            html_content: Bundled HTML or __ICP_FILES__ multi-file payload
 
         Returns:
             Dictionary containing canister_id, principal_id, url, and other metadata
@@ -650,74 +1015,27 @@ actor {{
         if not ICPService._check_dfx_installed():
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
+        network = settings.effective_deploy_network
+        assets = ICPService._parse_deploy_content(html_content)
+
         with tempfile.TemporaryDirectory() as tmpdir:
             try:
-                # Sanitize project name for dfx project name (alphanumeric + underscore)
-                sanitized_name = "".join(
-                    c if c.isalnum() or c == "_" else "_" for c in project_name
-                )
-                sanitized_name = sanitized_name.lstrip("_")[
-                    :30
-                ]  # Max 30 chars, remove leading underscores
+                project_dir = Path(tmpdir) / "project"
+                project_dir.mkdir()
 
-                if not sanitized_name:
-                    sanitized_name = "project"
-
-                project_dir = Path(tmpdir) / sanitized_name
-
-                logger.info(f"Creating individual canister for project: {project_name}")
-
-                # Create a new dfx project (use sanitized_name, not full path)
-                returncode, stdout, stderr = ICPService._run_dfx_command(
-                    ["new", "--no-frontend", sanitized_name],
-                    cwd=tmpdir,
+                logger.info(
+                    f"Creating asset canister for project: {project_name} "
+                    f"({len(assets)} file(s), network={network})"
                 )
 
-                if returncode != 0:
-                    raise CanisterCreationException(f"Failed to create dfx project: {stderr}")
-
-                # Generate Motoko code that serves HTML
-                motoko_code = ICPService._generate_html_serving_motoko(html_content)
-                canister_src = project_dir / "src" / "main.mo"
-                canister_src.write_text(motoko_code)
-
-                logger.info(f"Generated Motoko code for HTML serving ({len(html_content)} bytes)")
-
-                # Deploy the canister
-                # Use "ic" for production mainnet deployment
-                network = "ic"  # Production mainnet deployment
-                returncode, stdout, stderr = ICPService._run_dfx_command(
-                    ["deploy", "--network", network],
-                    cwd=str(project_dir),
+                ICPService._write_asset_project(project_dir, assets, network)
+                canister_id = ICPService._deploy_asset_canister(
+                    project_dir, network, available_cycles=available_cycles
                 )
+                canister_url = ICPService.canister_public_url(canister_id, network)
 
-                if returncode != 0:
-                    raise CanisterDeploymentException(f"Failed to deploy canister: {stderr}")
-
-                logger.info(f"Deployment output:\n{stdout}")
-                logger.info(f"Deployment stderr:\n{stderr}")
-
-                # Parse the deployment output to extract canister ID
-                canister_id = ICPService._extract_canister_id(stdout)
-
-                # If not found in stdout, try stderr
-                if not canister_id:
-                    canister_id = ICPService._extract_canister_id(stderr)
-                    if canister_id:
-                        logger.info(f"Canister ID found in stderr: {canister_id}")
-
-                if not canister_id:
-                    logger.error(
-                        f"Could not extract canister ID from output:\nstdout: {stdout}\nstderr: {stderr}"
-                    )
-                    raise CanisterDeploymentException(
-                        "Could not extract canister ID from deployment output"
-                    )
-
-                # Generate the canister URL
-                canister_url = f"https://{canister_id}.icp0.io"
-
-                logger.info(f"Successfully created individual canister: {canister_id}")
+                total_bytes = sum(len(body) for body in assets.values())
+                logger.info(f"Successfully created asset canister: {canister_id}")
 
                 return {
                     "canister_id": canister_id,
@@ -726,7 +1044,7 @@ actor {{
                     "url": canister_url,
                     "status": "deployed",
                     "network": network,
-                    "html_size_bytes": len(html_content),
+                    "html_size_bytes": total_bytes,
                 }
 
             except (CanisterCreationException, CanisterDeploymentException):
@@ -765,38 +1083,42 @@ actor {{
             escaped_content = escaped_content[:max_size]
 
         # Create a Motoko canister that serves HTML via HTTP interface
-        motoko_code = f'''
+        # Use .replace() — Motoko record syntax `{name = ...}` breaks Python f-strings (PEP 701)
+        content_len = str(len(html_content))
+        motoko_code = (
+            """
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
-import Nat8 "mo:base/Nat8";
+import Nat16 "mo:base/Nat16";
 
-actor {{
-  let htmlContent = "{escaped_content}";
+persistent actor {
+  let htmlContent = "__HTML__";
 
-  public query func http_request(request : {{
+  public query func http_request(request : {
     method : Text;
     url : Text;
-    headers : [{{name : Text; value : Text}}];
+    headers : [{name : Text; value : Text}];
     body : Blob;
-  }}) : async {{
+  }) : async {
     body : Blob;
-    headers : [{{name : Text; value : Text}}];
+    headers : [{name : Text; value : Text}];
     status_code : Nat16;
-  }} {{
-    // Convert string to bytes for HTTP response
+  } {
     let htmlBytes = Blob.toArray(Text.encodeUtf8(htmlContent));
-    
-    return {{
+    return {
       body = Blob.fromArray(htmlBytes);
       headers = [
-        {{"name" = "Content-Type"; "value" = "text/html; charset=utf-8"}},
-        {{"name" = "Access-Control-Allow-Origin"; "value" = "*"}},
-        {{"name" = "Cache-Control"; "value" = "public, max-age=3600"}},
-        {{"name" = "Content-Length"; "value" = "{str(len(html_content))}"}},
+        {name = "Content-Type"; value = "text/html; charset=utf-8"},
+        {name = "Access-Control-Allow-Origin"; value = "*"},
+        {name = "Cache-Control"; value = "public, max-age=3600"},
+        {name = "Content-Length"; value = "__LEN__"},
       ];
-      status_code = 200;
-    }};
-  }};
-}};
-'''
+      status_code = 200 : Nat16;
+    };
+  };
+};
+"""
+            .replace("__HTML__", escaped_content)
+            .replace("__LEN__", content_len)
+        )
         return motoko_code

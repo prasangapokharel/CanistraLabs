@@ -18,8 +18,9 @@ engine = create_async_engine(
 )
 
 # Create synchronous engine for migrations
+_sync_url = settings.database_url.replace("postgresql+asyncpg://", "postgresql://")
 sync_engine = create_engine(
-    settings.database_url,
+    _sync_url,
     echo=settings.database_echo,
     pool_pre_ping=True,
 )

@@ -1,24 +1,29 @@
 """Project service."""
 
-import hashlib
+import logging
 from typing import List, Optional
 
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.models.project import Project, ProjectStatus
-from app.models.user import User
+from app.models.canister import Canister
+from app.models.deployment import Deployment
+from app.models.domain import CustomDomain
 from app.schemas.project import ProjectCreate, ProjectUpdate
+from app.utils.icpUtils import ICPService
+
+logger = logging.getLogger(__name__)
+
+
+def canonical_canister_url(canister_id: str) -> str:
+    """Public URL for a deployed canister (local replica or IC mainnet)."""
+    return ICPService.canister_public_url(canister_id)
 
 
 class ProjectService:
     """Project management service."""
-
-    @staticmethod
-    def generate_project_url(user_id: int, project_id: int) -> str:
-        """Generate auto-formatted project URL."""
-        user_hash = hashlib.md5(str(user_id).encode()).hexdigest()[:8]
-        return f"https://{user_hash}-{project_id}.ic0.app"
 
     @staticmethod
     async def create_project(
@@ -32,12 +37,9 @@ class ProjectService:
             language=project_create.language,
             code_content=project_create.code_content,
             status=ProjectStatus.PENDING,
+            url=None,
         )
         session.add(project)
-        await session.flush()
-
-        # Generate URL after project ID is assigned
-        project.url = ProjectService.generate_project_url(user_id, project.id)
         await session.flush()
         return project
 
@@ -84,7 +86,23 @@ class ProjectService:
 
     @staticmethod
     async def delete_project(session: AsyncSession, project: Project) -> None:
-        """Delete a project."""
+        """Delete a project, its IC canister, and all related records."""
+        from app.services.canisterFactory import CanisterFactory
+
+        if project.canister_id:
+            try:
+                await CanisterFactory.delete_project_canister(session, project)
+            except Exception as exc:
+                logger.warning(
+                    "IC canister delete failed for project %s (%s): %s",
+                    project.id,
+                    project.canister_id,
+                    exc,
+                )
+
+        await session.execute(delete(CustomDomain).where(CustomDomain.project_id == project.id))
+        await session.execute(delete(Canister).where(Canister.project_id == project.id))
+        await session.execute(delete(Deployment).where(Deployment.project_id == project.id))
         await session.delete(project)
         await session.flush()
 

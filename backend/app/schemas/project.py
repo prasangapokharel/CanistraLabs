@@ -3,7 +3,9 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field, model_validator
+
+from app.utils.icpUtils import ICPService
 
 
 class ProjectBase(BaseModel):
@@ -41,6 +43,30 @@ class ProjectResponse(ProjectBase):
     updated_at: datetime
     deployed_at: Optional[datetime]
 
+    @model_validator(mode="after")
+    def sanitize_url(self) -> "ProjectResponse":
+        """Only expose a URL when the project has a real deployed canister."""
+        if not self.canister_id:
+            self.url = None
+        elif not self.url:
+            self.url = ICPService.canister_public_url(self.canister_id)
+        elif self.canister_id not in self.url:
+            is_local = "127.0.0.1" in self.url or "localhost" in self.url
+            if not is_local:
+                self.url = ICPService.canister_public_url(self.canister_id)
+        return self
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def display_status(self) -> str:
+        if self.canister_id and self.status in {"active", "deployed"}:
+            return "deployed"
+        if self.status == "failed":
+            return "failed"
+        if self.canister_id:
+            return "deployed"
+        return self.status if self.status else "pending"
+
     class Config:
         from_attributes = True
 
@@ -56,6 +82,12 @@ class ProjectDeployRequest(BaseModel):
 
     code_content: Optional[str] = None
     force: bool = False
+
+
+class CanisterPowerRequest(BaseModel):
+    """Start or stop a project's canister."""
+
+    enabled: bool
 
 
 class ProjectDeployResponse(BaseModel):

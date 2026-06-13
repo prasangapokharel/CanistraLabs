@@ -9,18 +9,18 @@ Provides complete custom domain management including:
 - Status tracking and monitoring
 """
 
-from fastapi import APIRouter, HTTPException, Depends, status, Header
+from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel, validator
 from typing import Dict, Any, List, Optional, Annotated
 import re
 
+from app.api.deps import get_current_user_id
 from app.database.db import get_db
 from app.services.domainManagement import DomainManagementService
 from app.services.auth import AuthService
 from app.models.domain import CustomDomain
 from app.models.project import Project
-from app.utils.security import verify_token
 from sqlalchemy import select
 
 router = APIRouter(prefix="/api/v1/domains", tags=["Domain Management"])
@@ -66,36 +66,7 @@ class DomainStatusResponse(BaseModel):
     error: Optional[str] = None
 
 
-# Authentication dependencies
-async def get_bearer_token(authorization: Annotated[Optional[str], Header()] = None) -> str:
-    """Extract bearer token from Authorization header."""
-    if not authorization:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authorization header",
-        )
-
-    parts = authorization.split()
-    if len(parts) != 2 or parts[0].lower() != "bearer":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authorization header format",
-        )
-
-    return parts[1]
-
-
-async def get_current_user_id(
-    authorization: Annotated[str, Depends(get_bearer_token)],
-) -> int:
-    """Get current user ID from token."""
-    token_data = verify_token(authorization, token_type="access")
-    if not token_data:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-        )
-    return int(token_data.sub)
+# Authentication via app.api.deps.get_current_user_id
 
 
 @router.post("/projects/{project_id}/setup")
@@ -475,12 +446,20 @@ async def delete_custom_domain(
 
 # Utility endpoint for DNS instructions
 @router.get("/dns-instructions/{canister_id}")
-async def get_dns_instructions(canister_id: str, domain: str) -> Dict[str, Any]:
-    """
-    Get DNS configuration instructions for any domain and canister ID.
-    Useful for users setting up domains manually.
-    """
+async def get_dns_instructions(
+    canister_id: str,
+    domain: str,
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    session: Annotated[AsyncSession, Depends(get_db)],
+) -> Dict[str, Any]:
+    """Get DNS configuration instructions for a canister owned by the authenticated user."""
     try:
+        result = await session.execute(
+            select(Project).where(Project.canister_id == canister_id, Project.user_id == user_id)
+        )
+        if not result.scalar_one_or_none():
+            raise HTTPException(status_code=404, detail="Canister not found")
+
         domain_service = DomainManagementService()
         dns_config = domain_service._generate_dns_config(domain, canister_id)
         ic_domains_content = domain_service._generate_ic_domains_content(domain)

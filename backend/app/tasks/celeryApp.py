@@ -19,25 +19,10 @@ celery_app.conf.update(
     timezone="UTC",
     enable_utc=True,
     task_track_started=True,
-    task_time_limit=30 * 60,  # 30 minutes hard limit
-    task_soft_time_limit=25 * 60,  # 25 minutes soft limit
+    task_time_limit=30 * 60,
+    task_soft_time_limit=25 * 60,
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=1000,
-    result_expires=3600,  # Results expire after 1 hour
+    result_expires=3600,
+    include=["app.tasks.deployment", "app.tasks.cleanup"],
 )
-
-
-@celery_app.task(bind=True, max_retries=3)
-def deploy_canister(self, project_id: int, deployment_id: int) -> dict:
-    """Async task to deploy a canister to ICP."""
-    try:
-        # This will be implemented in Phase 10
-        return {
-            "status": "pending",
-            "project_id": project_id,
-            "deployment_id": deployment_id,
-            "message": "Deployment task queued",
-        }
-    except Exception as exc:
-        # Retry with exponential backoff
-        raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))

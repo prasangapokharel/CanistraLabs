@@ -33,7 +33,8 @@ class Canister(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"), nullable=False, index=True)
     canister_name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    principal_id: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
+    # One user principal owns many canisters — must not be unique
+    principal_id: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     canister_hash: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
     status: Mapped[str] = mapped_column(String(50), default=CanisterStatus.PENDING, nullable=False)
     cycles_balance: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)

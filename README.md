@@ -6,6 +6,58 @@ Host static sites (HTML, CSS, JavaScript) on the **Internet Computer** from a we
 
 ---
 
+## How it works
+
+Follow these steps to go from zero to a live site on ICP.
+
+### Step 1 — Install and start the stack
+
+1. Complete [First-time setup](#first-time-setup) below (database, backend, frontend).
+2. From the repo root, run:
+
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+3. Open the dashboard at **http://localhost:3000** and sign in.
+
+| Service | URL |
+|---------|-----|
+| Dashboard | http://localhost:3000 |
+| API | http://localhost:8000 |
+| Swagger docs | http://localhost:8000/docs |
+
+For local canister deploys, use `./start.sh --local-dfx` and set `DEPLOY_NETWORK=local` in `backend/.env`.
+
+### Step 2 — Fund your wallet
+
+1. Open **Wallet** in the sidebar.
+2. Copy your **Deposit address (Account ID)** or scan the QR code.
+3. For testnet development, get **TESTICP** from [faucet.internetcomputer.org](https://faucet.internetcomputer.org) (TESTICP tab).
+4. Click **Check deposits**, then convert ICP/TESTICP to **cycles** when ready to deploy.
+
+![Wallet — deposit address, QR code, and balance](docs/assets/progress/screenshot-1.png)
+
+### Step 3 — Check the dashboard
+
+After funding, the dashboard shows your project count, live deployments, and cycle balance. Create a project with **New project** or open an existing one from **Recent projects**.
+
+![Dashboard — projects overview and cycle balance](docs/assets/progress/screenshot-2.png)
+
+### Step 4 — Edit and publish to ICP
+
+1. Open a project in the **Project editor**.
+2. Edit `index.html`, `style.css`, and `script.js` in the browser (or upload a folder).
+3. Click **Save & Publish** to push files to your asset canister.
+4. Use **Visit site** to open the live `.icp0.io` URL.
+
+![Project editor — in-browser code editor and live ICP URL](docs/assets/progress/screenshot-3.png)
+
+**Production:** set `DEPLOY_NETWORK=ic` and `USE_TESTICP=false` in `backend/.env`, fund with real ICP, then follow the same wallet → publish flow. See [docs/deployment/PRODUCTION_CHECKLIST.md](docs/deployment/PRODUCTION_CHECKLIST.md).
+
+---
+
 ## Prerequisites
 
 | Tool | Purpose |
@@ -78,13 +130,9 @@ With local dfx replica (local canister deploys):
 ./start.sh --local-dfx
 ```
 
-| Service | URL |
-|---------|-----|
-| Dashboard | http://localhost:3000 |
-| API | http://localhost:8000 |
-| Swagger docs | http://localhost:8000/docs |
-
 Press **Ctrl+C** to stop backend and frontend.
+
+> **Tip:** See [How it works](#how-it-works) above for the full wallet → dashboard → publish walkthrough with screenshots.
 
 ---
 

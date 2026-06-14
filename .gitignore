@@ -175,3 +175,7 @@ identity.pem
 
 # Build info
 build-info/
+
+# Local tooling (not tracked)
+scripts/
+.cursor/

@@ -20,7 +20,7 @@ chmod +x start.sh
 ./start.sh
 ```
 
-3. Open the dashboard at **http://localhost:3000** and sign in.
+3. Open the dashboard at **http://localhost:3000**.
 
 | Service | URL |
 |---------|-----|
@@ -30,31 +30,54 @@ chmod +x start.sh
 
 For local canister deploys, use `./start.sh --local-dfx` and set `DEPLOY_NETWORK=local` in `backend/.env`.
 
-### Step 2 — Fund your wallet
+### Step 2 — Sign in or create an account
+
+1. Go to **http://localhost:3000/auth/login** to sign in with your email and password.
+2. Or open **Sign up** to create a new account (email, username, password).
+
+![Sign in — log in to the ICP hosting dashboard](docs/assets/progress/1/01-sign-in.png)
+
+![Sign up — create a new hosting account](docs/assets/progress/1/02-sign-up.png)
+
+### Step 3 — Open the dashboard
+
+After login you land on the **Dashboard**. It shows project count, live deployments, cycle balance, and recent projects. Use **New project** to start, or open a project from the list.
+
+![Dashboard — overview of projects and cycles on ICP](docs/assets/progress/1/03-dashboard.png)
+
+### Step 4 — Manage projects
+
+Open **Projects** in the sidebar to see every project. Each card shows status (Draft, Live, Paused), canister ID, and actions: **Visit**, **Metrics**, pause/resume, or delete.
+
+![Projects — list all sites with live/draft status](docs/assets/progress/1/04-projects.png)
+
+### Step 5 — Fund your wallet
 
 1. Open **Wallet** in the sidebar.
 2. Copy your **Deposit address (Account ID)** or scan the QR code.
-3. For testnet development, get **TESTICP** from [faucet.internetcomputer.org](https://faucet.internetcomputer.org) (TESTICP tab).
-4. Click **Check deposits**, then convert ICP/TESTICP to **cycles** when ready to deploy.
+3. Send ICP from an exchange or wallet (use Account ID, not Principal ID).
+4. Click **Refresh** to update your balance.
 
-![Wallet — deposit address, QR code, and balance](docs/assets/progress/screenshot-1.png)
+![Wallet — deposit address, QR code, and ICP balance](docs/assets/progress/1/05-wallet.png)
 
-### Step 3 — Check the dashboard
+### Step 6 — Convert ICP to cycles
 
-After funding, the dashboard shows your project count, live deployments, and cycle balance. Create a project with **New project** or open an existing one from **Recent projects**.
+1. Open **Convert** under Wallet (or **Convert to cycles →**).
+2. Check how many cycles you need for mainnet deploy (minimum ~600 BC).
+3. Click **Convert ICP to cycles**, then **Refresh balances**.
 
-![Dashboard — projects overview and cycle balance](docs/assets/progress/screenshot-2.png)
+![Convert — turn ICP into cycles for canister deploys](docs/assets/progress/1/06-convert-cycles.png)
 
-### Step 4 — Edit and publish to ICP
+### Step 7 — Edit and publish to ICP
 
 1. Open a project in the **Project editor**.
 2. Edit `index.html`, `style.css`, and `script.js` in the browser (or upload a folder).
-3. Click **Save & Publish** to push files to your asset canister.
-4. Use **Visit site** to open the live `.icp0.io` URL.
+3. Click **Save**, then **Publish** to push files to your asset canister.
+4. Use **Visit site** to open the live canister URL. Check **Deploy history** for status.
 
-![Project editor — in-browser code editor and live ICP URL](docs/assets/progress/screenshot-3.png)
+![Project editor — code editor, canister ID, and publish flow](docs/assets/progress/1/07-project-editor.png)
 
-**Production:** set `DEPLOY_NETWORK=ic` and `USE_TESTICP=false` in `backend/.env`, fund with real ICP, then follow the same wallet → publish flow. See [docs/deployment/PRODUCTION_CHECKLIST.md](docs/deployment/PRODUCTION_CHECKLIST.md).
+**Production:** set `DEPLOY_NETWORK=ic` and `USE_TESTICP=false` in `backend/.env`, fund with real ICP, convert to cycles, then publish. See [docs/deployment/PRODUCTION_CHECKLIST.md](docs/deployment/PRODUCTION_CHECKLIST.md).
 
 ---
 

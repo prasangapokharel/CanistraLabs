@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-export default function BillingRedirect() {
-  redirect('/dashboard');
+import { BillingView } from '@/components/dashboard/BillingView';
+
+export default function BillingPage() {
+  return <BillingView />;
 }

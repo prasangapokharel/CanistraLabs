@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-export default function DomainsRedirect() {
-  redirect('/dashboard');
+import { UserDomainsView } from '@/components/dashboard/UserDomainsView';
+
+export default function DomainsPage() {
+  return <UserDomainsView />;
 }

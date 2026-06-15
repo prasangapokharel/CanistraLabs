@@ -9,10 +9,19 @@ const titles: Record<string, string> = {
   '/dashboard/projects': 'Projects',
   '/dashboard/projects/new': 'New project',
   '/dashboard/wallet': 'Wallet',
+  '/dashboard/wallet/convert': 'Convert cycles',
+  '/dashboard/canisters': 'Canisters',
+  '/dashboard/domains': 'Domains',
+  '/dashboard/analytics': 'Analytics',
+  '/dashboard/billing': 'Billing',
+  '/dashboard/settings': 'Settings',
+  '/dashboard/profile': 'Profile',
+  '/dashboard/notifications': 'Activity',
 };
 
 function titleFromPath(pathname: string): string {
   if (titles[pathname]) return titles[pathname];
+  if (pathname.match(/^\/dashboard\/projects\/[^/]+\/metrics$/)) return 'Metrics';
   if (pathname.match(/^\/dashboard\/projects\/[^/]+$/)) return 'Project editor';
   return 'Canistra';
 }

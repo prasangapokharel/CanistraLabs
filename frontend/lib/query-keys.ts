@@ -72,4 +72,14 @@ export const queryKeys = {
         ? [...queryKeys.analytics.all, 'stats', projectId]
         : [...queryKeys.analytics.all, 'stats'] as const,
   },
+
+  dfx: {
+    all: ['dfx'] as const,
+    commands: () => [...queryKeys.dfx.all, 'commands'] as const,
+    ping: (network: string) => [...queryKeys.dfx.all, 'ping', network] as const,
+    canisterStatus: (canisterId: string) =>
+      [...queryKeys.dfx.all, 'canisterStatus', canisterId] as const,
+    canisterUrl: (canisterId: string) =>
+      [...queryKeys.dfx.all, 'canisterUrl', canisterId] as const,
+  },
 } as const;

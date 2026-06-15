@@ -35,7 +35,7 @@ export function CTA() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
             <Link 
-              href="/signup" 
+              href="/auth/signup" 
               className="group inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-lg font-medium text-black transition-all hover:bg-white/90 hover:scale-105"
             >
               Get Started Free
@@ -43,7 +43,7 @@ export function CTA() {
             </Link>
             
             <Link 
-              href="/contact" 
+              href="/help" 
               className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 text-lg font-medium text-white transition-all hover:bg-white/10 hover:border-white/20"
             >
               Contact Sales

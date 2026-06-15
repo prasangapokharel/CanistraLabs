@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-export default function AnalyticsRedirect() {
-  redirect('/dashboard');
+import { AnalyticsOverview } from '@/components/dashboard/AnalyticsOverview';
+
+export default function AnalyticsPage() {
+  return <AnalyticsOverview />;
 }

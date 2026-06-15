@@ -1,9 +1,8 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { apiClient } from '@/lib/apiClient';
-import { deployApi } from '@/lib/api';
-import type { CanisterStatus, DeploymentPayload } from '@/types/api';
+import { deployApi, dfxApi } from '@/lib/api';
+import type { DeploymentPayload } from '@/types/api';
 
 interface Deployment {
   id: number | string;
@@ -20,6 +19,8 @@ export function useDeployments(projectId: string) {
     queryFn: () => deployApi.getDeploymentHistory(Number(projectId)),
     staleTime: 3 * 60 * 1000,
     enabled: !!projectId,
+    retry: false,
+    throwOnError: false,
   });
 }
 
@@ -35,8 +36,7 @@ export function useDeployment(projectId: string, deploymentId: string) {
 export function useCanisterStatus(canisterId: string) {
   return useQuery({
     queryKey: ['canisterStatus', canisterId],
-    queryFn: () =>
-      apiClient.get<CanisterStatus>(`/api/v1/deployments/canisters/${canisterId}/status`),
+    queryFn: () => dfxApi.getCanisterStatus(canisterId),
     staleTime: 30_000,
     enabled: !!canisterId,
   });

@@ -65,3 +65,20 @@ From the repo root:
 ```
 
 Requires `dfx` on `PATH`. Destructive commands (deploy, delete, etc.) only record `--help`; read-only commands also include a live **RESPONSE** section where safe.
+
+## HTTP API (backend)
+
+The FastAPI backend exposes dfx operations at **`/api/v1/dfx`**:
+
+| Endpoint | dfx equivalent |
+|----------|----------------|
+| `GET /api/v1/dfx/commands` | Command catalog (implemented vs pending) |
+| `GET /api/v1/dfx/ping` | `dfx ping ic` |
+| `POST /api/v1/dfx/projects/{id}/deploy` | Official asset deploy (ICPService) |
+| `POST /api/v1/dfx/canister/{id}/start` | `dfx canister start` |
+| `POST /api/v1/dfx/canister/{id}/stop` | `dfx canister stop` |
+| `DELETE /api/v1/dfx/canister/{id}` | `dfx canister delete --yes` |
+
+Full list: open **http://localhost:8000/docs** (debug mode) or `GET /api/v1/dfx/commands`.
+
+Tests: `cd backend && pytest tests/test_dfx_api.py tests/test_dfx_api_service.py`

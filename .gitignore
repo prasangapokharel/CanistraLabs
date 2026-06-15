@@ -179,3 +179,7 @@ build-info/
 # Local tooling (not tracked)
 scripts/
 .cursor/
+*.pytest_cache
+*.ruff_cache
+*.agents
+*.venv

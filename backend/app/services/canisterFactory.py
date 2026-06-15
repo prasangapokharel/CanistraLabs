@@ -343,10 +343,24 @@ class CanisterFactory:
             ICPIdentityManager.switch_to_user_identity(user)
             await CanisterFactory._ensure_cycles_for_deploy(session, user)
 
+            old_canister_id = project.canister_id
             result = ICPService.update_canister(
                 canister_id=project.canister_id,
                 code_content=html_content,
             )
+
+            new_canister_id = result.get("canister_id")
+            replaced_stale = bool(
+                new_canister_id and new_canister_id != old_canister_id
+            )
+            if replaced_stale:
+                logger.info(
+                    "Replacing stale canister %s with %s for project %s",
+                    old_canister_id,
+                    new_canister_id,
+                    project.id,
+                )
+                project.canister_id = new_canister_id
 
             if result.get("url"):
                 project.url = result["url"]
@@ -362,6 +376,7 @@ class CanisterFactory:
                 "url": project.url,
                 "status": result.get("status", "updated"),
                 "updated_at": datetime.utcnow().isoformat(),
+                "replaced_stale_canister": replaced_stale,
             }
 
         except ICPError as e:
@@ -384,14 +399,20 @@ class CanisterFactory:
         if user and user.dfx_identity_name:
             ICPIdentityManager.switch_to_user_identity(user)
 
-        if enabled:
-            ICPService.start_canister(project.canister_id)
-            project.status = ProjectStatus.ACTIVE.value
-            icp_status = "running"
-        else:
-            ICPService.stop_canister(project.canister_id)
-            project.status = ProjectStatus.PAUSED.value
-            icp_status = "stopped"
+        try:
+            if enabled:
+                ICPService.start_canister(project.canister_id)
+                project.status = ProjectStatus.ACTIVE.value
+                icp_status = "running"
+            else:
+                ICPService.stop_canister(project.canister_id)
+                project.status = ProjectStatus.PAUSED.value
+                icp_status = "stopped"
+        except ICPError as e:
+            from app.utils.dfxErrors import parse_dfx_error
+
+            parsed = parse_dfx_error(str(e))
+            raise ICPError(parsed.get("message", str(e))) from e
 
         stmt = select(Canister).where(Canister.project_id == project.id)
         db_result = await session.execute(stmt)

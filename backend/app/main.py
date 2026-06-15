@@ -1,6 +1,8 @@
 """FastAPI application factory."""
 
 import logging
+import threading
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,19 +11,35 @@ from fastapi.responses import JSONResponse
 from app.api.v1 import (
     auth,
     projects,
-    deployments,
     wallet,
-    cleanDfx,
-    dynamicDeployment,
     domainManagement,
     metrics,
     cron,
+    dfxApi,
 )
 from app.config import settings
 from app.middleware.security import SecurityHeadersMiddleware
 from app.utils.http_errors import safe_error_detail
 
 logger = logging.getLogger(__name__)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Application startup — ensure local dfx replica when configured (non-blocking)."""
+
+    def _start_dfx_background() -> None:
+        from app.services.dfxLifecycle import ensure_local_replica
+
+        try:
+            status = ensure_local_replica()
+            logger.info("dfx lifecycle: %s", status)
+        except Exception as exc:
+            logger.warning("dfx lifecycle failed: %s", exc)
+
+    if settings.dfx_auto_start:
+        threading.Thread(target=_start_dfx_background, daemon=True).start()
+    yield
 
 
 def create_app() -> FastAPI:
@@ -35,6 +53,7 @@ def create_app() -> FastAPI:
         docs_url="/docs" if settings.debug else None,
         redoc_url="/redoc" if settings.debug else None,
         redirect_slashes=False,
+        lifespan=lifespan,
     )
 
     app.add_middleware(SecurityHeadersMiddleware)
@@ -61,12 +80,17 @@ def create_app() -> FastAPI:
     @app.get("/health", tags=["Health"])
     async def health_check():
         """Health check endpoint."""
+        from app.services.dfxLifecycle import is_local_replica_running
+
         return {
             "status": "healthy",
             "app_name": settings.app_name,
             "version": settings.app_version,
             "environment": settings.environment,
             "network": settings.icp_network,
+            "deploy_network": settings.effective_deploy_network,
+            "dfx_local_replica": is_local_replica_running(),
+            "dfx_auto_start": settings.dfx_auto_start,
         }
 
     @app.get("/api/v1", tags=["Info"])
@@ -81,13 +105,11 @@ def create_app() -> FastAPI:
 
     app.include_router(auth.router)
     app.include_router(projects.router)
-    app.include_router(deployments.router)
     app.include_router(wallet.router)
-    app.include_router(cleanDfx.router)
-    app.include_router(dynamicDeployment.router)
     app.include_router(domainManagement.router)
     app.include_router(metrics.router)
     app.include_router(cron.router)
+    app.include_router(dfxApi.router)
 
     return app
 

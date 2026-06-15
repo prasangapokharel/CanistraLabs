@@ -65,7 +65,7 @@ def main() -> int:
     # Deploy underfunded → pending_funding with structured fields
     code, data = req(
         "POST",
-        "/api/v1/deployments/projects/1/deploy",
+        f"/api/v1/dfx/projects/1/deploy",
         token=token,
         body={"code_content": "<html><body>scenario test</body></html>"},
     )
@@ -81,7 +81,7 @@ def main() -> int:
     # Canister power on local-id project (project 6 = umwsh / m74gv...)
     code, data = req(
         "POST",
-        "/api/v1/deployments/projects/6/canister/power",
+        f"/api/v1/dfx/projects/6/power",
         token=token,
         body={"enabled": False},
     )

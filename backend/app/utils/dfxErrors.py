@@ -55,6 +55,16 @@ def parse_dfx_error(raw: str) -> Dict[str, Any]:
             "action": "Check dfx is running and your network settings.",
         }
 
+    if "trying to connect to the local replica" in lower or "local replica" in lower:
+        return {
+            "error_code": "local_replica_down",
+            "message": (
+                "This canister was deployed locally but the dfx replica is not running. "
+                "Run `dfx start --background`, or publish again to deploy on IC mainnet."
+            ),
+            "action": "Start dfx locally or republish for a mainnet canister.",
+        }
+
     # Strip noisy stack traces for display; keep first meaningful line
     first_line = next((ln.strip() for ln in text.splitlines() if ln.strip()), text)
     return {

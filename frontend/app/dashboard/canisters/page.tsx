@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+'use client';
 
-export default function CanistersRedirect() {
-  redirect('/dashboard/projects');
+import { CanistersView } from '@/components/dashboard/CanistersView';
+
+export default function CanistersPage() {
+  return <CanistersView />;
 }

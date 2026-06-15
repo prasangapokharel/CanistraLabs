@@ -12,17 +12,17 @@ export function Footer() {
       links: [
         { label: "Features", href: "/features" },
         { label: "Pricing", href: "/pricing" },
-        { label: "Documentation", href: "/docs" },
-        { label: "Changelog", href: "/changelog" },
+        { label: "Documentation", href: "/help" },
+        { label: "Changelog", href: "/about" },
       ]
     },
     {
       title: "Resources",
       links: [
-        { label: "Blog", href: "/blog" },
-        { label: "Community", href: "/community" },
+        { label: "Blog", href: "/about" },
+        { label: "Community", href: "https://forum.dfinity.org" },
         { label: "Help Center", href: "/help" },
-        { label: "Status", href: "/status" },
+        { label: "Status", href: "https://status.internetcomputer.org" },
       ]
     },
     {
@@ -30,7 +30,7 @@ export function Footer() {
       links: [
         { label: "Privacy Policy", href: "/privacy" },
         { label: "Terms of Service", href: "/terms" },
-        { label: "Cookie Policy", href: "/cookies" },
+        { label: "Cookie Policy", href: "/privacy" },
       ]
     }
   ];

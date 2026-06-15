@@ -85,6 +85,7 @@ class Settings(BaseSettings):
     async_deploy_enabled: bool = True
     deployment_timeout_seconds: int = 300
     max_deployment_retries: int = 3
+    dfx_auto_start: bool = True
 
     @field_validator("environment")
     @classmethod

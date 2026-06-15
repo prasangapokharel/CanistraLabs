@@ -77,7 +77,7 @@ async def test_deploy_project_creates_new_canister(
         }
 
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={"code_content": 'actor { public func test() : async Text { return "test"; } }'},
             headers={"Authorization": f"Bearer {valid_token}"},
         )
@@ -112,7 +112,7 @@ async def test_deploy_project_updates_existing_canister(
         }
 
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={
                 "code_content": 'actor { public func updated() : async Text { return "updated"; } }'
             },
@@ -129,7 +129,7 @@ async def test_deploy_project_updates_existing_canister(
 async def test_deploy_project_without_authorization(client, test_project):
     """Test deploying without authorization returns 401."""
     response = await client.post(
-        f"/api/v1/deployments/projects/{test_project.id}/deploy",
+        f"/api/v1/dfx/projects/{test_project.id}/deploy",
         json={"code_content": "actor { }"},
     )
 
@@ -141,7 +141,7 @@ async def test_deploy_project_without_authorization(client, test_project):
 async def test_deploy_project_invalid_token(client, test_project):
     """Test deploying with invalid token returns 401."""
     response = await client.post(
-        f"/api/v1/deployments/projects/{test_project.id}/deploy",
+        f"/api/v1/dfx/projects/{test_project.id}/deploy",
         json={"code_content": "actor { }"},
         headers={"Authorization": "Bearer invalid-token"},
     )
@@ -153,7 +153,7 @@ async def test_deploy_project_invalid_token(client, test_project):
 async def test_deploy_nonexistent_project(client, async_session_maker, test_user, valid_token):
     """Test deploying nonexistent project returns 404."""
     response = await client.post(
-        "/api/v1/deployments/projects/9999/deploy",
+        "/api/v1/dfx/projects/9999/deploy",
         json={"code_content": "actor { }"},
         headers={"Authorization": f"Bearer {valid_token}"},
     )
@@ -187,7 +187,7 @@ async def test_deploy_project_not_owned(client, async_session_maker, valid_token
         project_id = other_project.id
 
     response = await client.post(
-        f"/api/v1/deployments/projects/{project_id}/deploy",
+        f"/api/v1/dfx/projects/{project_id}/deploy",
         json={"code_content": "actor { }"},
         headers={"Authorization": f"Bearer {valid_token}"},
     )
@@ -204,7 +204,7 @@ async def test_deploy_handles_canister_creation_error(
         mock_deploy.side_effect = CanisterCreationException("Failed to deploy")
 
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={"code_content": "actor { }"},
             headers={"Authorization": f"Bearer {valid_token}"},
         )
@@ -230,7 +230,7 @@ async def test_get_deployment_status(
         deployment_id = deployment.id
 
     response = await client.get(
-        f"/api/v1/deployments/projects/{test_project.id}/deployments/{deployment_id}",
+        f"/api/v1/dfx/projects/{test_project.id}/deployments/{deployment_id}",
         headers={"Authorization": f"Bearer {valid_token}"},
     )
 
@@ -245,7 +245,7 @@ async def test_get_deployment_status(
 async def test_get_deployment_status_not_found(client, test_user, test_project, valid_token):
     """Test getting nonexistent deployment returns 404."""
     response = await client.get(
-        f"/api/v1/deployments/projects/{test_project.id}/deployments/9999",
+        f"/api/v1/dfx/projects/{test_project.id}/deployments/9999",
         headers={"Authorization": f"Bearer {valid_token}"},
     )
 
@@ -278,7 +278,7 @@ async def test_get_deployment_status_wrong_project(
         deployment_id = deployment.id
 
     response = await client.get(
-        f"/api/v1/deployments/projects/{test_project.id}/deployments/{deployment_id}",
+        f"/api/v1/dfx/projects/{test_project.id}/deployments/{deployment_id}",
         headers={"Authorization": f"Bearer {valid_token}"},
     )
 
@@ -302,7 +302,7 @@ async def test_list_deployments(client, async_session_maker, test_user, test_pro
         await session.commit()
 
     response = await client.get(
-        f"/api/v1/deployments/projects/{test_project.id}/deployments",
+        f"/api/v1/dfx/projects/{test_project.id}/deployments",
         headers={"Authorization": f"Bearer {valid_token}"},
     )
 
@@ -332,7 +332,7 @@ async def test_list_deployments_pagination(
 
     # Test default limit
     response = await client.get(
-        f"/api/v1/deployments/projects/{test_project.id}/deployments",
+        f"/api/v1/dfx/projects/{test_project.id}/deployments",
         headers={"Authorization": f"Bearer {valid_token}"},
     )
 
@@ -355,7 +355,7 @@ async def test_get_canister_status(
         }
 
         response = await client.get(
-            "/api/v1/deployments/canisters/test-canister-123/status",
+            "/api/v1/dfx/canister/test-canister-123/status",
             headers={"Authorization": f"Bearer {valid_token}"},
         )
 
@@ -396,7 +396,7 @@ async def test_get_canister_status_fallback_to_db(
         mock_status.side_effect = ICPError("ICP service unavailable")
 
         response = await client.get(
-            "/api/v1/deployments/canisters/cached-canister-123/status",
+            "/api/v1/dfx/canister/cached-canister-123/status",
             headers={"Authorization": f"Bearer {valid_token}"},
         )
 
@@ -421,7 +421,7 @@ async def test_deployment_records_status_progression(
         }
 
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={"code_content": "actor { }"},
             headers={"Authorization": f"Bearer {valid_token}"},
         )
@@ -447,7 +447,7 @@ async def test_deployment_error_handling(
         mock_deploy.side_effect = CanisterDeploymentException(error_message)
 
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={"code_content": "actor { }"},
             headers={"Authorization": f"Bearer {valid_token}"},
         )
@@ -480,7 +480,7 @@ async def test_deploy_uses_project_code_content_if_not_provided(
 
         # Deploy without providing code_content
         response = await client.post(
-            f"/api/v1/deployments/projects/{test_project.id}/deploy",
+            f"/api/v1/dfx/projects/{test_project.id}/deploy",
             json={},
             headers={"Authorization": f"Bearer {valid_token}"},
         )
@@ -496,7 +496,7 @@ async def test_deploy_uses_project_code_content_if_not_provided(
 async def test_deployment_missing_authorization_header(client, test_project):
     """Test deployment without authorization header returns 401."""
     response = await client.post(
-        f"/api/v1/deployments/projects/{test_project.id}/deploy",
+        f"/api/v1/dfx/projects/{test_project.id}/deploy",
         json={"code_content": "actor { }"},
     )
 
@@ -508,7 +508,7 @@ async def test_deployment_missing_authorization_header(client, test_project):
 async def test_deployment_malformed_authorization_header(client, test_project):
     """Test deployment with malformed authorization header returns 401."""
     response = await client.post(
-        f"/api/v1/deployments/projects/{test_project.id}/deploy",
+        f"/api/v1/dfx/projects/{test_project.id}/deploy",
         json={"code_content": "actor { }"},
         headers={"Authorization": "InvalidFormat"},
     )

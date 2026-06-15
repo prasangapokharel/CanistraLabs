@@ -6,8 +6,9 @@ import { Copy, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { analyticsApi } from '@/lib/api';
+import { analyticsApi, dfxApi } from '@/lib/api';
 import { useDeployments } from '@/hooks/api/useDeployments';
+import { statusBadgeLabel } from '@/lib/deploy-status';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
@@ -41,6 +42,8 @@ export function ProjectDeployPanel({ projectId, canisterId }: ProjectDeployPanel
   const {
     data: deployments,
     isLoading: historyLoading,
+    isError: historyError,
+    isFetched: historyFetched,
     refetch: refetchHistory,
   } = useDeployments(projectId);
 
@@ -53,6 +56,13 @@ export function ProjectDeployPanel({ projectId, canisterId }: ProjectDeployPanel
     queryFn: () => analyticsApi.getMetrics(Number(projectId)),
     enabled: !!canisterId,
     refetchInterval: 60_000,
+  });
+
+  const { data: liveUrl } = useQuery({
+    queryKey: ['dfx-canister-url', canisterId],
+    queryFn: () => dfxApi.getCanisterUrl(canisterId!),
+    enabled: !!canisterId,
+    staleTime: 60_000,
   });
 
   const metrics = metricsRes?.metrics as
@@ -108,6 +118,18 @@ export function ProjectDeployPanel({ projectId, canisterId }: ProjectDeployPanel
             </div>
             <div className="flex gap-4 sm:justify-end">
               <div>
+                <p className="text-xs text-muted-foreground">Live URL</p>
+                <p className="max-w-[140px] truncate text-xs font-medium" title={liveUrl ?? undefined}>
+                  {liveUrl ? (
+                    <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {liveUrl.replace(/^https?:\/\//, '')}
+                    </a>
+                  ) : (
+                    '—'
+                  )}
+                </p>
+              </div>
+              <div>
                 <p className="text-xs text-muted-foreground">Cycles left</p>
                 <p className="font-medium tabular-nums">
                   {metricsLoading ? '…' : (metrics?.cycles_formatted ?? '—')}
@@ -131,15 +153,17 @@ export function ProjectDeployPanel({ projectId, canisterId }: ProjectDeployPanel
 
         <div>
           <p className="mb-1.5 text-xs font-medium text-muted-foreground">Deploy history</p>
-          {historyLoading ? (
+          {historyLoading && !historyFetched ? (
             <p className="text-xs text-muted-foreground">Loading…</p>
+          ) : historyError ? (
+            <p className="text-xs text-muted-foreground">Deploy history unavailable.</p>
           ) : recent.length === 0 ? (
             <p className="text-xs text-muted-foreground">No deploys yet.</p>
           ) : (
             <ul className="space-y-1">
               {recent.map((d) => (
                 <li
-                  key={d.id}
+                  key={d.deployment_id ?? d.id}
                   className="flex items-center justify-between gap-2 rounded-md border bg-muted/20 px-2 py-1.5"
                 >
                   <div className="min-w-0 flex-1">
@@ -149,7 +173,7 @@ export function ProjectDeployPanel({ projectId, canisterId }: ProjectDeployPanel
                     </p>
                   </div>
                   <Badge variant={statusVariant(d.status)} className="shrink-0 text-[10px]">
-                    {d.status}
+                    {statusBadgeLabel(d.status)}
                   </Badge>
                 </li>
               ))}

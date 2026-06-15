@@ -41,13 +41,19 @@ class DfxCommand:
         dfxPath = Path.home() / ".local" / "bin" / "dfx"
         return str(dfxPath) if dfxPath.exists() else "dfx"
 
-    def _runCommand(self, args: List[str], identity: Optional[str] = None) -> Tuple[int, str, str]:
+    def _runCommand(
+        self,
+        args: List[str],
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Tuple[int, str, str]:
         """
         Execute dfx command with proper environment.
 
         Args:
             args: dfx command arguments
             identity: optional identity to use
+            network: optional network override (ic, local)
 
         Returns:
             (returncode, stdout, stderr)
@@ -59,7 +65,7 @@ class DfxCommand:
         env = os.environ.copy()
         env["PATH"] = f"{Path.home() / '.local' / 'bin'}:{env.get('PATH', '')}"
         env["DFX_WARNING"] = "-mainnet_plaintext_identity"
-        env["DFX_NETWORK"] = self.network
+        env["DFX_NETWORK"] = network or self.network
         if self.ledger_canister_id:
             env["DFX_LEDGER_CANISTER_ID"] = self.ledger_canister_id
 
@@ -71,6 +77,28 @@ class DfxCommand:
         except Exception as e:
             logger.error(f"Command failed: {e}")
             return 1, "", str(e)
+
+    def _networkFlag(self, network: Optional[str] = None) -> List[str]:
+        return ["--network", network or self.network]
+
+    def _result(
+        self,
+        returncode: int,
+        stdout: str,
+        stderr: str,
+        **extra: Any,
+    ) -> Dict[str, Any]:
+        output = stdout.strip() if returncode == 0 else (stderr.strip() or stdout.strip())
+        result: Dict[str, Any] = {
+            "success": returncode == 0,
+            "output": output,
+            "stdout": stdout.strip(),
+            "stderr": stderr.strip(),
+            **extra,
+        }
+        if returncode != 0:
+            result["error"] = output
+        return result
 
     # =========================
     # IDENTITY COMMANDS
@@ -382,9 +410,10 @@ class DfxCommand:
         name: Optional[str] = None,
         withCycles: Optional[str] = None,
         identity: Optional[str] = None,
+        network: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Create canister: dfx canister create [name] [--with-cycles amount]"""
-        cmd = ["canister", "create", "--network", self.network]
+        cmd = ["canister", "create", *self._networkFlag(network)]
 
         if name:
             cmd.append(name)
@@ -394,65 +423,158 @@ class DfxCommand:
         if withCycles:
             cmd.extend(["--with-cycles", withCycles])
 
-        returncode, stdout, stderr = self._runCommand(cmd, identity)
-
-        result = {"success": returncode == 0}
+        returncode, stdout, stderr = self._runCommand(cmd, identity, network)
+        result = self._result(returncode, stdout, stderr, name=name)
 
         if returncode == 0:
-            canisterId = self._extractCanisterId(stdout + stderr)
-            result.update({"canisterId": canisterId, "name": name, "output": stdout.strip()})
-        else:
-            result["error"] = stderr
+            result["canisterId"] = self._extractCanisterId(stdout + stderr)
 
         return result
 
-    def canisterGetStatus(self, canisterId: str, identity: Optional[str] = None) -> Dict[str, Any]:
+    def canisterGetStatus(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
         """Get canister status: dfx canister status <canister_id>"""
         returncode, stdout, stderr = self._runCommand(
-            ["canister", "status", canisterId, "--network", self.network], identity
+            ["canister", "status", canisterId, *self._networkFlag(network)],
+            identity,
+            network,
         )
-
-        result = {"success": returncode == 0, "canisterId": canisterId}
+        result = self._result(returncode, stdout, stderr, canisterId=canisterId)
 
         if returncode == 0:
-            status = self._parseCanisterStatus(stdout)
-            result.update({"status": status, "output": stdout.strip()})
-        else:
-            result["error"] = stderr
+            result["status"] = self._parseCanisterStatus(stdout)
 
         return result
 
-    def canisterDelete(self, canisterId: str, identity: Optional[str] = None) -> Dict[str, Any]:
-        """Delete canister: dfx canister delete <canister_id>"""
+    def canisterStart(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Start canister: dfx canister start <canister_id>"""
         returncode, stdout, stderr = self._runCommand(
-            ["canister", "delete", canisterId, "--network", self.network], identity
+            ["canister", "start", canisterId, *self._networkFlag(network)],
+            identity,
+            network,
         )
+        return self._result(returncode, stdout, stderr, canisterId=canisterId)
 
-        return {
-            "success": returncode == 0,
-            "canisterId": canisterId,
-            "output": stdout.strip() if returncode == 0 else stderr,
-        }
+    def canisterStop(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Stop canister: dfx canister stop <canister_id>"""
+        returncode, stdout, stderr = self._runCommand(
+            ["canister", "stop", canisterId, *self._networkFlag(network)],
+            identity,
+            network,
+        )
+        return self._result(returncode, stdout, stderr, canisterId=canisterId)
+
+    def canisterDelete(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Delete canister: dfx canister delete <canister_id> --yes"""
+        returncode, stdout, stderr = self._runCommand(
+            ["canister", "delete", canisterId, *self._networkFlag(network), "--yes"],
+            identity,
+            network,
+        )
+        return self._result(returncode, stdout, stderr, canisterId=canisterId)
+
+    def canisterInfo(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Get canister info: dfx canister info <canister_id>"""
+        returncode, stdout, stderr = self._runCommand(
+            ["canister", "info", canisterId, *self._networkFlag(network)],
+            identity,
+            network,
+        )
+        return self._result(returncode, stdout, stderr, canisterId=canisterId)
+
+    def canisterUrl(
+        self,
+        canisterId: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Get canister URL: dfx canister url <canister_id>"""
+        returncode, stdout, stderr = self._runCommand(
+            ["canister", "url", canisterId, *self._networkFlag(network)],
+            identity,
+            network,
+        )
+        result = self._result(returncode, stdout, stderr, canisterId=canisterId)
+        if returncode == 0:
+            result["url"] = stdout.strip()
+        return result
+
+    def canisterDepositCycles(
+        self,
+        canisterId: str,
+        amount: str,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Deposit cycles: dfx canister deposit-cycles <canister_id> <amount>"""
+        returncode, stdout, stderr = self._runCommand(
+            [
+                "canister",
+                "deposit-cycles",
+                canisterId,
+                amount,
+                *self._networkFlag(network),
+            ],
+            identity,
+            network,
+        )
+        return self._result(
+            returncode, stdout, stderr, canisterId=canisterId, amount=amount
+        )
 
     def canisterDeploy(
-        self, name: Optional[str] = None, identity: Optional[str] = None
+        self,
+        name: Optional[str] = None,
+        identity: Optional[str] = None,
+        network: Optional[str] = None,
+        withCycles: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Deploy canister: dfx deploy [name]"""
-        cmd = ["deploy", "--network", self.network]
-
+        """Deploy canister: dfx deploy [name] --yes"""
+        cmd = ["deploy", *self._networkFlag(network), "--yes"]
         if name:
             cmd.append(name)
+        if withCycles:
+            cmd.extend(["--with-cycles", withCycles])
 
-        returncode, stdout, stderr = self._runCommand(cmd, identity)
-
-        result = {"success": returncode == 0}
-
+        returncode, stdout, stderr = self._runCommand(cmd, identity, network)
+        result = self._result(returncode, stdout, stderr, name=name)
         if returncode == 0:
-            result.update({"output": stdout.strip()})
-        else:
-            result["error"] = stderr
-
+            result["canisterId"] = self._extractCanisterId(stdout + stderr)
         return result
+
+    def ping(self, network: str = "ic") -> Dict[str, Any]:
+        """Ping network: dfx ping [network]"""
+        returncode, stdout, stderr = self._runCommand(["ping", network])
+        return self._result(returncode, stdout, stderr, network=network)
+
+    def infoCommand(self, subcommand: str) -> Dict[str, Any]:
+        """Run dfx info <subcommand> (read-only)."""
+        returncode, stdout, stderr = self._runCommand(["info", subcommand])
+        return self._result(returncode, stdout, stderr, subcommand=subcommand)
 
     # =========================
     # UTILITY FUNCTIONS

@@ -18,10 +18,10 @@ export function Header() {
   }, []);
 
   const navLinks = [
-    { href: '/features', label: 'Features' },
-    { href: '/pricing', label: 'Pricing' },
-    { href: '/docs', label: 'Documentation' },
-    { href: '/blog', label: 'Blog' },
+    { href: '/about', label: 'Features' },
+    { href: '/about', label: 'Pricing' },
+    { href: '/help', label: 'Documentation' },
+    { href: '/about', label: 'Blog' },
   ];
 
   return (
@@ -69,13 +69,13 @@ export function Header() {
                 <Github className="w-5 h-5" />
               </Link>
               <Link
-                href="/login"
+                href="/auth/login"
                 className="text-sm font-medium text-white hover:text-white/80 transition-colors"
               >
                 Sign In
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 className="group inline-flex h-9 items-center justify-center gap-2 rounded-full bg-white px-4 text-sm font-medium text-black transition-colors hover:bg-white/90"
               >
                 Get Started
@@ -116,14 +116,14 @@ export function Header() {
               ))}
               <div className="h-px w-full bg-white/10 my-4" />
               <Link
-                href="/login"
+                href="/auth/login"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-lg font-medium text-white/80 hover:text-white"
               >
                 Sign In
               </Link>
               <Link
-                href="/signup"
+                href="/auth/signup"
                 onClick={() => setIsMenuOpen(false)}
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-lg font-medium text-black transition-colors hover:bg-white/90"
               >

@@ -30,7 +30,10 @@ export function ProjectPowerToggle({
         description: next ? 'Site is live again.' : 'Site offline — lower idle compute use.',
       });
     },
-    onError: (err) => toast.error(formatDeployError(err)),
+    onError: (err) => {
+      const msg = formatDeployError(err);
+      toast.error('Power change failed', { description: msg });
+    },
   });
 
   if (!canisterId) return null;

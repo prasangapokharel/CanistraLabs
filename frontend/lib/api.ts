@@ -13,10 +13,22 @@ import type {
   DeployResult,
   DeploymentRecord,
   Domain,
+  DfxCommandCatalog,
+  DfxConvertBody,
+  DfxCyclesTopUpBody,
+  DfxDepositCyclesBody,
   FundingInstructions,
   Project,
   WalletIdentity,
 } from '@/types/api';
+import {
+  normalizeCanisterStatus,
+  normalizeConvertResult,
+  normalizeDfxDeploy,
+  normalizePowerResult,
+  unwrapDfxUrl,
+  type DfxWrappedResponse,
+} from '@/lib/dfx/normalize';
 
 // ---------------------------------------------------------------------------
 // Response normalizers
@@ -100,51 +112,128 @@ export const projectsApi = {
 };
 
 // ---------------------------------------------------------------------------
+// DFX commands — /api/v1/dfx (maps to official dfx CLI)
+// ---------------------------------------------------------------------------
+
+export const dfxApi = {
+  getCommands: () => apiClient.get<DfxCommandCatalog>('/api/v1/dfx/commands'),
+
+  getVersion: () =>
+    apiClient.get<{ command: string; success: boolean; version: string }>('/api/v1/dfx/version'),
+
+  ping: (network = 'ic') =>
+    apiClient.get<DfxWrappedResponse>(`/api/v1/dfx/ping`, { params: { network } }),
+
+  getIdentityPrincipal: () =>
+    apiClient.get<DfxWrappedResponse>('/api/v1/dfx/identity/principal'),
+
+  getLedgerBalance: () =>
+    apiClient.get<DfxWrappedResponse>('/api/v1/dfx/ledger/balance'),
+
+  getCyclesBalance: () =>
+    apiClient.get<DfxWrappedResponse>('/api/v1/dfx/cycles/balance'),
+
+  convertCycles: (body?: DfxConvertBody) =>
+    apiClient
+      .post<DfxWrappedResponse>('/api/v1/dfx/cycles/convert', body ?? {})
+      .then(normalizeConvertResult),
+
+  topUpCycles: (body: DfxCyclesTopUpBody) =>
+    apiClient.post<DfxWrappedResponse>('/api/v1/dfx/cycles/top-up', body),
+
+  getCanisterStatus: (canisterId: string) =>
+    apiClient
+      .get<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}/status`)
+      .then(normalizeCanisterStatus),
+
+  getCanisterInfo: (canisterId: string) =>
+    apiClient.get<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}/info`),
+
+  getCanisterUrl: (canisterId: string) =>
+    apiClient
+      .get<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}/url`)
+      .then(unwrapDfxUrl),
+
+  startCanister: (canisterId: string) =>
+    apiClient.post<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}/start`, {}),
+
+  stopCanister: (canisterId: string) =>
+    apiClient.post<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}/stop`, {}),
+
+  deleteCanister: (canisterId: string) =>
+    apiClient.delete<DfxWrappedResponse>(`/api/v1/dfx/canister/${canisterId}`),
+
+  depositCycles: (canisterId: string, body: DfxDepositCyclesBody) =>
+    apiClient.post<DfxWrappedResponse>(
+      `/api/v1/dfx/canister/${canisterId}/deposit-cycles`,
+      body
+    ),
+
+  /** Official asset deploy path (async Celery or sync) */
+  deployProject: (projectId: number, data?: { code_content?: string }) =>
+    apiClient
+      .post<DeployResult>(`/api/v1/dfx/projects/${projectId}/deploy`, data ?? {})
+      .then(normalizeDfxDeploy),
+
+  updateProject: (projectId: number, data?: { code_content?: string }) =>
+    apiClient
+      .post<DeployResult>(`/api/v1/dfx/projects/${projectId}/update-canister`, data ?? {})
+      .then(normalizeDfxDeploy),
+
+  getDeploymentStatus: (projectId: number, deploymentId: number) =>
+    apiClient.get<DeploymentRecord>(
+      `/api/v1/dfx/projects/${projectId}/deployments/${deploymentId}`
+    ),
+
+  listDeployments: (projectId: number) =>
+    apiClient.get<DeploymentRecord[]>(`/api/v1/dfx/projects/${projectId}/deployments`),
+
+  setProjectPower: (projectId: number, enabled: boolean) =>
+    apiClient
+      .post<DfxWrappedResponse>(`/api/v1/dfx/projects/${projectId}/power`, { enabled })
+      .then(normalizePowerResult),
+
+  deleteProjectCanister: (projectId: number) =>
+    apiClient.delete<{ command: string; project_id: number; canister_id?: string; success: boolean }>(
+      `/api/v1/dfx/projects/${projectId}/canister`
+    ),
+};
+
+// ---------------------------------------------------------------------------
 // Deployments & hosting
 // ---------------------------------------------------------------------------
 
 export const deployApi = {
-  /** Deploy project HTML/assets to a new ICP canister */
+  /** Deploy project HTML/assets to ICP (official dfx path via /api/v1/dfx) */
   deploy: (projectId: string | number, data?: { code_content?: string; force?: boolean }) =>
-    apiClient.post<DeployResult>(
-      `/api/v1/deployments/projects/${projectId}/deploy`,
-      data ?? {}
-    ),
+    apiClient
+      .post<DeployResult>(`/api/v1/dfx/projects/${projectId}/deploy`, data ?? {})
+      .then(normalizeDfxDeploy),
 
-  /** Re-deploy after funding (same as deploy) */
   resume: (projectId: string | number) =>
     deployApi.deploy(projectId, { force: true }),
 
   updateCanister: (projectId: number, data?: { code_content?: string }) =>
-    apiClient.post<DeployResult>(
-      `/api/v1/deployments/projects/${projectId}/update-canister`,
-      data ?? {}
-    ),
+    apiClient
+      .post<DeployResult>(`/api/v1/dfx/projects/${projectId}/update-canister`, data ?? {})
+      .then((res) => normalizeDfxDeploy(res)),
 
-  deleteCanister: (projectId: number) =>
-    apiClient.delete<{ message: string }>(`/api/v1/deployments/projects/${projectId}/canister`),
+  deleteCanister: (projectId: number) => dfxApi.deleteProjectCanister(projectId),
 
   getDeploymentStatus: (projectId: number, deploymentId: number) =>
     apiClient.get<DeploymentRecord>(
-      `/api/v1/deployments/projects/${projectId}/deployments/${deploymentId}`
+      `/api/v1/dfx/projects/${projectId}/deployments/${deploymentId}`
     ),
 
   getDeploymentHistory: async (projectId: number): Promise<DeploymentRecord[]> =>
     apiClient.get<DeploymentRecord[]>(
-      `/api/v1/deployments/projects/${projectId}/deployments`
+      `/api/v1/dfx/projects/${projectId}/deployments`
     ),
 
-  getCanisterStatus: (canisterId: string) =>
-    apiClient.get<CanisterStatus>(`/api/v1/deployments/canisters/${canisterId}/status`),
+  getCanisterStatus: (canisterId: string) => dfxApi.getCanisterStatus(canisterId),
 
   setCanisterPower: (projectId: number, enabled: boolean) =>
-    apiClient.post<{
-      project_id: number;
-      canister_id: string;
-      enabled: boolean;
-      status: string;
-      canister_status: string;
-    }>(`/api/v1/deployments/projects/${projectId}/canister/power`, { enabled }),
+    dfxApi.setProjectPower(projectId, enabled),
 };
 
 // ---------------------------------------------------------------------------
@@ -187,8 +276,18 @@ export const canistersApi = {
     ];
   },
   getLogs: async (_id: string): Promise<CanisterLog[]> => [],
-  start: (id: string) => canistersApi.getById(id),
-  stop: (id: string) => canistersApi.getById(id),
+  start: async (id: string) => {
+    const project = await projectsApi.getById(Number(id));
+    if (!project.canister_id) throw new Error('No canister deployed');
+    await dfxApi.startCanister(project.canister_id);
+    return canistersApi.getById(id);
+  },
+  stop: async (id: string) => {
+    const project = await projectsApi.getById(Number(id));
+    if (!project.canister_id) throw new Error('No canister deployed');
+    await dfxApi.stopCanister(project.canister_id);
+    return canistersApi.getById(id);
+  },
   redeploy: (id: string) => deployApi.deploy(id, {}),
   delete: (id: string) => deployApi.deleteCanister(Number(id)),
   updateSettings: (id: string, _data: { name: string; cycles?: number }) =>
@@ -202,10 +301,7 @@ export const canistersApi = {
 export const walletApi = {
   getIdentity: () => apiClient.get<WalletIdentity>('/api/v1/wallet/identity'),
   refreshBalance: () => apiClient.post<WalletIdentity>('/api/v1/wallet/refresh-balance'),
-  convertIcpToCycles: () =>
-    apiClient.post<{ success: boolean; message?: string; cycles_balance?: number }>(
-      '/api/v1/wallet/convert-icp-to-cycles'
-    ),
+  convertIcpToCycles: () => dfxApi.convertCycles(),
   getFundingInstructions: () =>
     apiClient.get<FundingInstructions>('/api/v1/wallet/funding-instructions'),
   getNetworkStatus: () => apiClient.get<Record<string, unknown>>('/api/v1/wallet/network-status'),
@@ -221,10 +317,12 @@ export interface DomainRecord {
   domain: string;
   status: string;
   canister_id?: string;
+  canister_url?: string;
   ssl_active?: boolean;
   dns_configured?: boolean;
   custom_url?: string;
   created_at?: string;
+  activated_at?: string;
 }
 
 export const domainsApi = {
@@ -276,4 +374,12 @@ export const analyticsApi = {
     apiClient.get<Record<string, unknown>>(`/api/v1/projects/${projectId}/metrics/live`),
 };
 
-export type { Domain, Project, WalletIdentity, FundingInstructions, DeployResult, DeploymentRecord };
+export type {
+  Domain,
+  Project,
+  WalletIdentity,
+  FundingInstructions,
+  DeployResult,
+  DeploymentRecord,
+  DfxCommandCatalog,
+};

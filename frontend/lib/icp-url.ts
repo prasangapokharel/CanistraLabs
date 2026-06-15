@@ -11,6 +11,13 @@ export function isCanisterId(value: string | null | undefined): boolean {
   return CANISTER_ID_RE.test(id) && id.includes('-');
 }
 
+const LOCAL_CANISTER_RE = /(?:^|-)(?:[a-z0-9]*7777|77777)(?:-|$)/i;
+
+export function isLocalCanisterId(canisterId: string | null | undefined): boolean {
+  if (!canisterId) return false;
+  return LOCAL_CANISTER_RE.test(canisterId.trim());
+}
+
 export function isLocalCanisterUrl(url: string | null | undefined): boolean {
   if (!url) return false;
   const u = url.toLowerCase();

@@ -20,30 +20,37 @@ export function formatFundingRequirements(req?: FundingRequirements): string[] {
 
 /** Turn API deploy/wallet errors into a readable multi-line message. */
 export function formatDeployError(error: unknown): string {
-  if (error instanceof ApiError && error.data && typeof error.data === 'object') {
-    const data = error.data as { detail?: unknown };
-    const detail = data.detail;
-    if (detail && typeof detail === 'object' && detail !== null) {
-      const d = detail as {
-        message?: string;
-        action?: string;
-        recommended_icp?: string;
-        formatted_cycles_shortfall?: string;
-        error_code?: string;
-      };
-      if (d.message) {
-        const parts = [d.message];
-        if (d.formatted_cycles_shortfall && d.formatted_cycles_shortfall !== '0 cycles') {
-          parts.push(`Shortfall: ${d.formatted_cycles_shortfall}.`);
+  if (error instanceof ApiError) {
+    const data = error.data;
+    if (data && typeof data === 'object' && data !== null) {
+      const payload = data as { detail?: unknown; message?: string };
+      const detail = payload.detail ?? payload.message;
+      if (detail && typeof detail === 'object' && detail !== null) {
+        const d = detail as {
+          message?: string;
+          action?: string;
+          recommended_icp?: string;
+          formatted_cycles_shortfall?: string;
+        };
+        if (d.message) {
+          const parts = [d.message];
+          if (d.formatted_cycles_shortfall && d.formatted_cycles_shortfall !== '0 cycles') {
+            parts.push(`Shortfall: ${d.formatted_cycles_shortfall}.`);
+          }
+          if (d.recommended_icp) {
+            parts.push(`Convert about ${d.recommended_icp} ICP to cycles.`);
+          }
+          if (d.action) parts.push(d.action);
+          return parts.filter(Boolean).join(' ');
         }
-        if (d.recommended_icp) {
-          parts.push(`Convert about ${d.recommended_icp} ICP to cycles.`);
-        }
-        if (d.action) parts.push(d.action);
-        return parts.filter(Boolean).join(' ');
+      }
+      if (typeof detail === 'string' && detail.length > 0) {
+        return detail;
       }
     }
-    if (typeof detail === 'string') return detail;
+    if (error.message && !error.message.startsWith('API Error:')) {
+      return error.message;
+    }
   }
   if (error instanceof Error) return error.message;
   return 'Request failed';

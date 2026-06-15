@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { domainsApi } from '@/lib/api';
+import { domainsApi, type DomainRecord } from '@/lib/api';
 import { 
   Globe, 
   ExternalLink, 
@@ -40,17 +40,6 @@ interface DomainSetupData {
   ic_domains_content: string;
 }
 
-interface DomainRecord {
-  id: number;
-  domain_name: string;
-  status: string;
-  canister_id?: string;
-  ssl_active?: boolean;
-  dns_configured?: boolean;
-  custom_url?: string;
-  created_at?: string;
-}
-
 export default function DomainManager({ projectId }: { projectId: number }) {
   const [setupLoading, setSetupLoading] = useState(false);
   const [newDomain, setNewDomain] = useState('');
@@ -68,7 +57,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         throw new Error('Failed to load domains');
       }
 
-      return (data.domains || []) as DomainRecord[];
+      return data.domains ?? [];
     },
   });
 
@@ -95,7 +84,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         setNewSubdomain('');
         void refetch();
       } else {
-        setError(result.detail || 'Failed to setup domain');
+        setError('Failed to setup domain');
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
@@ -113,7 +102,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         setSuccess('DNS verification completed!');
         void refetch();
       } else {
-        setError(result.detail || 'DNS verification failed');
+        setError('DNS verification failed');
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
@@ -129,7 +118,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         setSuccess('Domain registration submitted to ICP boundary nodes!');
         void refetch();
       } else {
-        setError(result.detail || 'Domain registration failed');
+        setError('Domain registration failed');
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
@@ -145,7 +134,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         setSuccess('Registration status updated!');
         void refetch();
       } else {
-        setError(result.detail || 'Failed to check registration status');
+        setError('Failed to check registration status');
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
@@ -159,7 +148,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getStatusBadge = (status: string, _sslActive: boolean) => {
+  const getStatusBadge = (status: string, _sslActive?: boolean) => {
     switch (status) {
       case 'active':
         return <Badge variant="outline" className="border-green-200 bg-green-50 text-green-800 dark:bg-green-900/20 dark:border-green-800 dark:text-green-400"><CheckCircle className="w-3 h-3 mr-1" />Active</Badge>;
@@ -441,11 +430,11 @@ export default function DomainManager({ projectId }: { projectId: number }) {
                     <div className="flex items-center justify-between">
                       <span>Canister URL:</span>
                       <div className="flex items-center space-x-2">
-                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">{domain.canister_url}</code>
+                        <code className="bg-gray-100 px-2 py-1 rounded text-xs">{domain.canister_url ?? domain.canister_id ?? '—'}</code>
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => copyToClipboard(domain.canister_url)}
+                          onClick={() => copyToClipboard(domain.canister_url ?? domain.canister_id ?? '')}
                         >
                           <Copy className="w-3 h-3" />
                         </Button>
@@ -470,7 +459,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
                     
                     <div className="flex items-center justify-between">
                       <span>Created:</span>
-                      <span>{new Date(domain.created_at).toLocaleDateString()}</span>
+                      <span>{domain.created_at ? new Date(domain.created_at).toLocaleDateString() : '—'}</span>
                     </div>
                     
                     {domain.activated_at && (

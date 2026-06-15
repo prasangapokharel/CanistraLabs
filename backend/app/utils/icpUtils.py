@@ -41,6 +41,18 @@ def _dfx_deploy_lock():
             fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
 
+def _ensure_network_ready(network: str) -> None:
+    """Start local dfx replica when operations target the local network."""
+    if network != "local":
+        return
+    from app.services.dfxLifecycle import require_local_replica
+
+    try:
+        require_local_replica()
+    except RuntimeError as exc:
+        raise CanisterDeploymentException(str(exc)) from exc
+
+
 class ICPError(Exception):
     """Base exception for ICP-related errors."""
 
@@ -320,6 +332,22 @@ class ICPService:
             )
 
     @staticmethod
+    def _is_missing_canister_error(text: str) -> bool:
+        lower = text.lower()
+        return any(
+            marker in lower
+            for marker in (
+                "cannot find canister",
+                "canisteridnotfound",
+                "please issue 'dfx canister create",
+                "failed to get canister status",
+                "canister not found",
+                "ic0301",
+                "destinationinvalid",
+            )
+        )
+
+    @staticmethod
     def _deploy_asset_canister(
         project_dir: Path,
         network: str,
@@ -327,12 +355,14 @@ class ICPService:
         available_cycles: Optional[int] = None,
     ) -> str:
         """Deploy or upgrade the asset canister; return the canister ID."""
+        _ensure_network_ready(network)
         base_cmd = ["deploy", ASSET_CANISTER_NAME, "--network", network, "--yes"]
         if network == "ic" and not canister_id and available_cycles:
             # Cap at recommended amount; dfx deducts creation fee from this deposit.
             with_cycles = min(available_cycles, MAINNET_RECOMMENDED_CYCLES)
             base_cmd.extend(["--with-cycles", str(with_cycles)])
 
+        redeploy_fresh = False
         with _dfx_deploy_lock():
             if canister_id:
                 cmd = base_cmd + ["--mode", "reinstall"]
@@ -376,9 +406,33 @@ class ICPService:
                 output = f"{output}\n{stdout2}\n{stderr2}"
 
             if returncode != 0:
-                raise CanisterDeploymentException(
-                    f"Failed to deploy asset canister: {stderr or stdout}"
-                )
+                err_text = f"{stderr or ''}\n{stdout or ''}"
+                if (
+                    canister_id
+                    and network == "local"
+                    and ICPService._is_missing_canister_error(err_text)
+                ):
+                    logger.warning(
+                        "Local canister %s missing on replica (stale after dfx --clean); "
+                        "creating a fresh canister",
+                        canister_id,
+                    )
+                    ids_file = project_dir / ".dfx" / network / "canister_ids.json"
+                    if ids_file.exists():
+                        ids_file.unlink()
+                    redeploy_fresh = True
+                else:
+                    raise CanisterDeploymentException(
+                        f"Failed to deploy asset canister: {stderr or stdout}"
+                    )
+
+        if redeploy_fresh:
+            return ICPService._deploy_asset_canister(
+                project_dir,
+                network,
+                canister_id=None,
+                available_cycles=available_cycles,
+            )
 
         deployed_id = ICPService._extract_canister_id(output) or canister_id
         if not deployed_id:
@@ -696,6 +750,7 @@ persistent actor {{
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
         network = network_for_canister(canister_id)
+        _ensure_network_ready(network)
         try:
             with _dfx_deploy_lock():
                 returncode, stdout, stderr = ICPService._run_dfx_command(
@@ -717,6 +772,7 @@ persistent actor {{
             raise DfxNotInstalledException("dfx is not installed or not in PATH")
 
         network = network_for_canister(canister_id)
+        _ensure_network_ready(network)
         try:
             with _dfx_deploy_lock():
                 returncode, stdout, stderr = ICPService._run_dfx_command(

@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ProjectCodeEditor } from '@/components/project/ProjectCodeEditor';
 import { ProjectDeployPanel } from '@/components/project/ProjectDeployPanel';
+import DomainManager from '@/components/dashboard/DomainManager';
 import {
   listFileNames,
   parseProjectFiles,
@@ -33,11 +34,19 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import {
   deploySucceeded,
+  isLocalCanisterId,
   isLocalCanisterUrl,
   projectDeployLabel,
   projectIsLive,
   projectLiveUrl,
 } from '@/lib/icp-url';
+import { DeployStatusAlert } from '@/components/project/DeployStatusAlert';
+import {
+  deployingAlert,
+  failedAlert,
+  fundingAlertFromResult,
+  type DeployAlert,
+} from '@/lib/deploy-status';
 import type { DeployResult } from '@/types/api';
 
 interface ProjectEditorProps {
@@ -49,7 +58,7 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
   const [files, setFiles] = useState<Record<string, string>>({});
   const [activeFile, setActiveFile] = useState('index.html');
   const [newFileName, setNewFileName] = useState('');
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [deployAlert, setDeployAlert] = useState<DeployAlert | null>(null);
   const [dirty, setDirty] = useState(false);
   const [pollingDeploymentId, setPollingDeploymentId] = useState<number | null>(null);
 
@@ -63,10 +72,28 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
     refetchInterval: (query) => {
       const status = query.state.data?.status;
       if (!status) return 2000;
-      if (['success', 'failed', 'pending_funding', 'deployed'].includes(status)) return false;
+      if (['success', 'failed', 'pending_funding', 'deployed', 'updated'].includes(status))
+        return false;
       return 2000;
     },
   });
+
+  // Stop polling after 5 minutes (e.g. Celery worker offline)
+  useEffect(() => {
+    if (pollingDeploymentId == null) return;
+    const timer = window.setTimeout(() => {
+      setPollingDeploymentId(null);
+      setDeployAlert(
+        failedAlert(
+          'Deploy timed out. Convert ICP to cycles or ensure the backend worker is running, then try again.'
+        )
+      );
+      toast.error('Deploy timed out', {
+        description: 'The deployment did not finish in time.',
+      });
+    }, 5 * 60 * 1000);
+    return () => window.clearTimeout(timer);
+  }, [pollingDeploymentId]);
 
   const { data: wallet } = useQuery({
     queryKey: ['wallet', 'identity'],
@@ -76,6 +103,15 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
 
   const deployNetwork = wallet?.deploy_network ?? 'local';
   const isLocalDeploy = deployNetwork === 'local';
+  const isLocalCanister = Boolean(project.canister_id && isLocalCanisterId(project.canister_id));
+  const deployReady = wallet?.deploy_ready ?? isLocalDeploy;
+  const needsFunding = !project.canister_id && !deployReady && !isLocalDeploy;
+
+  const fundingMessage =
+    wallet?.message ??
+    (wallet?.requirements?.formatted_cycles_shortfall
+      ? `Need ${wallet.requirements.formatted_cycles_shortfall} more cycles for mainnet deploy.`
+      : 'Fund wallet and convert ICP to cycles before deploying.');
 
   useEffect(() => {
     setFiles(parseProjectFiles(project.code_content ?? null));
@@ -88,16 +124,22 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
 
     if (status === 'pending_funding') {
       setPollingDeploymentId(null);
-      setStatusMessage('Not live yet — fund your wallet, then Publish again.');
-      toast.warning('Funding required', { description: polledDeployment.message });
+      const alert = fundingAlertFromResult({
+        status: 'pending_funding',
+        funding_required: true,
+        message: polledDeployment.message,
+      } as DeployResult);
+      setDeployAlert(alert);
+      toast.warning(alert.title, { description: alert.message });
       void refetchDeployments();
       return;
     }
 
     if (status === 'failed') {
       setPollingDeploymentId(null);
-      setStatusMessage(polledDeployment.message ?? 'Deploy failed');
-      toast.error('Deploy failed', { description: polledDeployment.message });
+      const alert = failedAlert(polledDeployment.message ?? 'Deploy failed');
+      setDeployAlert(alert);
+      toast.error(alert.title, { description: alert.message });
       void refetchDeployments();
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       return;
@@ -105,7 +147,7 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
 
     if (status === 'success' || status === 'deployed') {
       setPollingDeploymentId(null);
-      setStatusMessage(null);
+      setDeployAlert(null);
       queryClient.invalidateQueries({ queryKey: ['projects'] });
       queryClient.invalidateQueries({ queryKey: ['projects', String(project.id)] });
       queryClient.invalidateQueries({ queryKey: ['project-metrics', String(project.id)] });
@@ -138,10 +180,12 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
     mutationFn: async () => {
       const serialized = serializeProjectFiles(files);
       await projectsApi.update(Number(project.id), { code_content: serialized });
+      toast.success('Project saved');
 
-      // Re-fetch so we deploy vs update based on latest canister_id (not stale props)
       const fresh = await projectsApi.getById(Number(project.id));
       const canisterId = fresh.canister_id ?? project.canister_id;
+
+      setDeployAlert(deployingAlert('Deploying to ICP…'));
 
       if (canisterId) {
         return deployApi.updateCanister(Number(project.id), { code_content: serialized });
@@ -156,25 +200,22 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
 
       if (result.async || result.status === 'queued') {
         setPollingDeploymentId(result.deployment_id);
-        setStatusMessage('Deploying in background…');
+        setDeployAlert(deployingAlert('Deploy queued — processing in background…'));
         toast.message('Deploy started', { description: 'This may take a minute.' });
         void refetchDeployments();
         return;
       }
 
       if (result.funding_required || result.status === 'pending_funding') {
-        const desc =
-          result.message ??
-          (result.recommended_icp
-            ? `Convert about ${result.recommended_icp} ICP to cycles on Wallet → Convert.`
-            : 'Send ICP to your Account ID on the Wallet page.');
-        toast.warning('Not enough cycles for mainnet deploy', { description: desc });
-        setStatusMessage(desc);
+        const alert = fundingAlertFromResult(result);
+        setDeployAlert(alert);
+        toast.warning(alert.title, { description: alert.message });
+        void refetchDeployments();
         return;
       }
 
       if (deploySucceeded(result)) {
-        setStatusMessage(null);
+        setDeployAlert(null);
         void refetchDeployments();
         queryClient.invalidateQueries({ queryKey: ['project-metrics', String(project.id)] });
         const url =
@@ -184,6 +225,7 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
             : null);
         const local = isLocalCanisterUrl(url);
         toast.success(local ? 'Published' : 'Live on ICP', {
+          description: 'Project saved and deployed.',
           action: url
             ? {
                 label: 'Visit site',
@@ -194,19 +236,33 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
         return;
       }
 
-      if (result.status === 'failed') {
-        toast.error('Publish failed', { description: result.message ?? 'Check backend logs' });
-        setStatusMessage(result.message ?? 'Publish failed');
+      if (result.status === 'updated') {
+        setDeployAlert(null);
+        toast.success('Published', {
+          description: 'Project saved and canister updated.',
+        });
+        void refetchDeployments();
         return;
       }
 
-      toast.success('Project saved');
-      setStatusMessage('Saved — not yet live. Fund wallet then Publish.');
+      if (result.status === 'failed') {
+        const alert = failedAlert(result.message ?? 'Deploy failed');
+        setDeployAlert(alert);
+        toast.error(alert.title, { description: alert.message });
+        return;
+      }
+
+      const alert = failedAlert(
+        result.message ?? `Unexpected deploy status: ${result.status ?? 'unknown'}`
+      );
+      setDeployAlert(alert);
+      toast.error(alert.title, { description: alert.message });
     },
     onError: (err) => {
       const msg = formatDeployError(err);
-      toast.error('Publish failed', { description: msg });
-      setStatusMessage(msg);
+      const alert = failedAlert(msg);
+      setDeployAlert(alert);
+      toast.error(alert.title, { description: alert.message });
     },
   });
 
@@ -276,8 +332,9 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
     pollingDeploymentId != null;
 
   // One banner max: errors/funding only (live state is in the badge + Visit button)
-  const showDraftHint = !isLive && !statusMessage && !project.canister_id;
-  const showWalletHint = wallet?.auto_convert_available && !statusMessage;
+  const showDraftHint =
+    !isLive && !deployAlert && !project.canister_id && !needsFunding;
+  const showWalletHint = needsFunding && !deployAlert;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
@@ -321,29 +378,40 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
           </Button>
           <Button size="sm" onClick={() => publishMutation.mutate()} disabled={isBusy}>
             <Rocket className="h-4 w-4" />
-            {isBusy ? 'Publishing…' : isLive ? 'Publish' : 'Deploy'}
+            {isBusy ? 'Publishing…' : isLive ? 'Publish' : needsFunding ? 'Deploy (needs cycles)' : 'Deploy'}
           </Button>
         </div>
       </div>
 
       <ProjectDeployPanel projectId={String(project.id)} canisterId={project.canister_id} />
 
-      {statusMessage && (
-        <Alert className="shrink-0">
-          <AlertDescription>{statusMessage}</AlertDescription>
+      {project.canister_id && (
+        <div className="shrink-0 max-h-[40vh] overflow-y-auto rounded-lg border p-3">
+          <DomainManager projectId={Number(project.id)} />
+        </div>
+      )}
+
+      {isLocalCanister && !isLocalDeploy && (
+        <Alert className="shrink-0 border-amber-500/50 bg-amber-500/5">
+          <AlertDescription className="text-sm">
+            This project uses a <strong>local dev canister</strong> (not IC mainnet). Publishing
+            updates it on your machine — the backend auto-starts <code className="text-xs">dfx</code>.
+            For mainnet, delete this project and deploy again after funding cycles.
+          </AlertDescription>
         </Alert>
       )}
 
+      {deployAlert && <DeployStatusAlert alert={deployAlert} className="shrink-0" />}
+
       {showWalletHint && (
-        <Alert className="shrink-0">
-          <AlertDescription className="text-sm">
-            Token balance ready —{' '}
-            <Link href="/dashboard/wallet/convert" className="underline">
-              convert to cycles
-            </Link>{' '}
-            before deploying.
-          </AlertDescription>
-        </Alert>
+        <DeployStatusAlert
+          className="shrink-0"
+          alert={{
+            kind: 'funding',
+            title: 'Insufficient cycles for mainnet deploy',
+            message: fundingMessage,
+          }}
+        />
       )}
 
       {showDraftHint && (
@@ -351,8 +419,8 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
           <AlertDescription className="text-sm">
             {isLocalDeploy ? (
               <>
-                Click <strong>Deploy</strong> to publish on your local dfx replica (keep{' '}
-                <code className="text-xs">dfx start</code> running).
+                Click <strong>Deploy</strong> to publish on your local dfx replica (backend
+                auto-starts <code className="text-xs">dfx start</code>).
               </>
             ) : (
               <>

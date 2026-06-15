@@ -223,3 +223,34 @@ export interface WalletIdentity {
   requirements?: FundingRequirements;
   created_at?: string;
 }
+
+export interface DfxCommandCatalogEntry {
+  dfx: string;
+  method: string;
+  api: string | null;
+  implemented: boolean;
+  category: string;
+  notes?: string;
+}
+
+export interface DfxCommandCatalog {
+  total: number;
+  implemented: number;
+  pending: number;
+  commands: DfxCommandCatalogEntry[];
+  dfx_version?: string;
+  timestamp?: string;
+}
+
+export interface DfxConvertBody {
+  amount?: string;
+}
+
+export interface DfxCyclesTopUpBody {
+  canister_id: string;
+  amount: string;
+}
+
+export interface DfxDepositCyclesBody {
+  amount: string;
+}

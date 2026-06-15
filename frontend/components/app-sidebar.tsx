@@ -19,7 +19,13 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { DashboardSquare01Icon, Folder01Icon } from '@hugeicons/core-free-icons';
+import {
+  DashboardSquare01Icon,
+  Folder01Icon,
+  Globe02Icon,
+  ChartHistogramIcon,
+} from '@hugeicons/core-free-icons';
+import { Server } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import { walletApi } from '@/lib/api';
 
@@ -33,6 +39,21 @@ const navMain = [
     title: 'Projects',
     url: '/dashboard/projects',
     icon: <HugeiconsIcon icon={Folder01Icon} strokeWidth={2} />,
+  },
+  {
+    title: 'Canisters',
+    url: '/dashboard/canisters',
+    icon: <Server className="size-4 shrink-0" />,
+  },
+  {
+    title: 'Domains',
+    url: '/dashboard/domains',
+    icon: <HugeiconsIcon icon={Globe02Icon} strokeWidth={2} />,
+  },
+  {
+    title: 'Analytics',
+    url: '/dashboard/analytics',
+    icon: <HugeiconsIcon icon={ChartHistogramIcon} strokeWidth={2} />,
   },
 ];
 

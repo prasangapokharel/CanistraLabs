@@ -1,0 +1,56 @@
+# dfx ledger fabricate-cycles --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Local development only: Fabricate cycles out of thin air and deposit them into the specified
+canister(s). Can specify a number of ICP/e8s (which will be converted to cycles using the current
+exchange rate) or a number of cycles. If no amount is specified, 10T cycles are added
+
+Usage: dfx ledger fabricate-cycles [OPTIONS]
+
+Options:
+      --cycles <CYCLES>
+          Specifies the amount of cycles to fabricate
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --amount <AMOUNT>
+          ICP to mint into cycles and deposit into destination canister Can be specified as a
+          Decimal with the fractional portion up to 8 decimal places i.e. 100.012
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --icp <ICP>
+          Specify ICP as a whole number, helpful for use in conjunction with `--e8s`
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --e8s <E8S>
+          Specify e8s as a whole number, helpful for use in conjunction with `--icp`
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --t <T>
+          Specifies the amount of trillion cycles to fabricate
+      --canister <CANISTER>
+          Specifies the name or id of the canister to receive the cycles deposit. You must specify
+          either a canister name/id or the --all option
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+      --all
+          Deposit cycles to all of the canisters configured in the dfx.json file
+  -h, --help
+          Print help

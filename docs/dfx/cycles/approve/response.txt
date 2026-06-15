@@ -1,0 +1,58 @@
+# dfx cycles approve --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Approves a principal to spend cycles on behalf of the approver
+
+Usage: dfx cycles approve [OPTIONS] <SPENDER> <AMOUNT>
+
+Arguments:
+  <SPENDER>  Allow this principal to spend cycles
+  <AMOUNT>   The number of cycles to approve
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+      --spender-subaccount <SPENDER_SUBACCOUNT>
+          Allow this subaccount to spend cycles
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --from-subaccount <FROM_SUBACCOUNT>
+          Approve cycles to be spent from this subaccount
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --expected-allowance <EXPECTED_ALLOWANCE>
+          The number of previously approved cycles. See
+          https://github.com/dfinity/ICRC-1/blob/main/standards/ICRC-2/README.md for details
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --created-at-time <CREATED_AT_TIME>
+          Transaction timestamp, in nanoseconds, for use in controlling transaction-deduplication,
+          default is system-time.
+          https://internetcomputer.org/docs/current/developer-docs/integrations/icrc-1/#transaction-deduplication-
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --expires-at <EXPIRES_AT>
+          Timestamp until which the approval is valid. None means that the approval is valid
+          indefinitely
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --memo <MEMO>
+          Memo
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

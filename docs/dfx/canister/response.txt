@@ -1,0 +1,71 @@
+# dfx canister --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Manages canisters deployed on a network replica
+
+Usage: dfx canister [OPTIONS] <COMMAND>
+
+Commands:
+  call              Calls a method on a deployed canister
+  create            Creates an empty canister and associates the assigned Canister ID to the
+                    canister name
+  delete            Deletes a currently stopped canister
+  deposit-cycles    Deposit cycles into the specified canister
+  id                Prints the identifier of a canister
+  info              Get the hash of a canister’s Wasm module and its current controllers
+  install           Installs compiled code in a canister
+  metadata          Displays metadata in a canister
+  migrate-id        Migrate a canister ID from one subnet to another
+  migration-status  Show the status of a migration
+  request-status    Requests the status of a call from a canister
+  send              Send a previously-signed message
+  set-id            Sets the identifier of a canister
+  sign              Sign a canister call and generate message file
+  snapshot          Controls canister snapshots that can reset a canister to an earlier state of
+                    execution
+  start             Starts a stopped canister
+  status            Returns the current status of a canister: Running, Stopping, or Stopped. Also
+                    carries information like balance, current settings, memory used and everything
+                    returned by 'info'
+  stop              Stops a currently running canister
+  uninstall-code    Uninstalls a canister, removing its code and state. Does not delete the canister
+  update-settings   Update one or more of a canister's settings (i.e its controller, compute
+                    allocation, or memory allocation.)
+  logs              Get the canister logs
+  url               Prints the url of a canister
+  help              Print this message or the help of the given subcommand(s)
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --wallet <WALLET>
+          Specify a wallet canister id to perform the call. If none specified, defaults to use the
+          selected Identity's wallet canister
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

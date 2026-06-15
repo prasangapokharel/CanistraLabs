@@ -1,0 +1,53 @@
+# dfx identity import --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Creates a new identity from a PEM file or seed phrase file
+
+Usage: dfx identity import [OPTIONS] <NEW_IDENTITY> [PEM_FILE]
+
+Arguments:
+  <NEW_IDENTITY>  The identity to create
+  [PEM_FILE]      The PEM file to import
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+      --seed-file <SEED_FILE>
+          The path to a file with your seed phrase
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --disable-encryption
+          DEPRECATED: Please use --storage-mode=plaintext instead
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --storage-mode <STORAGE_MODE>
+          How your private keys are stored. By default, if keyring/keychain is available, keys are
+          stored there. Otherwise, a password-protected file is used as fallback. Mode 'plaintext'
+          is not safe, but convenient for use in CI [possible values: keyring, password-protected,
+          plaintext]
+      --force
+          If the identity already exists, remove and re-import it
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

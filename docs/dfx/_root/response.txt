@@ -1,0 +1,76 @@
+# dfx  --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+The DFINITY Executor
+
+Usage: dfx [OPTIONS] <COMMAND>
+
+Commands:
+  build       Builds all or specific canisters from the code in your project. By default, all
+              canisters are built
+  cache       Manages the dfx version cache
+  canister    Manages canisters deployed on a network replica
+  config      Changes settings in dfx's configuration
+  completion  Generate a shell completion script
+  cycles      Helper commands to manage the user's cycles
+  deploy      Deploys all or a specific canister from the code in your project. By default, all
+              canisters are deployed
+  deps        Pull dependencies and integrate locally
+  diagnose    Detects known problems in the current environment caused by upgrading DFX, and
+              suggests commands to fix them. These commands can be batch-run automatically via `dfx
+              fix`
+  fix         Applies one-time fixes for known problems in the current environment caused by
+              upgrading DFX. Makes no changes that would not have been suggested by `dfx diagnose`
+  extension   Manages the dfx extensions
+  generate    Generate type declarations for canisters from the code in your project
+  identity    Manages identities used to communicate with the Internet Computer network. Setting an
+              identity enables you to test user-based access controls
+  info        Get information about the replica shipped with dfx, path to networks.json, and network
+              ports of running replica
+  killall     Kills all dfx-related processes on the system. Useful if a process gets stuck
+  ledger      Ledger commands
+  new         Creates a new project
+  ping        Pings an Internet Computer network and returns its status
+  quickstart  Use the `dfx quickstart` command to perform initial one time setup for your identity
+              and/or wallet. This command can be run anytime to repeat the setup process or to be
+              used as an informational command, printing information about your ICP balance, current
+              ICP to XDR conversion rate, and more
+  remote      Commands used to work with remote canisters
+  schema      Prints the schema for dfx.json
+  start       Starts the local replica and a web server for the current project
+  stop        Stops the local network replica
+  wallet      Helper commands to manage the user's cycles wallet
+  help        Print this message or the help of the given subcommand(s)
+
+Options:
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help
+  -V, --version
+          Print version
+
+=== RESPONSE (safe run) ===
+dfx 0.31.0
+---
+The DFINITY Executor
+
+Usage: dfx [OPTIONS] <COMMAND>
+
+Commands:

@@ -1,0 +1,56 @@
+# dfx cycles convert --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Convert some of the user's ICP balance into cycles
+
+Usage: dfx cycles convert [OPTIONS]
+
+Options:
+      --from-subaccount <FROM_SUBACCOUNT>
+          Subaccount to withdraw from
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --to-subaccount <TO_SUBACCOUNT>
+          Subaccount to mint cycles to
+      --fee <FEE>
+          Transaction fee, default is 10000 e8s
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --created-at-time <CREATED_AT_TIME>
+          Transaction timestamp, in nanoseconds, for use in controlling transaction-deduplication,
+          default is system-time
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --amount <AMOUNT>
+          ICP to mint into cycles and deposit into your cycles ledger account Can be specified as a
+          Decimal with the fractional portion up to 8 decimal places i.e. 100.012
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --icp <ICP>
+          Specify ICP as a whole number, helpful for use in conjunction with `--e8s`
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+      --e8s <E8S>
+          Specify e8s as a whole number, helpful for use in conjunction with `--icp`
+      --deposit-memo <DEPOSIT_MEMO>
+          Memo used when depositing the minted cycles
+  -h, --help
+          Print help

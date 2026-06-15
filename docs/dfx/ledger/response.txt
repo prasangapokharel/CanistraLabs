@@ -1,0 +1,59 @@
+# dfx ledger --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Ledger commands
+
+Usage: dfx ledger [OPTIONS] <COMMAND>
+
+Commands:
+  account-id         Prints the ledger account identifier corresponding to a principal
+  allowance          Get the ICP allowance that the spender account can transfer from the owner
+                     account
+  approve            Approve a principal to spend ICP on your behalf
+  balance            Prints the account balance of the user
+  create-canister    Create a canister from ICP
+  fabricate-cycles   Local development only: Fabricate cycles out of thin air and deposit them into
+                     the specified canister(s). Can specify a number of ICP/e8s (which will be
+                     converted to cycles using the current exchange rate) or a number of cycles. If
+                     no amount is specified, 10T cycles are added
+  notify             Notify the ledger about a send transaction to the cycles minting canister. This
+                     command should only be used if `dfx ledger create-canister` or `dfx ledger
+                     top-up` successfully sent a message to the ledger, and a transaction was
+                     recorded at some block height, but for some reason the subsequent notify failed
+  show-subnet-types  Show available subnet types in the cycles minting canister
+  top-up             Top up a canister with cycles minted from ICP
+  transfer           Transfer ICP from the user to the destination account identifier or principal
+  transfer-from      Transfer ICP from the approver princiapl to another principal
+  help               Print this message or the help of the given subcommand(s)
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

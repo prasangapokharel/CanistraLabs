@@ -12,6 +12,7 @@ Project documentation is grouped by topic:
 | [`reports/`](reports/) | Test results, validation summaries, phase reports |
 | [`api/`](api/) | API endpoint reference |
 | [`assets/`](assets/) | Screenshots and images |
+| [`dfx/`](dfx/) | Captured `dfx` command help and safe responses (119 commands) |
 
 ## Start here
 

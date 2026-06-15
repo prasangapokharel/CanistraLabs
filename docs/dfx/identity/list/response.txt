@@ -1,0 +1,99 @@
+# dfx identity list --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Lists existing identities
+
+Usage: dfx identity list [OPTIONS]
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help
+
+=== RESPONSE (safe run) ===
+anonymous
+default
+user_1_01f1cfa9
+user_1_0b269a8f
+user_1_1a11d5ea
+user_1_60e142f3
+user_1_891c0d31
+user_1_89b09b25
+user_1_89cc57f9 *
+user_1_8d5fd7de
+user_1_9e0c1768
+user_1_a74c1119
+user_1_a9feafba
+user_1_b4d1b6bb
+user_1_c2029930
+user_1_c2f0db9c
+user_37_0a10363b
+user_37_1cba7c53
+user_37_1f2e82b5
+user_37_3fc4d431
+user_37_524cd0ea
+user_37_5695e797
+user_37_5702401f
+user_37_57d17b2a
+user_37_5a7a381a
+user_37_5d197252
+user_37_648c6706
+user_37_76978d37
+user_37_7991671b
+user_37_7c2a459b
+user_37_c0174cbc
+user_37_c3f82fb2
+user_37_c5773752
+user_37_ea8b68b8
+user_37_f158ae54
+user_37_ff7e3b29
+user_38_97e46295
+user_39_923efc57
+user_40_64be9629
+user_41_a3c7d566
+user_42_293391e2
+user_43_cefd9462
+user_44_04d48855
+user_45_c23d1054
+user_46_dc68431b
+user_47_c14823e1
+user_48_cb184c95
+user_49_5980dc43
+user_50_a7e3effb
+user_51_020384e9
+user_52_05927075
+user_53_03c1925d
+user_54_ac8693c2
+user_55_ff2f5f54
+user_56_49b5736c
+user_57_c3147221
+user_58_ed8a3936
+user_59_ca5b3aa6
+user_60_8612d6cb

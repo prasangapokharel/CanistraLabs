@@ -1,0 +1,55 @@
+# dfx identity new --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Creates a new identity
+
+Usage: dfx identity new [OPTIONS] <NEW_IDENTITY>
+
+Arguments:
+  <NEW_IDENTITY>  The name of the identity to create. Valid characters are letters, numbers, and
+                  these symbols: .-_@
+
+Options:
+      --hsm-pkcs11-lib-path <HSM_PKCS11_LIB_PATH>
+          The file path to the opensc-pkcs11 library e.g. "/usr/local/lib/opensc-pkcs11.so"
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --hsm-key-id <HSM_KEY_ID>
+          A sequence of pairs of hex digits
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --disable-encryption
+          DEPRECATED: Please use --storage-mode=plaintext instead
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --storage-mode <STORAGE_MODE>
+          How your private keys are stored. By default, if keyring/keychain is available, keys are
+          stored there. Otherwise, a password-protected file is used as fallback. Mode 'plaintext'
+          is not safe, but convenient for use in CI [possible values: keyring, password-protected,
+          plaintext]
+      --force
+          If the identity already exists, remove and re-create it
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

@@ -1,0 +1,57 @@
+# dfx start --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Starts the local replica and a web server for the current project
+
+Usage: dfx start [OPTIONS]
+
+Options:
+      --host <HOST>
+          Specifies the host name and port number to bind the frontend to
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --background
+          Exits the dfx leaving the replica running. Will wait until the replica replies before
+          exiting
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --clean
+          Cleans the state of the current project
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --system-canisters
+          Bootstraps system canisters
+      --bitcoin-node <BITCOIN_NODE>
+          Address of bitcoind node.  Implies --enable-bitcoin
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+      --enable-bitcoin
+          enable bitcoin integration. If --bitcoin_node is not passed, defaults to 127.0.0.1:18444
+      --dogecoin-node <DOGECOIN_NODE>
+          Address of dogecoind node.  Implies --enable-dogecoin
+      --enable-dogecoin
+          enable dogecoin integration. If --dogecoin_node is not passed, defaults to 127.0.0.1:18444
+      --enable-canister-http
+          enable canister http requests (on by default)
+      --artificial-delay <ARTIFICIAL_DELAY>
+          The delay (in milliseconds) an update call should take. Lower values may be expedient in
+          CI [default: 600]
+      --force
+          Start even if the network config was modified
+      --domain <DOMAIN>
+          A list of domains that can be served. These are used for canister resolution [default:
+          localhost]
+      --pocketic
+          Runs PocketIC instead of the replica Currently this has no effect
+  -h, --help
+          Print help

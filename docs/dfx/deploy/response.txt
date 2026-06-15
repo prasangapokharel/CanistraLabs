@@ -1,0 +1,151 @@
+# dfx deploy --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Deploys all or a specific canister from the code in your project. By default, all canisters are
+deployed
+
+Usage: dfx deploy [OPTIONS] [CANISTER_NAME]
+
+Arguments:
+  [CANISTER_NAME]
+          Specifies the name of the canister you want to deploy. If you don’t specify a canister
+          name, all canisters defined in the dfx.json file are deployed
+
+Options:
+      --argument <ARGUMENT>
+          Specifies the argument to pass to the method
+
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+
+      --argument-type <ARGUMENT_TYPE>
+          Specifies the data type for the argument when making the call using an argument
+          
+          [possible values: idl, raw]
+
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+
+      --argument-file <ARGUMENT_FILE>
+          Specifies the file from which to read the argument to pass to the method
+
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both
+          
+          [default: stderr]
+          [possible values: stderr, tee, file]
+
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+
+  -m, --mode <MODE>
+          Specifies the mode of canister installation.
+          
+          If set to 'auto', either 'install' or 'upgrade' will be used, depending on whether the
+          canister is already installed.
+          
+          [possible values: install, reinstall, upgrade, auto]
+
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet
+          
+          [env: DFX_IDENTITY=]
+
+      --skip-pre-upgrade
+          Skip the pre_upgrade hook on upgrade.
+          
+          This requires the mode to be set to 'upgrade' or 'auto'.
+
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+
+      --wasm-memory-persistence <WASM_MEMORY_PERSISTENCE>
+          Keep or replace the Wasm main memory on upgrade.
+          
+          This requires the mode to be set to 'upgrade' or 'auto'.
+          
+          [possible values: keep, replace]
+
+      --upgrade-unchanged
+          Upgrade the canister even if the .wasm did not change
+
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name
+          
+          [env: DFX_NETWORK=]
+
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+
+      --ic
+          Shorthand for --network=ic
+
+      --with-cycles <WITH_CYCLES>
+          Specifies the initial cycle balance to deposit into the newly created canister. The
+          specified amount needs to take the canister create fee into account. This amount is
+          deducted from the wallet's cycle balance
+
+      --specified-id <PRINCIPAL>
+          Attempts to create the canister with this Canister ID.
+          
+          This option only works with non-mainnet replica. This option implies the --no-wallet flag.
+          This option takes precedence over the specified_id field in dfx.json.
+
+      --wallet <WALLET>
+          Specify a wallet canister id to perform the call. If none specified, defaults to use the
+          selected Identity's wallet canister
+
+      --no-wallet
+          Performs the create call with the user Identity as the Sender of messages. Bypasses the
+          Wallet canister
+
+      --output-env-file <OUTPUT_ENV_FILE>
+          Output environment variables to a file in dotenv format (without overwriting any
+          user-defined variables, if the file already exists)
+
+  -y, --yes
+          Skips yes/no checks by answering 'yes'. Such checks usually result in data loss, so this
+          is not recommended outside of CI
+
+      --no-asset-upgrade
+          Skips upgrading the asset canister, to only install the assets themselves
+
+      --by-proposal
+          Prepare (upload) assets for later commit by proposal
+
+      --compute-evidence
+          Compute evidence and compare it against expected evidence
+
+      --created-at-time <CREATED_AT_TIME>
+          Transaction timestamp, in nanoseconds, for use in controlling transaction deduplication,
+          default is system time.
+          https://internetcomputer.org/docs/current/developer-docs/integrations/icrc-1/#transaction-deduplication-
+
+      --from-subaccount <FROM_SUBACCOUNT>
+          Subaccount of the selected identity to spend cycles from
+
+      --subnet-type <SUBNET_TYPE>
+          Specify the optional subnet type to create canisters on. If no subnet type is provided,
+          the canister will be created on a random default application subnet. `dfx ledger
+          show-subnet-types` can be used to list available subnet types
+
+      --subnet <SUBNET>
+          Specify a specific subnet on which to create canisters on
+
+      --next-to <NEXT_TO>
+          Create canisters on the same subnet as this canister
+
+      --always-assist
+          Always use Candid assist when the argument types are all optional
+
+  -h, --help
+          Print help (see a summary with '-h')

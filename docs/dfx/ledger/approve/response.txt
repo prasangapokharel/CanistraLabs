@@ -1,0 +1,64 @@
+# dfx ledger approve --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Approve a principal to spend ICP on your behalf
+
+Usage: dfx ledger approve [OPTIONS] --amount <AMOUNT> <SPENDER>
+
+Arguments:
+  <SPENDER>  Allow this principal to spend ICP
+
+Options:
+      --from-subaccount <FROM_SUBACCOUNT>
+          Approve ICP to be spent from this subaccount
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --spender-subaccount <SPENDER_SUBACCOUNT>
+          Allow this subaccount to spend ICP
+      --amount <AMOUNT>
+          The number of ICPs to approve. Can be specified as a Decimal with the fractional portion
+          up to 8 decimal places i.e. 100.012
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --expected-allowance <EXPECTED_ALLOWANCE>
+          The number of previously approved ICPs. See
+          https://github.com/dfinity/ICRC-1/blob/main/standards/ICRC-2/README.md for details
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --fee <FEE>
+          Transaction fee, default is 0.00010000 ICP (10000 e8s)
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --created-at-time <CREATED_AT_TIME>
+          Transaction timestamp, in nanoseconds, for use in controlling transaction-deduplication,
+          default is system-time.
+          https://internetcomputer.org/docs/current/developer-docs/integrations/icrc-1/#transaction-deduplication-
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+      --expires-at <EXPIRES_AT>
+          Timestamp until which the approval is valid. None means that the approval is valid
+          indefinitely
+      --memo <MEMO>
+          Memo
+      --ledger-canister-id <LEDGER_CANISTER_ID>
+          Canister ID of the ledger canister
+  -h, --help
+          Print help

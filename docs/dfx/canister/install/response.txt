@@ -1,0 +1,120 @@
+# dfx canister install --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Installs compiled code in a canister
+
+Usage: dfx canister install [OPTIONS] [CANISTER] [OUTPUT_ENV_FILE]
+
+Arguments:
+  [CANISTER]
+          Specifies the canister to deploy. You must specify either canister name/id or the --all
+          option
+
+  [OUTPUT_ENV_FILE]
+          Output environment variables to a file in dotenv format (without overwriting any
+          user-defined variables, if the file already exists)
+
+Options:
+      --all
+          Deploys all canisters configured in the project dfx.json files
+
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name
+          
+          [env: DFX_NETWORK=]
+
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+
+      --async-call
+          Specifies not to wait for the result of the call to be returned by polling the replica.
+          Instead return a response ID
+
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+
+      --ic
+          Shorthand for --network=ic
+
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both
+          
+          [default: stderr]
+          [possible values: stderr, tee, file]
+
+  -m, --mode <MODE>
+          Specifies the mode of canister installation.
+          
+          If set to 'auto', either 'install' or 'upgrade' will be used, depending on whether the
+          canister is already installed.
+          
+          [possible values: install, reinstall, upgrade, auto]
+
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+
+      --skip-pre-upgrade
+          Skip the pre_upgrade hook on upgrade.
+          
+          This requires the mode to be set to 'upgrade' or 'auto'.
+
+      --wallet <WALLET>
+          Specify a wallet canister id to perform the call. If none specified, defaults to use the
+          selected Identity's wallet canister
+
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet
+          
+          [env: DFX_IDENTITY=]
+
+      --wasm-memory-persistence <WASM_MEMORY_PERSISTENCE>
+          Keep or replace the Wasm main memory on upgrade.
+          
+          This requires the mode to be set to 'upgrade' or 'auto'.
+          
+          [possible values: keep, replace]
+
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+
+      --upgrade-unchanged
+          Upgrade the canister even if the .wasm did not change
+
+      --argument <ARGUMENT>
+          Specifies the argument to pass to the method
+
+      --argument-type <ARGUMENT_TYPE>
+          Specifies the data type for the argument when making the call using an argument
+          
+          [possible values: idl, raw]
+
+      --argument-file <ARGUMENT_FILE>
+          Specifies the file from which to read the argument to pass to the method
+
+      --wasm <WASM>
+          Specifies a particular Wasm file to install, bypassing the dfx.json project settings
+
+  -y, --yes
+          Skips yes/no checks by answering 'yes'. Such checks usually result in data loss, so this
+          is not recommended outside of CI
+
+      --no-asset-upgrade
+          Skips upgrading the asset canister, to only install the assets themselves
+
+      --always-assist
+          Always use Candid assist when the argument types are all optional
+
+  -h, --help
+          Print help (see a summary with '-h')

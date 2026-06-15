@@ -1,0 +1,47 @@
+# dfx new --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Creates a new project
+
+Usage: dfx new [OPTIONS] <PROJECT_NAME>
+
+Arguments:
+  <PROJECT_NAME>  Specifies the name of the project to create
+
+Options:
+      --type <TYPE>
+          Choose the type of canister in the starter project [possible values: azle, kybra, motoko,
+          rust]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --dry-run
+          Provides a preview the directories and files to be created without adding them to the file
+          system
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --frontend <FRONTEND>
+          Choose the type of frontend in the starter project. Defaults to vanilla [possible values:
+          react, simple-assets, sveltekit, vanilla, vue, none]
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --no-frontend
+          Skip installing the frontend code example
+      --agent-version <AGENT_VERSION>
+          Overrides which version of the JavaScript Agent to install. By default, will contact NPM
+          to decide
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --extras <EXTRAS>
+          [possible values: bitcoin, internet-identity, frontend-tests]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+  -h, --help
+          Print help

@@ -1,0 +1,65 @@
+# dfx canister sign --help
+# Generated: 2026-06-15T11:46:03+05:45
+# dfx: dfx 0.31.0
+
+=== SUPPORT (--help) ===
+Sign a canister call and generate message file
+
+Usage: dfx canister sign [OPTIONS] <CANISTER_NAME> <METHOD_NAME> [ARGUMENT]
+
+Arguments:
+  <CANISTER_NAME>  Specifies the name/id of the canister to call
+  <METHOD_NAME>    Specifies the method name to call on the canister
+  [ARGUMENT]       Specifies the argument to pass to the method
+
+Options:
+      --network <NETWORK>
+          Override the compute network to connect to. By default, the local network is used. A valid
+          URL (starting with `http:` or `https:`) can be used here, and a special ephemeral network
+          will be created specifically for this request. E.g. "http://localhost:12345/" is a valid
+          network name [env: DFX_NETWORK=]
+      --type <TYPE>
+          Specifies the data type for the argument when making the call using an argument [possible
+          values: idl, raw]
+  -v, --verbose...
+          Displays detailed information about operations. -vv will generate a very large number of
+          messages and can affect performance
+      --argument-file <ARGUMENT_FILE>
+          Specifies the file from which to read the argument to pass to the method
+      --playground
+          Shorthand for --network=playground. Borrows short-lived canisters on the real IC network
+          instead of creating normal canisters
+  -q, --quiet...
+          Suppresses informational messages. -qq limits to errors only; -qqqq disables them all
+      --ic
+          Shorthand for --network=ic
+      --log <LOGMODE>
+          The logging mode to use. You can log to stderr, a file, or both [default: stderr]
+          [possible values: stderr, tee, file]
+      --query
+          Sends a query request to a canister
+      --logfile <LOGFILE>
+          The file to log to, if logging to a file (see --logmode)
+      --update
+          Sends an update request to a canister. This is the default if the method is not a query
+          method
+      --wallet <WALLET>
+          Specify a wallet canister id to perform the call. If none specified, defaults to use the
+          selected Identity's wallet canister
+      --identity <IDENTITY>
+          The user identity to run this command as. It contains your principal as well as some
+          things DFX associates with it like the wallet [env: DFX_IDENTITY=]
+      --random <RANDOM>
+          Specifies the config for generating random argument
+      --expire-after <EXPIRE_AFTER>
+          Specifies how long the message will be valid in seconds, default to be 300s (5 minutes)
+          [default: 5m]
+      --provisional-create-canister-effective-canister-id <PRINCIPAL>
+          The effective canister id for provisional canister creation must be a canister id in the
+          canister ranges of the subnet on which new canisters should be created
+      --file <FILE>
+          Specifies the output file name [default: message.json]
+      --always-assist
+          Always use Candid assist when the argument types are all optional
+  -h, --help
+          Print help

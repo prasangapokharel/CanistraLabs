@@ -73,11 +73,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link href="/dashboard" />}>
               <Image
-                src="/images/logo/icp.png"
+                src="/images/logo/icp.svg"
                 alt="Internet Computer"
-                width={28}
-                height={28}
-                className="size-7 shrink-0 rounded-md"
+                width={36}
+                height={18}
+                className="h-7 w-auto max-w-[2.25rem] shrink-0 object-contain"
               />
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="font-semibold">Canistra</span>

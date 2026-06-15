@@ -41,6 +41,7 @@ import {
   projectLiveUrl,
 } from '@/lib/icp-url';
 import { DeployStatusAlert } from '@/components/project/DeployStatusAlert';
+import { ActionConfirmDialog } from '@/components/confirm/ActionConfirmDialog';
 import {
   deployingAlert,
   failedAlert,
@@ -61,6 +62,7 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
   const [deployAlert, setDeployAlert] = useState<DeployAlert | null>(null);
   const [dirty, setDirty] = useState(false);
   const [pollingDeploymentId, setPollingDeploymentId] = useState<number | null>(null);
+  const [showDeployConfirm, setShowDeployConfirm] = useState(false);
 
   const { refetch: refetchDeployments } = useDeployments(String(project.id));
 
@@ -376,12 +378,33 @@ export function ProjectEditor({ project }: ProjectEditorProps) {
             <Save className="h-4 w-4" />
             Save
           </Button>
-          <Button size="sm" onClick={() => publishMutation.mutate()} disabled={isBusy}>
+          <Button size="sm" onClick={() => setShowDeployConfirm(true)} disabled={isBusy}>
             <Rocket className="h-4 w-4" />
             {isBusy ? 'Publishing…' : isLive ? 'Publish' : needsFunding ? 'Deploy (needs cycles)' : 'Deploy'}
           </Button>
         </div>
       </div>
+
+      <ActionConfirmDialog
+        open={showDeployConfirm}
+        onOpenChange={setShowDeployConfirm}
+        title={isLive ? 'Publish changes?' : 'Deploy to ICP?'}
+        description={
+          isLive
+            ? 'This saves your project and updates the live canister with your latest files.'
+            : isLocalDeploy
+              ? 'This publishes your site on the local dfx replica (free dev cycles).'
+              : needsFunding
+                ? 'Your wallet may not have enough cycles for mainnet. You can still try, or fund your wallet first.'
+                : 'This creates a canister on IC mainnet and publishes your site live.'
+        }
+        confirmLabel={isLive ? 'Publish' : 'Deploy'}
+        loading={publishMutation.isPending}
+        onConfirm={() => {
+          setShowDeployConfirm(false);
+          publishMutation.mutate();
+        }}
+      />
 
       <ProjectDeployPanel projectId={String(project.id)} canisterId={project.canister_id} />
 

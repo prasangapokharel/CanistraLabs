@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {
   Avatar,
   AvatarFallback,
@@ -20,7 +21,14 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Logout01Icon, MoreVerticalCircle01Icon } from '@hugeicons/core-free-icons';
+import {
+  Logout01Icon,
+  MoreVerticalCircle01Icon,
+  Settings01Icon,
+  UserIcon,
+  Notification01Icon,
+  CreditCardIcon,
+} from '@hugeicons/core-free-icons';
 import { useAuth } from '@/providers/AuthProvider';
 
 export function NavUser({
@@ -73,6 +81,23 @@ export function NavUser({
                 </div>
               </DropdownMenuLabel>
             </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem render={<Link href="/dashboard/profile" />}>
+              <HugeiconsIcon icon={UserIcon} strokeWidth={2} />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
+              <HugeiconsIcon icon={Settings01Icon} strokeWidth={2} />
+              Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem render={<Link href="/dashboard/billing" />}>
+              <HugeiconsIcon icon={CreditCardIcon} strokeWidth={2} />
+              Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem render={<Link href="/dashboard/notifications" />}>
+              <HugeiconsIcon icon={Notification01Icon} strokeWidth={2} />
+              Activity
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => logout()}>
               <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} />

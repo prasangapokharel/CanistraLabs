@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { domainsApi, type DomainRecord } from '@/lib/api';
+import { ActionConfirmDialog } from '@/components/confirm/ActionConfirmDialog';
+import { toast } from 'sonner';
 import { 
   Globe, 
   ExternalLink, 
@@ -47,6 +49,9 @@ export default function DomainManager({ projectId }: { projectId: number }) {
   const [setupData, setSetupData] = useState<DomainSetupData | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showSetupConfirm, setShowSetupConfirm] = useState(false);
+  const [deleteDomainId, setDeleteDomainId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const { data: domains = [], isLoading, refetch } = useQuery({
     queryKey: ['project-domains', projectId],
@@ -82,6 +87,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
         setSuccess(`Domain ${(result.data as DomainSetupData).domain} setup initiated successfully!`);
         setNewDomain('');
         setNewSubdomain('');
+        toast.success('Domain setup started');
         void refetch();
       } else {
         setError('Failed to setup domain');
@@ -91,6 +97,25 @@ export default function DomainManager({ projectId }: { projectId: number }) {
       setError('Failed to setup domain');
     } finally {
       setSetupLoading(false);
+    }
+  };
+
+  const deleteDomain = async (domainId: number) => {
+    try {
+      setDeleteLoading(true);
+      const result = await domainsApi.delete(domainId);
+      if (result.success) {
+        setSuccess('Domain removed');
+        toast.success('Domain removed');
+        void refetch();
+      } else {
+        setError('Failed to remove domain');
+      }
+    } catch {
+      setError('Failed to remove domain');
+    } finally {
+      setDeleteLoading(false);
+      setDeleteDomainId(null);
     }
   };
 
@@ -218,7 +243,7 @@ export default function DomainManager({ projectId }: { projectId: number }) {
             </div>
             <div className="flex items-end">
               <Button 
-                onClick={setupCustomDomain}
+                onClick={() => setShowSetupConfirm(true)}
                 disabled={setupLoading || !newDomain.trim()}
                 className="w-full"
               >
@@ -423,6 +448,14 @@ export default function DomainManager({ projectId }: { projectId: number }) {
                           Visit
                         </Button>
                       )}
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-destructive hover:text-destructive"
+                        onClick={() => setDeleteDomainId(domain.domain_id)}
+                      >
+                        Remove
+                      </Button>
                     </div>
                   </div>
                   
@@ -475,6 +508,32 @@ export default function DomainManager({ projectId }: { projectId: number }) {
           )}
         </CardContent>
       </Card>
+
+      <ActionConfirmDialog
+        open={showSetupConfirm}
+        onOpenChange={setShowSetupConfirm}
+        title="Set up custom domain?"
+        description={`Configure DNS for ${newSubdomain ? `${newSubdomain}.` : ''}${newDomain.trim() || 'your domain'}. You will receive DNS records to add at your registrar.`}
+        confirmLabel="Setup domain"
+        loading={setupLoading}
+        onConfirm={() => {
+          setShowSetupConfirm(false);
+          void setupCustomDomain();
+        }}
+      />
+
+      <ActionConfirmDialog
+        open={deleteDomainId != null}
+        onOpenChange={(open) => !open && setDeleteDomainId(null)}
+        title="Remove custom domain?"
+        description="This removes the domain from your project. DNS records at your registrar will need to be updated separately."
+        confirmLabel="Remove"
+        destructive
+        loading={deleteLoading}
+        onConfirm={() => {
+          if (deleteDomainId != null) void deleteDomain(deleteDomainId);
+        }}
+      />
     </div>
   );
 }

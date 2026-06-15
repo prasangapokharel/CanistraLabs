@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { dashboardApi, walletApi } from '@/lib/api';
+import { dashboardApi, healthApi, walletApi } from '@/lib/api';
+import { PlatformHealthIndicator } from '@/components/dashboard/PlatformHealthIndicator';
 import { useProjects } from '@/hooks/api/useProjects';
 import { projectIsLive, projectLiveUrl } from '@/lib/icp-url';
 
@@ -25,14 +26,50 @@ export default function DashboardPage() {
     staleTime: 30_000,
   });
 
+  const { data: health } = useQuery({
+    queryKey: ['platform', 'health'],
+    queryFn: () => healthApi.get(),
+    refetchInterval: 30_000,
+    staleTime: 15_000,
+  });
+
   const deployed = projects.filter((p) => projectIsLive(p)).length;
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-lg font-semibold">Overview</h2>
-        <p className="text-sm text-muted-foreground">Your projects on the Internet Computer</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold">Overview</h2>
+          <p className="text-sm text-muted-foreground">Your projects on the Internet Computer</p>
+        </div>
+        <PlatformHealthIndicator />
       </div>
+
+      {health && (
+        <Card>
+          <CardContent className="flex flex-wrap items-center gap-3 py-4 text-sm">
+            <span
+              className={`size-2.5 rounded-full ${health.dfx_local_replica ? 'bg-green-500' : health.deploy_network === 'ic' ? 'bg-amber-500' : 'bg-red-500'}`}
+              aria-hidden
+            />
+            <span>
+              Backend <strong className="text-foreground">{health.status}</strong>
+              {' · '}
+              dfx local:{' '}
+              <strong className="text-foreground">
+                {health.dfx_local_replica ? 'running' : 'offline'}
+              </strong>
+              {' · '}
+              Deploy network: <strong className="text-foreground">{health.deploy_network}</strong>
+            </span>
+            {!health.dfx_local_replica && health.deploy_network !== 'ic' && (
+              <Link href="/dashboard/settings" className="text-xs underline text-muted-foreground">
+                Check settings
+              </Link>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {wallet?.funding_required && (
         <Alert>

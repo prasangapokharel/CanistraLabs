@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Zap } from 'lucide-react';
+import { Zap, Receipt } from 'lucide-react';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -16,6 +16,7 @@ import { Wallet01Icon } from '@hugeicons/core-free-icons';
 
 const walletBase = '/dashboard/wallet';
 const convertPath = `${walletBase}/convert`;
+const billingPath = '/dashboard/billing';
 
 export function NavWallet() {
   const pathname = usePathname();
@@ -43,6 +44,16 @@ export function NavWallet() {
             >
               <Zap className="size-4 shrink-0" />
               <span>Convert</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip="Billing"
+              isActive={pathname === billingPath}
+              render={<Link href={billingPath} />}
+            >
+              <Receipt className="size-4 shrink-0" />
+              <span>Billing</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

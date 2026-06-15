@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowLeft, Info, RefreshCw, Zap } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ActionConfirmDialog } from '@/components/confirm/ActionConfirmDialog';
 import { walletApi } from '@/lib/api';
 import { handleApiError } from '@/lib/apiClient';
 import { formatFundingRequirements } from '@/lib/fundingErrors';
@@ -14,6 +16,7 @@ import { cn } from '@/lib/utils';
 
 export function ConvertCycles() {
   const queryClient = useQueryClient();
+  const [showConvertConfirm, setShowConvertConfirm] = useState(false);
 
   const { data: identity, isLoading, error, refetch } = useQuery({
     queryKey: ['wallet', 'identity'],
@@ -158,7 +161,7 @@ export function ConvertCycles() {
           <Button
             className="w-full"
             size="lg"
-            onClick={() => convertMutation.mutate()}
+            onClick={() => setShowConvertConfirm(true)}
             disabled={convertMutation.isPending || !canConvert}
           >
             <Zap className="h-4 w-4" />
@@ -173,6 +176,19 @@ export function ConvertCycles() {
       <Button variant="ghost" size="sm" onClick={() => refetch()}>
         Reload
       </Button>
+
+      <ActionConfirmDialog
+        open={showConvertConfirm}
+        onOpenChange={setShowConvertConfirm}
+        title={`Convert ${token} to cycles?`}
+        description={`This converts available ${token} in your wallet to cycles for mainnet deploys. A small ${token} balance is kept for ledger fees.`}
+        confirmLabel="Convert now"
+        loading={convertMutation.isPending}
+        onConfirm={() => {
+          setShowConvertConfirm(false);
+          convertMutation.mutate();
+        }}
+      />
     </div>
   );
 }

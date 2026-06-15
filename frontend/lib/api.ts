@@ -47,6 +47,25 @@ function normalizeProjects(projects: Project[]): Project[] {
 }
 
 // ---------------------------------------------------------------------------
+// Platform health
+// ---------------------------------------------------------------------------
+
+export interface PlatformHealth {
+  status: string;
+  app_name?: string;
+  version?: string;
+  environment?: string;
+  network?: string;
+  deploy_network?: string;
+  dfx_local_replica?: boolean;
+  dfx_auto_start?: boolean;
+}
+
+export const healthApi = {
+  get: () => apiClient.get<PlatformHealth>('/health', { skipAuth: true }),
+};
+
+// ---------------------------------------------------------------------------
 // Dashboard
 // ---------------------------------------------------------------------------
 

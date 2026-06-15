@@ -8,6 +8,14 @@ import { ArrowRight, Copy, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { walletApi } from '@/lib/api';
 import { handleApiError } from '@/lib/apiClient';
 import { toast } from 'sonner';
@@ -122,10 +130,26 @@ export function MinimalWallet() {
           </div>
           {copied && <p className="text-xs text-muted-foreground">Copied</p>}
           {qrUrl && (
-            <div className="flex justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={qrUrl} alt="Deposit QR" className="h-[180px] w-[180px] rounded border" />
-            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="w-full">
+                  Show deposit QR code
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-sm">
+                <DialogHeader>
+                  <DialogTitle>Deposit {tokenLabel}</DialogTitle>
+                  <DialogDescription>
+                    Scan with your exchange or wallet app. Send to Account ID only.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex justify-center py-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={qrUrl} alt="Deposit QR" className="h-[200px] w-[200px] rounded border" />
+                </div>
+                <code className="block break-all rounded bg-muted p-2 text-xs">{identity.account_id}</code>
+              </DialogContent>
+            </Dialog>
           )}
           <p className="text-xs text-muted-foreground">
             Send ICP to this Account ID from an exchange or wallet — not your Principal ID.
